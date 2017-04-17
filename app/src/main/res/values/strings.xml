@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Movies App</string>
+
+    <string name="movies_title">Movies</string>
+    <string name="tvshows_title">TV Shows</string>
+    <string name="watchlist_title">Watchlist</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="newsfeed_title">News Feed</string>
+
+    <string-array name="tabs">
+        <item>Most popular</item>
+        <item>Latest</item>
+        <item>Highest rated</item>
+    </string-array>
+
+</resources>
