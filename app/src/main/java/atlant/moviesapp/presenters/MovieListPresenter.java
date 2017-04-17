@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.MoviesResponse;
@@ -27,7 +28,10 @@ public class MovieListPresenter {
     private static final int HIGHEST_RATED = 2;
 
 
-    private final static String API_KEY = "e87991d039ddbe98de1958bf8a8b5148";
+
+    private static final String API_KEY = BuildConfig.API_KEY;
+    private  Call<MoviesResponse> call;
+
 
     public MovieListPresenter(MovieListView view) {
         this.view = view;
@@ -36,7 +40,6 @@ public class MovieListPresenter {
     public void getHighestRatedMovies(int tag) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
-        Call<MoviesResponse> call;
         if (tag == MOST_POPULAR)
             call = apiservice.discoverMovies("popularity.desc", API_KEY);
         else if (tag == LATEST) call = apiservice.discoverMovies("release_date.desc", API_KEY);
@@ -60,6 +63,10 @@ public class MovieListPresenter {
 
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                if (call.isCanceled()) {
+                    Log.e("TAG", "request was cancelled");
+                }
+
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -67,6 +74,16 @@ public class MovieListPresenter {
         });
 
 
+    }
+    public void onStop() {
+        if(call!=null)
+            call.cancel();
+    }
+    public void onDestroy()
+    {
+        if(call!=null)
+            call.cancel();
+        view=null;
     }
 
 
