@@ -2,7 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="atlant.moviesapp.fragments.LatestFragment">
+    tools:context="atlant.moviesapp.fragments.LatestMoviesFragment">
+
+    <ProgressBar
+        android:id="@+id/latest_progress_bar"
+        style="@style/AppTheme.Movies.ProgressBar"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

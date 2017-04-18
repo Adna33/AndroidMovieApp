@@ -1,5 +1,8 @@
 package atlant.moviesapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -9,13 +12,13 @@ import java.util.List;
  * Created by Korisnik on 11.04.2017..
  */
 
-public class TvShow {
+public class TvShow implements Parcelable {
 
     @SerializedName("id")
     private Integer id;
 
-    @SerializedName("original_name")
-    private String originalTitle;
+    @SerializedName("name")
+    private String name;
 
     @SerializedName("poster_path")
     private String posterPath;
@@ -26,34 +29,15 @@ public class TvShow {
     @SerializedName("vote_average")
     private double rating;
 
-    @SerializedName("seasons_season_number")
-    private List<Integer> seasons=new ArrayList<>();
+    @SerializedName("first_air_date")
+    private String releaseDate;
 
-    @SerializedName("created_by_names")
-    private List<String> writers=new ArrayList<>();
 
-    /*@SerializedName("genre_ids")
-    private List<Integer> genreIds=new ArrayList<>();
-
-ili
-
-    @SerializedName("genre_names")
-    private List<String> genreNames=new ArrayList<>();
-
-    */
+    @SerializedName("genre_ids")
+    private List<Integer> genreIds = new ArrayList<Integer>();
 
     //TODO crew cast reviews director writers
 
-
-    public TvShow(Integer id, String originalTitle, String posterPath, String overview, double rating, List<Integer> seasons, List<String> writers) {
-        this.id = id;
-        this.originalTitle = originalTitle;
-        this.posterPath = posterPath;
-        this.overview = overview;
-        this.rating = rating;
-        this.seasons = seasons;
-        this.writers = writers;
-    }
 
     public Integer getId() {
         return id;
@@ -63,12 +47,12 @@ ili
         this.id = id;
     }
 
-    public String getOriginalTitle() {
-        return originalTitle;
+    public String getName() {
+        return name;
     }
 
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPosterPath() {
@@ -94,20 +78,67 @@ ili
     public void setRating(double rating) {
         this.rating = rating;
     }
-
-    public List<Integer> getSeasons() {
-        return seasons;
+    public String getRatingString() {
+        return Double.toString(rating);
     }
 
-    public void setSeasons(List<Integer> seasons) {
-        this.seasons = seasons;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public List<String> getWriters() {
-        return writers;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public void setWriters(List<String> writers) {
-        this.writers = writers;
+    public List<Integer> getGenreIds() {
+        return genreIds;
     }
+
+    public void setGenreIds(List<Integer> genreIds) {
+        this.genreIds = genreIds;
+    }
+    public String getImagePath() {
+        return "http://image.tmdb.org/t/p/w500" + posterPath;
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.rating);
+        dest.writeString(this.releaseDate);
+        dest.writeList(this.genreIds);
+
+    }
+    protected TvShow(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.posterPath = in.readString();
+        this.overview = in.readString();
+        this.rating = in.readDouble();
+        this.releaseDate = in.readString();
+        genreIds = new ArrayList<Integer>();
+        in.readList(genreIds, null);
+
+
+    }
+    public static final Creator<TvShow> CREATOR = new Creator<TvShow>() {
+        @Override
+        public TvShow createFromParcel(Parcel in) {
+            return new TvShow(in);
+        }
+
+        @Override
+        public TvShow[] newArray(int size) {
+            return new TvShow[size];
+        }
+    };
 }

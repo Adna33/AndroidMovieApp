@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.fragments.HighestRatedFragment;
-import atlant.moviesapp.fragments.LatestFragment;
-import atlant.moviesapp.fragments.MostPopularFragment;
+import atlant.moviesapp.fragments.HighestRatedMoviesFragment;
+import atlant.moviesapp.fragments.LatestMoviesFragment;
+import atlant.moviesapp.fragments.MostPopularMoviesFragment;
 
 /**
  * Created by Korisnik on 12.04.2017..
@@ -33,11 +33,11 @@ public class MoviePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case MOST_POPULAR:
-                return new MostPopularFragment();
+                return new MostPopularMoviesFragment();
             case LATEST:
-                return new LatestFragment();
+                return new LatestMoviesFragment();
             case HIGHEST_RATED:
-                return new HighestRatedFragment();
+                return new HighestRatedMoviesFragment();
 
             default:
                 throw new UnsupportedOperationException("Undefined Fragment index: " + position);

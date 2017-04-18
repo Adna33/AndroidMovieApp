@@ -2,9 +2,10 @@
 <resources>
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#f8ca00</color>
 
     <color name="backgroundColor">#303030</color>
+
 
     <color name="standardYellow">#f8ca00</color>
     <color name="buttonFocusedFioll">#e2cf7e</color>
@@ -12,5 +13,6 @@
 
     <color name="endGradient">#fa000000</color>
     <color name="fadedText">#898885</color>
+
 
 </resources>

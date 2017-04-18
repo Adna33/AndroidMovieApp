@@ -10,5 +10,8 @@ import atlant.moviesapp.model.Movie;
 
 public interface MovieListView {
 
-    public void showMovies(List<Movie> data);
+    void showMovies(List<Movie> data);
+    void showProgress();
+
+    void hideProgress();
 }

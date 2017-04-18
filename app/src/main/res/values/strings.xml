@@ -6,11 +6,34 @@
     <string name="watchlist_title">Watchlist</string>
     <string name="favorites_title">Favorites</string>
     <string name="newsfeed_title">News Feed</string>
+    <string name="menu_feed_title">Feed</string>
+
+    <string name="director_title">Director:</string>
+    <string name="seasons_title">Seasons:</string>
+    <string name="expand">See all</string>
+    <string name="read_more">Read more</string>
+    <string name="stars_title">Stars:</string>
+    <string name="writers_title">Writers:</string>
+    <string name="reviews_title">Reviews:</string>
+    <string name="cast_title">Cast:</string>
+
+    <string name="genre_unknown">Unknown Genre</string>
+    <string name="unknown_field">Unknown</string>
 
     <string-array name="tabs">
         <item>Most popular</item>
         <item>Latest</item>
         <item>Highest rated</item>
     </string-array>
+
+    <string-array name="TvTabs">
+        <item>Most popular</item>
+        <item>Latest</item>
+        <item>Highest rated</item>
+        <item>Airing</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

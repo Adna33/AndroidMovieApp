@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/movies_layout"
+    android:layout_margin="3dp"
+    >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/frameLayout">
+
+        <atlant.moviesapp.helper.ImageRatio
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:id="@+id/poster_iv"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/frameLayout"
+        android:layout_marginLeft="17dp"
+        android:id="@+id/linearLayout"
+        android:layout_marginBottom="3dp">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:fontFamily="sans-serif"
+            android:textSize="10.7sp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:text="Genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/movieGenre"
+            android:fontFamily="sans-serif"
+            android:textSize="5.3sp"/>
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/release_date"
+            android:textSize="6.7sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20.7dp"    android:paddingLeft="17dp"
+        android:layout_below="@id/linearLayout"
+        android:background="@color/endGradient"
+        android:paddingRight="17dp">
+
+        <TextView
+            android:text="Proba"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/star"
+            android:drawablePadding="3dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/bookmark_black_tool_symbol"
+            android:id="@+id/bookmark_btn"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:backgroundTint="@color/endGradient" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/like"
+            android:id="@+id/like_btn"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:backgroundTint="@color/endGradient"
+            android:layout_marginLeft="4dp" />
+    </LinearLayout>
+
+</RelativeLayout>

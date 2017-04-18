@@ -1,11 +1,14 @@
 package atlant.moviesapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Parcelable {
 
     @SerializedName("id")
     private Integer id;
@@ -48,6 +51,18 @@ public class Movie {
         this.video = video;
     }
 
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public List<Integer> getGenreIds() {
         return genreIds;
@@ -115,6 +130,37 @@ public class Movie {
 
     public String getImagePath() {
         return "http://image.tmdb.org/t/p/w500" + posterPath;
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.rating);
+        dest.writeString(this.releaseDate);
+        dest.writeList(this.genreIds);
+        dest.writeByte(isVideo() ? (byte) 1 : (byte) 0);
+
+
+    }
+    protected Movie(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.posterPath = in.readString();
+        this.overview = in.readString();
+        this.rating = in.readDouble();
+        this.releaseDate = in.readString();
+        genreIds = new ArrayList<Integer>();
+        in.readList(genreIds, null);
+        this.video = in.readByte() != 0;
 
     }
 }

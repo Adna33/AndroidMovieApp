@@ -1,6 +1,8 @@
 package atlant.moviesapp.presenters;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,10 @@ import retrofit2.Response;
 public class MovieListPresenter {
 
     private MovieListView view;
+    private ProgressBar progressBar;
     private static final int MOST_POPULAR = 0;
     private static final int LATEST = 1;
     private static final int HIGHEST_RATED = 2;
-
 
 
     private static final String API_KEY = BuildConfig.API_KEY;
@@ -40,6 +42,7 @@ public class MovieListPresenter {
     public void getHighestRatedMovies(int tag) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
+
         if (tag == MOST_POPULAR)
             call = apiservice.discoverMovies("popularity.desc", API_KEY);
         else if (tag == LATEST) call = apiservice.discoverMovies("release_date.desc", API_KEY);
@@ -52,6 +55,7 @@ public class MovieListPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
+                    view.hideProgress();
                     view.showMovies(movies);
                 } else {
                     //TODO onFailure
@@ -66,7 +70,6 @@ public class MovieListPresenter {
                 if (call.isCanceled()) {
                     Log.e("TAG", "request was cancelled");
                 }
-
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -85,6 +88,7 @@ public class MovieListPresenter {
             call.cancel();
         view=null;
     }
+
 
 
 }
