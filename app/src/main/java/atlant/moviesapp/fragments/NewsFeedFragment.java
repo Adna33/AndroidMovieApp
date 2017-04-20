@@ -26,10 +26,10 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFeedFragment extends Fragment implements NewsFeedView{
+public class NewsFeedFragment extends Fragment implements NewsFeedView {
 
-@BindView(R.id.news_layout)
-CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.news_layout)
+    CoordinatorLayout coordinatorLayout;
 
     @BindView(R.id.news_progress_bar)
     ProgressBar progressBar;
@@ -50,14 +50,14 @@ CoordinatorLayout coordinatorLayout;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_news_feed, container, false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
+        ButterKnife.bind(this, v);
 
-        presenter=new NewsFeedPresenter(this);
+        presenter = new NewsFeedPresenter(this);
         presenter.getNews();
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-       ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.newsfeed_title);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.newsfeed_title);
 
         return v;
     }
@@ -66,8 +66,9 @@ CoordinatorLayout coordinatorLayout;
     public void showNews(List<News> data) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        recyclerView.setAdapter(new NewsFeedAdapter(data, R.layout.list_item_news,getActivity().getApplicationContext()));
+        recyclerView.setAdapter(new NewsFeedAdapter(data, R.layout.list_item_news, getActivity().getApplicationContext()));
     }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
@@ -79,14 +80,18 @@ CoordinatorLayout coordinatorLayout;
         progressBar.setVisibility(View.INVISIBLE);
 
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }

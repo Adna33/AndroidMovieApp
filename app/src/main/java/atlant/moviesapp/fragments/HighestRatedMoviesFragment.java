@@ -82,10 +82,12 @@ public class HighestRatedMoviesFragment extends Fragment implements MovieListVie
     @Override
     public void onStop() {
         super.onStop();
+        if(presenter!=null)
         presenter.onStop();
     }
     @Override
     public void onDestroy() {
+        if(presenter!=null)
         presenter.onDestroy();
         super.onDestroy();
     }

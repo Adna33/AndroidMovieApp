@@ -13,16 +13,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
-import atlant.moviesapp.adapter.ReviewAdapter;
+import atlant.moviesapp.adapter.HorizontalAdapter;
+import atlant.moviesapp.adapter.TVListAdapter;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
-import atlant.moviesapp.model.Review;
-import atlant.moviesapp.model.TvGenre;
-import atlant.moviesapp.model.TvShow;
+import atlant.moviesapp.model.TvShowDetail;
+
 import atlant.moviesapp.presenters.TvDetailsPresenter;
 import atlant.moviesapp.views.TvDetailsView;
 import butterknife.BindView;
@@ -65,6 +66,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
 
+    @BindView(R.id.seasons_recycler_view)
+    RecyclerView seasonRecyclerView;
+
     private TvDetailsPresenter presenter;
 
     @Override
@@ -86,54 +90,43 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         });
 
         Intent intent = getIntent();
-        TvShow series = intent.getParcelableExtra("series");
-        director.setText("");
-        title.setText(series.getName());
-        if(TvGenre.getTvGenreById(series.getGenreIds().get(0))== null || series.getGenreIds().isEmpty()){genre.setText(R.string.genre_unknown);}
-        else
-        genre.setText(TvGenre.getTvGenreById(series.getGenreIds().get(0)).getName());
-        releaseDate.setText(series.getReleaseDate());
-        rating.setText(series.getRatingString());
-        overview.setText(series.getOverview());
-        showPoster(series);
-        presenter=new TvDetailsPresenter(this);
-        presenter.getCredits(series.getId());
+        Integer seriesId = intent.getIntExtra("series", 0);
+        presenter = new TvDetailsPresenter(this);
+        presenter.getDetails(seriesId);
+        presenter.getCredits(seriesId);
     }
 
     @Override
     public void showCast(List<Cast> cast) {
-        String castString="";
-        for (int i=0; i<cast.size(); i++) {
-            if(i<4)
-            {
-                castString= castString+cast.get(i).getName()+" ";
+        String castString = "";
+        for (int i = 0; i < cast.size(); i++) {
+            if (i < 4) {
+                castString = castString + cast.get(i).getName() + " ";
             }
 
         }
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item,this));
+        castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
 
     }
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString="";
-        for (int i=0; i<crew.size(); i++) {
-            if(crew.get(i).getJob().equals("Director"))
-            {
-                directorsString= directorsString+crew.get(i).getName()+"  ";
+        String directorsString = "";
+        for (int i = 0; i < crew.size(); i++) {
+            if (crew.get(i).getJob().equals("Director")) {
+                directorsString = directorsString + crew.get(i).getName() + "  ";
             }
 
         }
         director.setText(directorsString);
-        String writersString="";
-        int num=0;
-        for (int i=0; i<crew.size(); i++) {
-            if(crew.get(i).getDepartment().equals("Writing") && num<3)
-            {
+        String writersString = "";
+        int num = 0;
+        for (int i = 0; i < crew.size(); i++) {
+            if (crew.get(i).getDepartment().equals("Writing") && num < 3) {
                 num++;
-                writersString= writersString+crew.get(i).getName()+" ("+crew.get(i).getJob()+")  ";
+                writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
             }
 
         }
@@ -142,7 +135,49 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     }
 
     @Override
-    public void showPoster(TvShow series) {
+    public void showDetails(final TvShowDetail series) {
+        final List<Integer> seasons = new ArrayList<>();
+        director.setText("");
+        title.setText(series.getName());
+        if (series.getGenres() == null) {
+            genre.setText(R.string.genre_unknown);
+        } else
+            for (int i = 0; i < series.getGenres().size(); i++)
+                genre.setText(series.getGenres().get(i).getName() + " ");
+        for (int i = 1; i <= series.getNumberOfSeasons(); i++) {
+            seasons.add(i);
+        }
+        releaseDate.setText(series.getFirstAirDate());
+        rating.setText(series.getVoteAverage().toString());
+        overview.setText(series.getOverview());
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        seasonRecyclerView.setLayoutManager(layoutManager);
+        seasonRecyclerView.setAdapter(new HorizontalAdapter(seasons, R.layout.season_number_item));
+        seasonRecyclerView.addOnItemTouchListener(new HorizontalAdapter.RecyclerTouchListener(this, seasonRecyclerView, new HorizontalAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+
+                Intent intent = new Intent(TvShowDetails.this, SeasonsActivity.class);
+                intent.putExtra("showId", series.getId());
+                intent.putExtra("seasonId", seasons.get(position));
+                intent.putExtra("seasonNum", seasons.size());
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+        showPoster(series);
+
+    }
+
+
+    public void showPoster(TvShowDetail series) {
         Glide.with(this).load(series.getImagePath())
                 .crossFade().centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -150,21 +185,18 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     }
 
-    @Override
-    public void showReviews(List<Review> reviews) {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ReviewAdapter(reviews, R.layout.review_item,this));
-
-    }
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }

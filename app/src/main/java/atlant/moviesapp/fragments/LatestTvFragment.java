@@ -21,9 +21,9 @@ import atlant.moviesapp.views.TvShowListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LatestTvFragment extends Fragment implements TvShowListView{
+public class LatestTvFragment extends Fragment implements TvShowListView {
 
-    private static final int TAG=1;
+    private static final int TAG = 1;
 
     @BindView(R.id.latest_recycler_view)
     RecyclerView recyclerView;
@@ -38,8 +38,8 @@ public class LatestTvFragment extends Fragment implements TvShowListView{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_latest_tv, container, false);
 
-        ButterKnife.bind(this,view);
-        presenter=new TvShowListPresenter(this);
+        ButterKnife.bind(this, view);
+        presenter = new TvShowListPresenter(this);
         presenter.getHighestRatedSeries(TAG);
 
         return view;
@@ -57,7 +57,7 @@ public class LatestTvFragment extends Fragment implements TvShowListView{
             public void onClick(View view, int position) {
 
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                intent.putExtra("series", data.get(position));
+                intent.putExtra("series", data.get(position).getId());
                 startActivity(intent);
             }
 
@@ -67,6 +67,7 @@ public class LatestTvFragment extends Fragment implements TvShowListView{
             }
         }));
     }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
@@ -78,14 +79,18 @@ public class LatestTvFragment extends Fragment implements TvShowListView{
         progressBar.setVisibility(View.INVISIBLE);
 
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }

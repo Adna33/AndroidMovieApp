@@ -120,8 +120,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         }
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item,this));
-
+        castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
 
 
     }
@@ -161,17 +160,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     public void showReviews(List<Review> reviews) {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ReviewAdapter(reviews, R.layout.review_item,this));
+        recyclerView.setAdapter(new ReviewAdapter(reviews, R.layout.review_item, this));
 
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }

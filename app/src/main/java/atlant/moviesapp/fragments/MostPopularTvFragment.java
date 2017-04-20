@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MostPopularTvFragment extends Fragment implements TvShowListView{
+public class MostPopularTvFragment extends Fragment implements TvShowListView {
 
     private static final int TAG = 0;
 
@@ -47,10 +47,10 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=  inflater.inflate(R.layout.fragment_most_popular_tv, container, false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_most_popular_tv, container, false);
+        ButterKnife.bind(this, view);
 
-        presenter=new TvShowListPresenter(this);
+        presenter = new TvShowListPresenter(this);
         presenter.getHighestRatedSeries(TAG);
 
         return view;
@@ -66,7 +66,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView{
             public void onClick(View view, int position) {
 
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                intent.putExtra("series", data.get(position));
+                intent.putExtra("series", data.get(position).getId());
                 startActivity(intent);
             }
 
@@ -77,6 +77,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView{
         }));
 
     }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
@@ -88,14 +89,18 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView{
         progressBar.setVisibility(View.INVISIBLE);
 
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }

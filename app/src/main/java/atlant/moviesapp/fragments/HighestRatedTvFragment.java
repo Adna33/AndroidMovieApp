@@ -62,7 +62,7 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView{
             public void onClick(View view, int position) {
 
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                intent.putExtra("series", data.get(position));
+                intent.putExtra("series", data.get(position).getId());
                 startActivity(intent);
             }
 

@@ -1,4 +1,5 @@
 package atlant.moviesapp.fragments;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.activity.TvShowDetails;
 import atlant.moviesapp.adapter.TVListAdapter;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.TvShowListPresenter;
@@ -50,10 +52,24 @@ public class AiringTvFragment extends Fragment implements TvShowListView
     }
 
     @Override
-    public void showTvShows(List<TvShow> data) {
+    public void showTvShows(final List<TvShow> data) {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(new TVListAdapter(data, R.layout.list_item, getActivity().getApplicationContext()));
+        recyclerView.addOnItemTouchListener(new TVListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new TVListAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Intent intent = new Intent(getActivity(), TvShowDetails.class);
+                intent.putExtra("series", data.get(position).getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
     @Override
@@ -70,10 +86,12 @@ public class AiringTvFragment extends Fragment implements TvShowListView
     @Override
     public void onStop() {
         super.onStop();
+        if(presenter!=null)
         presenter.onStop();
     }
     @Override
     public void onDestroy() {
+        if(presenter!=null)
         presenter.onDestroy();
         super.onDestroy();
     }

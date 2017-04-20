@@ -25,9 +25,9 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LatestMoviesFragment extends Fragment  implements MovieListView {
+public class LatestMoviesFragment extends Fragment implements MovieListView {
 
-    private static final int TAG=1;
+    private static final int TAG = 1;
     @BindView(R.id.latest_recycler_view)
     RecyclerView recyclerView;
 
@@ -41,8 +41,8 @@ public class LatestMoviesFragment extends Fragment  implements MovieListView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_latest, container, false);
 
-        ButterKnife.bind(this,view);
-        presenter=new MovieListPresenter(this);
+        ButterKnife.bind(this, view);
+        presenter = new MovieListPresenter(this);
         presenter.getHighestRatedMovies(TAG);
 
         return view;
@@ -52,7 +52,7 @@ public class LatestMoviesFragment extends Fragment  implements MovieListView {
     public void showMovies(final List<Movie> data) {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(new MovieListAdapter(data, R.layout.list_item,getActivity().getApplicationContext()));
+        recyclerView.setAdapter(new MovieListAdapter(data, R.layout.list_item, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(new MovieListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new MovieListAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -68,6 +68,7 @@ public class LatestMoviesFragment extends Fragment  implements MovieListView {
             }
         }));
     }
+
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
@@ -79,14 +80,18 @@ public class LatestMoviesFragment extends Fragment  implements MovieListView {
         progressBar.setVisibility(View.INVISIBLE);
 
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
+
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if (presenter != null)
+            presenter.onDestroy();
         super.onDestroy();
     }
 }
