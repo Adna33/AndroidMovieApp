@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/news_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_margin="6dp"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    android:padding="10.7dp">
+
+
+    <TextView
+        android:text="Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/news_title"
+        android:textSize="13.3sp"
+        android:paddingBottom="10.7dp"/>
+
+    <TextView
+        android:text="News Overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/news_overview"
+        android:textSize="9.3sp"
+        android:paddingBottom="6.7dp"/>
+
+    <TextView
+        android:text="www.source.com"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="8sp"
+        android:id="@+id/source_link"
+        android:autoLink="web"
+        android:textColor="@color/colorAccent" />
+</LinearLayout>
