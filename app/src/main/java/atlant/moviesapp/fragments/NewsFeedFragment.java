@@ -34,8 +34,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
     @BindView(R.id.news_progress_bar)
     ProgressBar progressBar;
 
-    @BindView(R.id.toolbarClassic)
-    Toolbar toolbar;
+
 
     @BindView(R.id.feed_recycler_view)
     RecyclerView recyclerView;
@@ -56,8 +55,6 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         presenter = new NewsFeedPresenter(this);
         presenter.getNews();
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.newsfeed_title);
 
         return v;
     }
@@ -84,8 +81,6 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
     @Override
     public void onStop() {
         super.onStop();
-        if (presenter != null)
-            presenter.onStop();
     }
 
     @Override

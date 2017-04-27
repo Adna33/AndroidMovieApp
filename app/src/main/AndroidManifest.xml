@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +31,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MovieDetailsActivity" />
-        <activity android:name=".activity.TvShowDetails"></activity>
+        <activity android:name=".activity.TvShowDetails" />
+        <activity android:name=".activity.SeasonsActivity" />
+        <activity android:name=".activity.EpisodeActivity" />
+        <activity android:name=".activity.ActorActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ea42307ca851104bb199d9240e061904d42899b1"
+            />
     </application>
 
 </manifest>

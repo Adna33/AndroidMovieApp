@@ -22,18 +22,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <RelativeLayout
+                android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/play_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="invisible"
+                    app:srcCompat="@android:drawable/ic_media_play" />
+
+                <ImageView
                     android:id="@+id/movie_poster"
                     android:layout_width="match_parent"
-                    android:layout_height="171.3dp" />
+                    android:layout_height="200dp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="171.3dp"
+                    android:layout_height="200dp"
                     android:background="@drawable/gradient_detail" />
 
             </RelativeLayout>
@@ -41,7 +53,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,94 +61,96 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Title"
-                    android:textSize="16sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/movie_genre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/genre_unknown"
-                    android:textSize="8sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/movie_release_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="release date"
-                    android:textSize="8sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+
                     android:text="@string/director_title"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/movie_director"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+
                     android:text="@string/writers_title"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/movie_writors"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
+
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/stars_title"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/movie_stars"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="14sp" />
 
 
             </LinearLayout>
@@ -145,61 +159,61 @@
                 android:id="@+id/movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/star"
                 android:text="TextView"
-                android:textSize="9.3sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/movie_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="Overview text"
-                android:textSize="9.3sp" />
+                android:textSize="14sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText" />
 
             <TextView
-                android:text="@string/cast_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="9.3sp"/>
+                android:layout_margin="15dp"
+                android:text="@string/cast_title"
+                android:textSize="14sp" />
 
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cast_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="horizontal"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="6dp"
-                android:layout_marginBottom="10dp" />
+                android:scrollbars="horizontal" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText" />
 
 
             <TextView
-                android:text="@string/reviews_title"
+                android:id="@+id/tvReviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvReviews"
-                android:layout_margin="10dp"
-                android:textSize="9.3sp"/>
-
+                android:layout_margin="15dp"
+                android:text="@string/reviews_title"
+                android:textSize="14sp" />
 
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/reviews_recycler_view"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

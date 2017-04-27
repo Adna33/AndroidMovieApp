@@ -12,10 +12,10 @@
 
     <TextView
         android:text="Title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/news_title"
-        android:textSize="13.3sp"
+        android:textSize="16sp"
         android:paddingBottom="10.7dp"/>
 
     <TextView
@@ -23,14 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/news_overview"
-        android:textSize="9.3sp"
+        android:textSize="10sp"
         android:paddingBottom="6.7dp"/>
 
     <TextView
         android:text="www.source.com"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="8sp"
+        android:textSize="12sp"
         android:id="@+id/source_link"
         android:autoLink="web"
         android:textColor="@color/colorAccent" />

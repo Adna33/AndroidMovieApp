@@ -10,6 +10,8 @@
     <color name="standardYellow">#f8ca00</color>
     <color name="buttonFocusedFioll">#e2cf7e</color>
     <color name="btnPressedFill">#826d12</color>
+    <color name="episodesBackground">#292929</color>
+    <color name="seasonsBackgroud">#191919</color>
 
     <color name="endGradient">#fa000000</color>
     <color name="fadedText">#898885</color>

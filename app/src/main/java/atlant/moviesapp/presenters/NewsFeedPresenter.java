@@ -2,6 +2,7 @@ package atlant.moviesapp.presenters;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.List;
 
 import atlant.moviesapp.model.News;
@@ -42,6 +43,7 @@ public class NewsFeedPresenter {
                     view.hideProgress();
                     view.showNews(news);
                 } else {
+
                     //TODO onFailure
                     Log.e("TAG", "Error News Feed");
                 }
@@ -52,6 +54,9 @@ public class NewsFeedPresenter {
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
                 //TODO onFailure
+                if (call.isCanceled()) {
+
+                }
                 Log.e("TAG", t.toString() + "On Failure News Feed");
 
             }
@@ -61,8 +66,7 @@ public class NewsFeedPresenter {
     }
 
     public void onStop() {
-        if (call != null)
-            call.cancel();
+
     }
 
     public void onDestroy() {

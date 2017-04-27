@@ -31,6 +31,10 @@ public interface ApiInterface {
     @GET("movie/{id}/credits")
     Call<CreditsResponse> getMovieCredits(@Path("id") int movieId, @Query("api_key") String apiKey);
 
+    @GET("tv/{id}")
+    Call<TvShowDetail> getTvShow(@Path("id") int id, @Query("api_key") String apiKey);
+
+
     @GET("tv/{id}/credits")
     Call<CreditsResponse> getSeriesCredits(@Path("id") int tvSeriesId, @Query("api_key") String apiKey);
 
@@ -46,6 +50,22 @@ public interface ApiInterface {
     @GET("data/rss.php?file=topstories.xml")
     Call<NewsResponse> getNews();
 
+    @GET("tv/{id}/season/{season}")
+    Call<Season> getSeason(@Path("id") int id, @Path("season") Integer season, @Query("api_key") String apiKey);
 
+    @GET("tv/{id}/season/{season}/episode/{episode}/credits")
+    Call<CreditsResponse> getEpisodeCredits(@Path("id") int id,@Path("season") Integer season,@Path("episode") Integer episode,@Query("api_key") String apiKey);
+
+    @GET("search/multi")
+    Call<SearchResponse> getSearchResults(@Query("query") String query, @Query("api_key") String apiKey);
+
+    @GET("person/{id}")
+    Call<Actor> getActor(@Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("discover/movie")
+    Call<MoviesResponse> getActorFilmography(@Query("sort_by") String sortBy ,@Query("with_people") String withPeople ,@Query("api_key") String apiKey);
+
+    @GET("movie/{id}/videos")
+    Call<VideosResponse> getMovieVideos(@Path("id") int id, @Query("api_key") String apiKey);
 
 }

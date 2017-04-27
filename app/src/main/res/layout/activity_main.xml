@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="atlant.moviesapp.activity.MainActivity">
-
+        <include layout="@layout/appbarlayoutclassic" />
 
         <FrameLayout
             android:id="@+id/container"

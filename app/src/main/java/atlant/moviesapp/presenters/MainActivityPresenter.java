@@ -23,19 +23,24 @@ public class MainActivityPresenter {
         this.view = view;
     }
     public int selectFragment(MenuItem item) {
+        String s="";
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_feed:
                 fragment = new NewsFeedFragment();
+                s="News Feed";
                 break;
             case R.id.menu_movies:
                 fragment = new MovieFragment();
+                s="Movies";
                 break;
             case R.id.menu_tvshows:
                 fragment = new TvShowFragment();
+                s="Tv Shows";
                 break;
         }
         view.showFragment(fragment,item);
+        view.setupToolbar(s);
 
 
         return item.getItemId();

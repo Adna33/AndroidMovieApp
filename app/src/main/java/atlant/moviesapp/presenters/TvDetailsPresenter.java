@@ -8,11 +8,9 @@ import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Crew;
-import atlant.moviesapp.model.Review;
-import atlant.moviesapp.model.ReviewsResponse;
+import atlant.moviesapp.model.TvShowDetail;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
-import atlant.moviesapp.views.MovieDetailsView;
 import atlant.moviesapp.views.TvDetailsView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +30,7 @@ public class TvDetailsPresenter {
 
     private static final String API_KEY = BuildConfig.API_KEY;
     private Call<CreditsResponse> callCredits;
-    private Call<ReviewsResponse> call;
+    private Call<TvShowDetail> call;
 
     public void getCredits(int id) {
 
@@ -68,18 +66,18 @@ public class TvDetailsPresenter {
 
     }
 
-    public void getReviews(int id) {
+    public void getDetails(int id) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
-        call = apiservice.getSeriesReviews(id, API_KEY);
-        call.enqueue(new Callback<ReviewsResponse>() {
+        call = apiservice.getTvShow(id, API_KEY);
+        call.enqueue(new Callback<TvShowDetail>() {
             @Override
-            public void onResponse(Call<ReviewsResponse> call, Response<ReviewsResponse> response) {
+            public void onResponse(Call<TvShowDetail> call, Response<TvShowDetail> response) {
                 int statusCode = response.code();
                 if (statusCode == 200) {
-                    List<Review> reviews = response.body().getResults();
+                    Log.d("T",response.toString());
+                    TvShowDetail series= response.body();
 
-                    Log.d("REV", reviews.size() + "");
-                    view.showReviews(reviews);
+                    view.showDetails(series);
 
                 } else {
                     //TODO onFailure
@@ -90,7 +88,7 @@ public class TvDetailsPresenter {
             }
 
             @Override
-            public void onFailure(Call<ReviewsResponse> call, Throwable t) {
+            public void onFailure(Call<TvShowDetail> call, Throwable t) {
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -110,6 +108,7 @@ public class TvDetailsPresenter {
     public void onDestroy() {
         if (call != null)
             call.cancel();
+
         if (callCredits != null)
             callCredits.cancel();
         view = null;

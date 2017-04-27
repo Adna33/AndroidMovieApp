@@ -28,9 +28,6 @@ public class TvShowFragment extends Fragment {
     @BindView(R.id.main_tab_layout)
     TabLayout tabLayout;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     public TvShowFragment() {
         // Required empty public constructor
     }
@@ -46,8 +43,6 @@ public class TvShowFragment extends Fragment {
         viewPager.setAdapter(new TvShowPagerAdapter(getActivity(), getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.tvshows_title);
 
         return v;
     }

@@ -36,7 +36,18 @@ public class TvShow implements Parcelable {
     @SerializedName("genre_ids")
     private List<Integer> genreIds = new ArrayList<Integer>();
 
-    //TODO crew cast reviews director writers
+    public TvShow(Integer id, String name, String posterPath, String overview, double rating, String releaseDate, List<Integer> genreIds) {
+        this.id = id;
+        this.name = name;
+        this.posterPath = posterPath;
+        this.overview = overview;
+        this.rating = rating;
+        this.releaseDate = releaseDate;
+        this.genreIds = genreIds;
+    }
+
+
+//TODO crew cast reviews director writers
 
 
     public Integer getId() {
@@ -78,9 +89,7 @@ public class TvShow implements Parcelable {
     public void setRating(double rating) {
         this.rating = rating;
     }
-    public String getRatingString() {
-        return Double.toString(rating);
-    }
+    public String getRatingString(){return String.format("%.2f", rating);}
 
     public String getReleaseDate() {
         return releaseDate;
@@ -100,6 +109,12 @@ public class TvShow implements Parcelable {
     public String getImagePath() {
         return "http://image.tmdb.org/t/p/w500" + posterPath;
 
+    }
+
+
+
+    public static Creator<TvShow> getCREATOR() {
+        return CREATOR;
     }
 
     @Override

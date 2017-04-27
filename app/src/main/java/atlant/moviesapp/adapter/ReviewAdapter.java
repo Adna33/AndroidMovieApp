@@ -14,6 +14,7 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.model.Review;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Korisnik on 16.04.2017..
@@ -23,16 +24,17 @@ public class ReviewAdapter  extends RecyclerView.Adapter<ReviewAdapter.ReviewVie
     private List<Review> reviews;
     private int rowLayout;
     private Context mcontext;
+
     public static class ReviewViewHolder extends RecyclerView.ViewHolder
     {
+        private boolean isClicked=true;
         @BindView(R.id.review_item_layout)
         LinearLayout reviewLayout;
 
         @BindView(R.id.username_review)
         TextView username;
 
-        @BindView(R.id.rating_review)
-        TextView rating;
+
 
         @BindView(R.id.overview_review)
         TextView overview;
@@ -40,10 +42,29 @@ public class ReviewAdapter  extends RecyclerView.Adapter<ReviewAdapter.ReviewVie
         @BindView(R.id.read_more_review)
         TextView readMore;
 
+
+        @OnClick(R.id.read_more_review)
+        public void submit() {
+            if(!isClicked){
+
+                overview.setMaxLines(4);
+                isClicked = true;
+                readMore.setText("Read More");
+            } else {
+
+                overview.setMaxLines(Integer.MAX_VALUE);
+                isClicked = false;
+                readMore.setText("Hide");
+            }
+        }
+
         public ReviewViewHolder(View v)
         {
             super(v);
+
             ButterKnife.bind(this, v);
+
+
 
         }
     }
@@ -65,7 +86,6 @@ public class ReviewAdapter  extends RecyclerView.Adapter<ReviewAdapter.ReviewVie
     {
         holder.username.setText(reviews.get(position).getAuthor());
         holder.overview.setText(reviews.get(position).getContent());
-       // holder.sourceLink.setText(reviews.get(position).getLink());
 
 
     }

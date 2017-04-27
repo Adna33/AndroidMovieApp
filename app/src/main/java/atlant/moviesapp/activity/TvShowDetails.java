@@ -20,6 +20,7 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
 import atlant.moviesapp.adapter.TVListAdapter;
+import atlant.moviesapp.model.Actor;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
@@ -28,6 +29,7 @@ import atlant.moviesapp.presenters.TvDetailsPresenter;
 import atlant.moviesapp.views.TvDetailsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     @BindView(R.id.tv_title)
@@ -71,6 +73,18 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     private TvDetailsPresenter presenter;
 
+    private Integer seriesId;
+    private Integer seasonNum;
+
+    @OnClick(R.id.see_all_seasons)
+    public void seeAll() {
+        Intent intent = new Intent(TvShowDetails.this, SeasonsActivity.class);
+        intent.putExtra("showId", seriesId);
+        intent.putExtra("seasonId", 1);
+        intent.putExtra("seasonNum", seasonNum);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,14 +104,14 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         });
 
         Intent intent = getIntent();
-        Integer seriesId = intent.getIntExtra("series", 0);
+        seriesId = intent.getIntExtra("series", 0);
         presenter = new TvDetailsPresenter(this);
         presenter.getDetails(seriesId);
         presenter.getCredits(seriesId);
     }
 
     @Override
-    public void showCast(List<Cast> cast) {
+    public void showCast(final List<Cast> cast) {
         String castString = "";
         for (int i = 0; i < cast.size(); i++) {
             if (i < 4) {
@@ -108,6 +122,19 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
+        castRecyclerView.addOnItemTouchListener(new ActorAdapter.RecyclerTouchListener(this, castRecyclerView, new ActorAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(TvShowDetails.this, ActorActivity.class);
+                intent.putExtra("actorId", cast.get(position).getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
 
@@ -150,6 +177,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         releaseDate.setText(series.getFirstAirDate());
         rating.setText(series.getVoteAverage().toString());
         overview.setText(series.getOverview());
+        seasonNum = seasons.size();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         seasonRecyclerView.setLayoutManager(layoutManager);
