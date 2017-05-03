@@ -2,6 +2,7 @@ package atlant.moviesapp.presenters;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
@@ -35,16 +36,15 @@ public class TvShowListPresenter {
         this.view = view;
     }
 
-    public void getHighestRatedSeries(int tag) {
+    public void getHighestRatedSeries(int tag, int page) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
-
-
         if (tag == MOST_POPULAR)
-            call = apiservice.discoverSeries("popularity.desc", API_KEY);
-        else if (tag == LATEST) call = apiservice.discoverSeries("release_date.desc", API_KEY);
-        else if(tag==HIGHEST_RATED) call = apiservice.getHighestRatedSeries(API_KEY);
-        else call = apiservice.getAiringSeries(API_KEY);
+            call = apiservice.discoverSeries("popularity.desc", API_KEY, page);
+        else if (tag == LATEST)
+            call = apiservice.discoverSeries("release_date.desc", API_KEY, page);
+        else if (tag == HIGHEST_RATED) call = apiservice.getHighestRatedSeries(API_KEY, page);
+        else call = apiservice.getAiringSeries(API_KEY, page);
 
         //TODO Airing
 
@@ -57,18 +57,21 @@ public class TvShowListPresenter {
                     List<TvShow> shows = response.body().getResults();
                     view.hideProgress();
                     view.showTvShows(shows);
+
+
                 } else {
+                    view.hideProgress();
+                    view.showError();
                     //TODO onFailure
                     Log.e("TAG", "Error TvShowResponse Code");
-
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<TvShowsResponse> call, Throwable t) {
                 //TODO onFailure
+                view.hideProgress();
+                view.showError();
                 Log.e("TAG", t.toString() + "On Failure");
 
             }
@@ -76,15 +79,17 @@ public class TvShowListPresenter {
 
 
     }
+
+
     public void onStop() {
-        if(call!=null)
+        if (call != null)
             call.cancel();
     }
-    public void onDestroy()
-    {
-        if(call!=null)
+
+    public void onDestroy() {
+        if (call != null)
             call.cancel();
-        view=null;
+        view = null;
     }
 
 

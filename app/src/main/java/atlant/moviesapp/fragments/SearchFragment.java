@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
@@ -22,6 +24,7 @@ import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.activity.SeasonsActivity;
 import atlant.moviesapp.activity.TvShowDetails;
 import atlant.moviesapp.adapter.EpisodeAdapter;
+import atlant.moviesapp.adapter.MovieListAdapter;
 import atlant.moviesapp.adapter.NewsFeedAdapter;
 import atlant.moviesapp.adapter.SearchResultAdapter;
 import atlant.moviesapp.model.Movie;
@@ -42,6 +45,11 @@ public class SearchFragment extends Fragment implements SearchView {
 
     private SearchPresenter presenter;
 
+    List<SearchResult> search;
+    SearchResultAdapter adapter;
+    private int currentPage = 1;
+    String query;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -54,37 +62,22 @@ public class SearchFragment extends Fragment implements SearchView {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, v);
         presenter = new SearchPresenter(this);
-        if (getArguments() != null) {
-
-            String query = getArguments().getString("edttext");
-            presenter.getSearchResults(query);
-        }
-
-
-        return v;
-    }
-
-    @Override
-    public void DisplayResults(final List<SearchResult> data) {
-
+        search = new ArrayList<>();
+        adapter = new SearchResultAdapter(search, R.layout.search_result_item, recyclerView.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        recyclerView.setAdapter(new SearchResultAdapter(data, R.layout.search_result_item, recyclerView.getContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.addOnItemTouchListener(new SearchResultAdapter.RecyclerTouchListener(getActivity(), recyclerView, new SearchResultAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if(data.get(position).getMediaType().equals("tv"))
-                {
+                if (search.get(position).getMediaType().equals("tv")) {
                     Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                    intent.putExtra("series", data.get(position).getId());
+                    intent.putExtra("series", search.get(position).getId());
                     startActivity(intent);
-                }
-                else if(data.get(position).getMediaType().equals("movie"))
-                {
+                } else if (search.get(position).getMediaType().equals("movie")) {
                     Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                    Movie movie = data.get(position).getMovie();
+                    Movie movie = search.get(position).getMovie();
                     intent.putExtra("movie", movie);
                     startActivity(intent);
                 }
@@ -97,6 +90,42 @@ public class SearchFragment extends Fragment implements SearchView {
 
             }
         }));
+        adapter.setLoadMoreListener(new SearchResultAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        presenter.getSearchResults(query, currentPage);
+
+                    }
+                });
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        if (getArguments() != null) {
+
+            query = getArguments().getString("edttext");
+            if (query.length() > 3)
+                presenter.getSearchResults(query, currentPage);
+        }
+
+
+        return v;
+    }
+
+    @Override
+    public void DisplayResults(final List<SearchResult> data) {
+        if (!(data.size() > 0)) {
+            adapter.setMoreDataAvailable(false);
+            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
+        } else {
+            search.addAll(data);
+            adapter.notifyDataChanged();
+        }
 
     }
 

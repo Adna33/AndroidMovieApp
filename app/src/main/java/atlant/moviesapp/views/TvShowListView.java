@@ -12,6 +12,6 @@ import atlant.moviesapp.model.TvShow;
 public interface TvShowListView {
     public void showTvShows(List<TvShow> data);
     void showProgress();
-
+    void showError();
     void hideProgress();
 }

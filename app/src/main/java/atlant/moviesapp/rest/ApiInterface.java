@@ -14,19 +14,19 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("discover/movie")
-    Call<MoviesResponse> discoverMovies(@Query("sort_by") String sortBy,@Query("api_key") String apiKey);
+    Call<MoviesResponse> discoverMovies(@Query("sort_by") String sortBy,@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("discover/tv")
-    Call<TvShowsResponse> discoverSeries(@Query("sort_by") String sortBy,@Query("api_key") String apiKey);
+    Call<TvShowsResponse> discoverSeries(@Query("sort_by") String sortBy,@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("movie/top_rated")
-    Call<MoviesResponse> getHighestRatedMovies(@Query("api_key") String apiKey);
+    Call<MoviesResponse> getHighestRatedMovies(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/top_rated")
-    Call<TvShowsResponse> getHighestRatedSeries(@Query("api_key") String apiKey);
+    Call<TvShowsResponse> getHighestRatedSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/on_the_air")
-    Call<TvShowsResponse> getAiringSeries(@Query("api_key") String apiKey);
+    Call<TvShowsResponse> getAiringSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("movie/{id}/credits")
     Call<CreditsResponse> getMovieCredits(@Path("id") int movieId, @Query("api_key") String apiKey);
@@ -57,7 +57,7 @@ public interface ApiInterface {
     Call<CreditsResponse> getEpisodeCredits(@Path("id") int id,@Path("season") Integer season,@Path("episode") Integer episode,@Query("api_key") String apiKey);
 
     @GET("search/multi")
-    Call<SearchResponse> getSearchResults(@Query("query") String query, @Query("api_key") String apiKey);
+    Call<SearchResponse> getSearchResults(@Query("query") String query, @Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("person/{id}")
     Call<Actor> getActor(@Path("id") int id, @Query("api_key") String apiKey);

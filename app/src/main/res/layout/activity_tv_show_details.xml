@@ -218,26 +218,6 @@
                 android:layout_marginLeft="6dp"
                 android:layout_marginBottom="15dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/fadedText"/>
-
-            <TextView
-                android:text="@string/reviews_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvReviews"
-                android:layout_margin="15dp"
-                android:textSize="14sp"/>
-
-
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/reviews_recycler_view"
-                android:scrollbars="vertical"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

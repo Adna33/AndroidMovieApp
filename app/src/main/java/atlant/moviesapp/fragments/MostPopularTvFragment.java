@@ -1,16 +1,20 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
@@ -37,6 +41,10 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
     ProgressBar progressBar;
 
     private TvShowListPresenter presenter;
+    private int currentPage = 1;
+    List<TvShow> series;
+    TVListAdapter adapter;
+
 
     public MostPopularTvFragment() {
         // Required empty public constructor
@@ -51,22 +59,16 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
         ButterKnife.bind(this, view);
 
         presenter = new TvShowListPresenter(this);
-        presenter.getHighestRatedSeries(TAG);
-
-        return view;
-    }
-
-    @Override
-    public void showTvShows(final List<TvShow> data) {
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
+        series = new ArrayList<>();
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(new TVListAdapter(data, R.layout.list_item, getActivity().getApplicationContext()));
+        adapter = new TVListAdapter(series, getActivity().getApplicationContext());
+
         recyclerView.addOnItemTouchListener(new TVListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new TVListAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                intent.putExtra("series", data.get(position).getId());
+                intent.putExtra("series", series.get(position).getId());
                 startActivity(intent);
             }
 
@@ -75,6 +77,51 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
 
             }
         }));
+        adapter.setLoadMoreListener(new TVListAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        presenter.getHighestRatedSeries(TAG, currentPage++);
+                    }
+                });
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        presenter.getHighestRatedSeries(TAG, 1);
+        return view;
+    }
+
+    @Override
+    public void showTvShows(final List<TvShow> data) {
+
+        if (!(data.size() > 0)) {
+            adapter.setMoreDataAvailable(false);
+            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
+        } else {
+            series.addAll(data);
+            adapter.notifyDataChanged();
+        }
+
+
+    }
+
+    @Override
+    public void showError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Error loading data, please check your connection")
+                .setTitle("Error");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 

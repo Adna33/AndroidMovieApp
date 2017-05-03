@@ -31,6 +31,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private int rowLayout;
     private Context mcontext;
 
+
+    public SearchResultAdapter.OnLoadMoreListener loadMoreListener;
+    public boolean isLoading = false,
+            isMoreDataAvailable = true;
+
     public static class ResultViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.search_item)
         RelativeLayout itemLayout;
@@ -40,6 +45,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         @BindView(R.id.result_rating)
         TextView resultRating;
+
+        @BindView(R.id.result_year)
+        TextView resultYear;
 
         @BindView(R.id.searchPoster)
         ImageView imageView;
@@ -66,9 +74,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(SearchResultAdapter.ResultViewHolder holder, final int position) {
+        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+        }
         if (results.get(position).getMediaType().equals("tv")) {
             holder.resultTitle.setText(results.get(position).getName());
             holder.resultRating.setText(results.get(position).getRatingString());
+            String year=results.get(position).getFirstAirDate();
+            holder.resultYear.setText("Tv series ("+year.substring(0, Math.min(year.length(), 4))+")");
 
             if (results.get(position).getImagePath() != null) {
                 Glide.with(mcontext).load(results.get(position).getImagePath())
@@ -80,6 +94,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         } else if (results.get(position).getMediaType().equals("movie")) {
             holder.resultTitle.setText(results.get(position).getTitle());
             holder.resultRating.setText(results.get(position).getRatingString());
+            String year=results.get(position).getReleaseDate();
+            holder.resultYear.setText(year.substring(0, Math.min(year.length(), 4)));
             if (results.get(position).getImagePath() != null)
                 Glide.with(mcontext).load(results.get(position).getImagePath())
                         .crossFade().centerCrop()
@@ -141,5 +157,25 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
+        isMoreDataAvailable = moreDataAvailable;
+    }
+
+    /* notifyDataSetChanged is final method so we can't override it
+         call adapter.notifyDataChanged(); after update the list
+         */
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
+        isLoading = false;
+    }
+
+
+    public interface OnLoadMoreListener{
+        void onLoadMore();
+    }
+
+    public void setLoadMoreListener(SearchResultAdapter.OnLoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
     }
 }

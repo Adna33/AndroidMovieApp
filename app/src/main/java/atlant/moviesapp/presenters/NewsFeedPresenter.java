@@ -43,6 +43,8 @@ public class NewsFeedPresenter {
                     view.hideProgress();
                     view.showNews(news);
                 } else {
+                    view.hideProgress();
+                    view.showError();
 
                     //TODO onFailure
                     Log.e("TAG", "Error News Feed");
@@ -57,6 +59,8 @@ public class NewsFeedPresenter {
                 if (call.isCanceled()) {
 
                 }
+                view.hideProgress();
+                view.showError();
                 Log.e("TAG", t.toString() + "On Failure News Feed");
 
             }

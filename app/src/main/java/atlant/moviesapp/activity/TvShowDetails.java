@@ -62,8 +62,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     @BindView(R.id.toolbarClassic)
     Toolbar toolbar;
 
-    @BindView(R.id.reviews_recycler_view)
-    RecyclerView recyclerView;
+
 
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;

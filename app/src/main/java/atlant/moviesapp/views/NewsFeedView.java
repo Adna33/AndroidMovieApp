@@ -12,6 +12,6 @@ import atlant.moviesapp.model.TvShow;
 public interface NewsFeedView {
     void showNews(List<News> data);
     void showProgress();
-
     void hideProgress();
+    void showError();
 }

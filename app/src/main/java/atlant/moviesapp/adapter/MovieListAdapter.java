@@ -32,6 +32,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private int rowLayout;
     private Context context;
 
+    public MovieListAdapter.OnLoadMoreListener loadMoreListener;
+    public boolean isLoading = false,
+            isMoreDataAvailable = true;
+
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.movies_layout)
         RelativeLayout moviesLayout;
@@ -73,7 +77,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
-        holder.movieTitle.setText(movies.get(position).getTitle());
+        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+        }
+        String year=movies.get(position).getReleaseDate();
+        holder.movieTitle.setText(movies.get(position).getTitle()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
         holder.releaseDate.setText(movies.get(position).getReleaseDate());
         holder.rating.setText(movies.get(position).getRatingString());
         if (movies.get(position).getGenreIds().isEmpty() || MovieGenre.getGenreById(movies.get(position).getGenreIds().get(0)) == null)
@@ -141,4 +150,24 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
+        isMoreDataAvailable = moreDataAvailable;
+    }
+
+    /* notifyDataSetChanged is final method so we can't override it
+         call adapter.notifyDataChanged(); after update the list
+         */
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
+        isLoading = false;
+    }
+
+
+    public interface OnLoadMoreListener{
+        void onLoadMore();
+    }
+
+    public void setLoadMoreListener(MovieListAdapter.OnLoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
+    }
 }

@@ -30,17 +30,18 @@ public class SearchPresenter {
     public SearchPresenter(SearchView view) {
         this.view = view;
     }
-    public void getSearchResults(String query) {
+
+    public void getSearchResults(String query, int page) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
-        call = apiservice.getSearchResults(query, API_KEY);
+        call = apiservice.getSearchResults(query, API_KEY, page);
         call.enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 int statusCode = response.code();
                 if (statusCode == 200) {
 
-                    List<SearchResult> results= response.body().getResults();
-                    Log.d("EZ",results.size()+" ");
+                    List<SearchResult> results = response.body().getResults();
+                    Log.d("EZ", results.size() + " ");
                     view.DisplayResults(results);
 
                 } else {
@@ -59,6 +60,7 @@ public class SearchPresenter {
 
 
     }
+
     public void onStop() {
         if (call != null)
             call.cancel();

@@ -32,21 +32,22 @@ public class MovieListPresenter {
 
 
     private static final String API_KEY = BuildConfig.API_KEY;
-    private  Call<MoviesResponse> call;
+    private Call<MoviesResponse> call;
 
 
     public MovieListPresenter(MovieListView view) {
         this.view = view;
     }
 
-    public void getHighestRatedMovies(int tag) {
+    public void getHighestRatedMovies(int tag, int page) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
         if (tag == MOST_POPULAR)
-            call = apiservice.discoverMovies("popularity.desc", API_KEY);
-        else if (tag == LATEST) call = apiservice.discoverMovies("release_date.desc", API_KEY);
-        else call = apiservice.getHighestRatedMovies(API_KEY);
+            call = apiservice.discoverMovies("popularity.desc", API_KEY, page);
+        else if (tag == LATEST)
+            call = apiservice.discoverMovies("release_date.desc", API_KEY, page);
+        else call = apiservice.getHighestRatedMovies(API_KEY, page);
 
 
         call.enqueue(new Callback<MoviesResponse>() {
@@ -58,8 +59,8 @@ public class MovieListPresenter {
                     view.hideProgress();
                     view.showMovies(movies);
                 } else {
-                    //TODO onFailure
-                    Log.e("TAG", "Error");
+                    view.hideProgress();
+                    view.showError();
                 }
 
 
@@ -68,8 +69,11 @@ public class MovieListPresenter {
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
                 if (call.isCanceled()) {
+
                     Log.e("TAG", "request was cancelled");
                 }
+                view.hideProgress();
+                view.showError();
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -78,17 +82,17 @@ public class MovieListPresenter {
 
 
     }
+
     public void onStop() {
-        if(call!=null)
+        if (call != null)
             call.cancel();
-    }
-    public void onDestroy()
-    {
-        if(call!=null)
-            call.cancel();
-        view=null;
     }
 
+    public void onDestroy() {
+        if (call != null)
+            call.cancel();
+        view = null;
+    }
 
 
 }

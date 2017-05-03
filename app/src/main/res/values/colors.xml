@@ -13,6 +13,8 @@
     <color name="episodesBackground">#292929</color>
     <color name="seasonsBackgroud">#191919</color>
 
+    <color name="divider">#1ad8d8d8</color>
+
     <color name="endGradient">#fa000000</color>
     <color name="fadedText">#898885</color>
 

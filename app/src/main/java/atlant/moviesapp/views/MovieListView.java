@@ -12,6 +12,7 @@ public interface MovieListView {
 
     void showMovies(List<Movie> data);
     void showProgress();
-
     void hideProgress();
+    void showError();
+
 }

@@ -5,12 +5,15 @@
     android:layout_height="wrap_content"
     android:id="@+id/movies_layout"
     android:layout_margin="3dp"
+    android:backgroundTint="@color/endGradient"
     >
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/frameLayout">
+        android:id="@+id/frameLayout"
+        android:backgroundTint="@color/endGradient"
+        android:layout_marginBottom="9dp">
 
         <atlant.moviesapp.helper.ImageRatio
             android:layout_width="match_parent"
@@ -31,9 +34,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/frameLayout"
-        android:layout_marginLeft="17dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/linearLayout"
-        android:layout_marginBottom="3dp">
+        android:layout_marginBottom="9dp">
 
         <TextView
             android:text="TextView"
@@ -41,7 +44,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:fontFamily="sans-serif"
-            android:textSize="10.7sp"
+            android:textSize="12sp"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -50,28 +53,36 @@
             android:layout_height="wrap_content"
             android:id="@+id/movieGenre"
             android:fontFamily="sans-serif"
-            android:textSize="5.3sp"/>
+            android:textSize="8sp"
+            android:textColor="@color/fadedText" />
 
         <TextView
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/release_date"
-            android:textSize="6.7sp"
+            android:textSize="10sp"
             android:fontFamily="sans-serif"
-            android:textColor="@android:color/white"
+            android:textColor="@color/fadedText"
             />
 
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/linearLayout"
+        android:id="@+id/divider" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="20.7dp"    android:paddingLeft="17dp"
-        android:layout_below="@id/linearLayout"
+        android:paddingLeft="10dp"
+        android:layout_below="@id/divider"
         android:background="@color/endGradient"
-        android:paddingRight="17dp">
+        android:paddingRight="10dp"
+        android:gravity="center_horizontal"
+        android:layout_height="31dp">
 
         <TextView
             android:text="Proba"
@@ -80,7 +91,10 @@
             android:id="@+id/rating"
             android:layout_weight="1"
             android:drawableLeft="@drawable/star"
-            android:drawablePadding="3dp"/>
+            android:drawablePadding="3dp"
+            android:textSize="12sp"
+            android:gravity="center_vertical"
+            android:paddingTop="9dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
