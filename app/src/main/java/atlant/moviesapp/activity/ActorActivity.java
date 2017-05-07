@@ -53,6 +53,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     @BindView(R.id.film_recycler_view)
     RecyclerView recyclerView;
 
+
     private boolean isClicked = true;
 
     private ActorDetailsPresenter presenter;
@@ -71,6 +72,8 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             fullBiography.setText("Hide");
         }
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

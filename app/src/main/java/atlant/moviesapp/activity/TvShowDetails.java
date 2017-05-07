@@ -20,7 +20,9 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
 import atlant.moviesapp.adapter.TVListAdapter;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
@@ -74,6 +76,24 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     private Integer seriesId;
     private Integer seasonNum;
+    private Date date;
+
+    @BindView(R.id.rate_txtBtn)
+    TextView rateTxt;
+    private static final int TAG = 1;
+    @OnClick(R.id.rate_txtBtn)
+    void rate()
+    {
+        Intent i = new Intent(this, RatingActivity.class);
+        i.putExtra("title","Rate this TV show");
+        i.putExtra("id",seriesId);
+        i.putExtra("tag",TAG);
+        startActivity(i);
+
+    }
+    @BindView(R.id.divider)
+    TextView divider;
+
 
     @OnClick(R.id.see_all_seasons)
     public void seeAll() {
@@ -90,6 +110,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         setContentView(R.layout.activity_tv_show_details);
         ButterKnife.bind(this);
 
+        checkLogin();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
 
@@ -102,6 +123,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
             }
         });
 
+        date=new Date(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra("series", 0);
         presenter = new TvDetailsPresenter(this);
@@ -164,7 +186,8 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     public void showDetails(final TvShowDetail series) {
         final List<Integer> seasons = new ArrayList<>();
         director.setText("");
-        title.setText(series.getName());
+        String year=series.getFirstAirDate();
+        title.setText(series.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
         if (series.getGenres() == null) {
             genre.setText(R.string.genre_unknown);
         } else
@@ -173,8 +196,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         for (int i = 1; i <= series.getNumberOfSeasons(); i++) {
             seasons.add(i);
         }
+
         releaseDate.setText(series.getFirstAirDate());
-        rating.setText(series.getVoteAverage().toString());
+        rating.setText(series.getVoteAverage().toString()+ "/10");
         overview.setText(series.getOverview());
         seasonNum = seasons.size();
 
@@ -204,6 +228,16 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     }
 
 
+    public void checkLogin() {
+        if (ApplicationState.isLoggedIn()) {
+            rateTxt.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+        }
+        else{
+            rateTxt.setVisibility(View.INVISIBLE);
+            divider.setVisibility(View.INVISIBLE);
+        }
+    }
     public void showPoster(TvShowDetail series) {
         Glide.with(this).load(series.getImagePath())
                 .crossFade().centerCrop()

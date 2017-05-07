@@ -72,8 +72,7 @@ public class MovieListPresenter {
 
                     Log.e("TAG", "request was cancelled");
                 }
-                view.hideProgress();
-                view.showError();
+
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 

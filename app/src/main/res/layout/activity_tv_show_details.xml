@@ -138,16 +138,36 @@
 
 
             </LinearLayout>
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
             <TextView
                 android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/star"
+                android:drawableLeft="@drawable/star_fill_icon"
+                android:drawablePadding="3dp"
                 android:text="TextView"
                 android:textSize="14sp" />
+            <TextView
+                android:text=" |"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/divider" />
+
+            <TextView
+                android:text="Rate this"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rate_txtBtn"
+                android:drawablePadding="3dp"
+                android:drawableLeft="@drawable/star_no_fill_icon"
+                android:layout_weight="1"
+                android:paddingLeft="3dp" /></LinearLayout>
 
             <TextView
                 android:id="@+id/tv_overview"

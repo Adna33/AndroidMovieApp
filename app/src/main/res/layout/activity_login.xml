@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="atlant.moviesapp.activity.LoginActivity"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbarlayoutclassic" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        android:id="@+id/login_email"
+        android:hint="Your Name"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="16dp"
+        android:text="AdnaKarkelja" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:id="@+id/login_password"
+        android:hint="Your Password"
+        android:inputType="textPassword"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="akarkelja1" />
+
+    <Button
+        android:text="LOGIN"
+        android:layout_width="match_parent"
+        android:id="@+id/login_button"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:capitalize="characters"
+        android:background="@color/standardYellow"
+        android:textColor="@android:color/black"
+        android:layout_height="43dp"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:text="@string/forgot_passord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_forgot"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="100dp" />
+
+    <TextView
+        android:text="@string/new_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="173dp" />
+</LinearLayout>

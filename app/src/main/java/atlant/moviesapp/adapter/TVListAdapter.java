@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.TvGenre;
@@ -33,6 +34,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
 
     private List<TvShow> series;
     private Context context;
+    private Date date;
 
 
     public OnLoadMoreListener loadMoreListener;
@@ -70,6 +72,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     public TVListAdapter(List<TvShow> series, Context context) {
         this.series = series;
         this.context = context;
+        date=new Date(context);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         }
 
         holder.seriesName.setText(series.get(position).getName());
-        holder.releaseDate.setText(series.get(position).getReleaseDate());
+        holder.releaseDate.setText(date.getFormatedDate(series.get(position).getReleaseDate()));
         holder.rating.setText(series.get(position).getRatingString());
         if (series.get(position).getGenreIds().isEmpty()) {
             holder.genre.setText(R.string.genre_unknown);

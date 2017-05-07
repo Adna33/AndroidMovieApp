@@ -5,15 +5,19 @@ package atlant.moviesapp.adapter;
  */
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,6 +25,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.activity.MovieDetailsActivity;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,12 +37,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private List<Movie> movies;
     private int rowLayout;
     private Context context;
+    private Date date;
 
     public MovieListAdapter.OnLoadMoreListener loadMoreListener;
     public boolean isLoading = false,
             isMoreDataAvailable = true;
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
+    public static class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.movies_layout)
         RelativeLayout moviesLayout;
 
@@ -56,10 +63,30 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         @BindView(R.id.rating)
         TextView rating;
 
+        @BindView(R.id.like_btn)
+        ImageButton favorite;
+
+        @BindView(R.id.bookmark_btn)
+        ImageButton watchlist;
+
 
         public MovieViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            //Proba
+            if (v.getId() == favorite.getId()){
+                Toast.makeText(v.getContext(), "FAVOURITE ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            }
+            if (v.getId() == watchlist.getId()){
+                Toast.makeText(v.getContext(), "WATCHLIST ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
@@ -67,6 +94,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         this.movies = movies;
         this.rowLayout = rowLayout;
         this.context = context;
+        date=new Date(context);
     }
 
     @Override
@@ -83,7 +111,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
         String year=movies.get(position).getReleaseDate();
         holder.movieTitle.setText(movies.get(position).getTitle()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
-        holder.releaseDate.setText(movies.get(position).getReleaseDate());
+        holder.releaseDate.setText(date.getFormatedDate(movies.get(position).getReleaseDate()));
         holder.rating.setText(movies.get(position).getRatingString());
         if (movies.get(position).getGenreIds().isEmpty() || MovieGenre.getGenreById(movies.get(position).getGenreIds().get(0)) == null)
             holder.genre.setText(R.string.genre_unknown);

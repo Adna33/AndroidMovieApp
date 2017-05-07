@@ -23,7 +23,6 @@ public class TvShowDetail {
     @SerializedName("id")
     private Integer id;
 
-
     @SerializedName("last_air_date")
     private String lastAirDate;
 

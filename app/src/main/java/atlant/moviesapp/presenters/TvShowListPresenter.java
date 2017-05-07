@@ -70,8 +70,6 @@ public class TvShowListPresenter {
             @Override
             public void onFailure(Call<TvShowsResponse> call, Throwable t) {
                 //TODO onFailure
-                view.hideProgress();
-                view.showError();
                 Log.e("TAG", t.toString() + "On Failure");
 
             }

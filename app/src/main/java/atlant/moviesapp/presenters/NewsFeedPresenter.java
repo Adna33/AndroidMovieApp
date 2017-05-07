@@ -59,8 +59,9 @@ public class NewsFeedPresenter {
                 if (call.isCanceled()) {
 
                 }
-                view.hideProgress();
-                view.showError();
+
+                //view.hideProgress();
+                //view.showError();
                 Log.e("TAG", t.toString() + "On Failure News Feed");
 
             }
@@ -76,6 +77,6 @@ public class NewsFeedPresenter {
     public void onDestroy() {
         if (call != null)
             call.cancel();
-        view = null;
+
     }
 }

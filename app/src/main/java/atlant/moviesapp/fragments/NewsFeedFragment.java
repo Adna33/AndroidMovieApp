@@ -54,9 +54,10 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
         ButterKnife.bind(this, v);
-
+        showProgress();
         presenter = new NewsFeedPresenter(this);
         presenter.getNews();
+
 
 
         return v;

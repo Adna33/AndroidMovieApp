@@ -18,6 +18,7 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Episode;
@@ -51,6 +52,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
     RecyclerView castRecyclerView;
 
     private EpisodePresenter presenter;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +77,10 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         Integer seriesId=intent.getIntExtra("seriesid",0);
         Integer seasonId=intent.getIntExtra("seasonid",0);
 
-
-        title.setText(episode.getName());
-        releaseDate.setText(episode.getAirDate());
+        date=new Date(this);
+        String year=episode.getAirDate();
+        title.setText(episode.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
+        releaseDate.setText(date.getFormatedDate(episode.getAirDate()));
         rating.setText(episode.getRatingString()+"/10");
         overview.setText(episode.getOverview());
         Glide.with(this).load(episode.getImagePath())

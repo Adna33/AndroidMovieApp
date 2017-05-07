@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,8 +38,15 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="ea42307ca851104bb199d9240e061904d42899b1"
-            />
+            android:value="ea42307ca851104bb199d9240e061904d42899b1" />
+
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.SignupActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.RatingActivity" />
+        <activity android:name=".activity.UserRatingsActivity" />
+        <activity android:name=".activity.UserFavoritesActivity" />
+        <activity android:name=".activity.UserWatchlistActivity"></activity>
     </application>
 
 </manifest>
