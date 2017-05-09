@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Genre"
+                    android:textColor="@color/fadedText"
                     android:textSize="12sp" />
 
                 <TextView
@@ -64,6 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="release date"
+                    android:textColor="@color/fadedText"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -179,7 +181,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText"
+                android:layout_marginTop="24dp" />
 
 
             <LinearLayout

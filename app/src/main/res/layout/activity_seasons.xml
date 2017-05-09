@@ -33,6 +33,13 @@
             android:background="@color/seasonsBackgroud"
             android:padding="10dp" />
 
+        <TextView
+            android:text="Year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/season_year"
+            android:layout_margin="14dp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/episodes_recycler_view"
             android:background="@color/episodesBackground"

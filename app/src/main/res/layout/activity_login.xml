@@ -19,7 +19,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
-       />
+        android:text="AdnaKarkelja" />
 
     <EditText
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:inputType="textPassword"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        />
+        android:text="akarkelja1" />
 
     <Button
         android:text="LOGIN"

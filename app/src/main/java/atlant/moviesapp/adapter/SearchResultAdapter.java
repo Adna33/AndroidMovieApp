@@ -74,15 +74,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(SearchResultAdapter.ResultViewHolder holder, final int position) {
-        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+        if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
         if (results.get(position).getMediaType().equals("tv")) {
             holder.resultTitle.setText(results.get(position).getName());
             holder.resultRating.setText(results.get(position).getRatingString());
-            String year=results.get(position).getFirstAirDate();
-            holder.resultYear.setText("Tv series ("+year.substring(0, Math.min(year.length(), 4))+")");
+            String year = results.get(position).getFirstAirDate();
+            holder.resultYear.setText("Tv series (" + year.substring(0, Math.min(year.length(), 4)) + ")");
 
             if (results.get(position).getImagePath() != null) {
                 Glide.with(mcontext).load(results.get(position).getImagePath())
@@ -94,7 +94,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         } else if (results.get(position).getMediaType().equals("movie")) {
             holder.resultTitle.setText(results.get(position).getTitle());
             holder.resultRating.setText(results.get(position).getRatingString());
-            String year=results.get(position).getReleaseDate();
+            String year = results.get(position).getReleaseDate();
             holder.resultYear.setText(year.substring(0, Math.min(year.length(), 4)));
             if (results.get(position).getImagePath() != null)
                 Glide.with(mcontext).load(results.get(position).getImagePath())
@@ -158,6 +158,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         }
     }
+
     public void setMoreDataAvailable(boolean moreDataAvailable) {
         isMoreDataAvailable = moreDataAvailable;
     }
@@ -165,13 +166,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     /* notifyDataSetChanged is final method so we can't override it
          call adapter.notifyDataChanged(); after update the list
          */
-    public void notifyDataChanged(){
+    public void notifyDataChanged() {
         notifyDataSetChanged();
         isLoading = false;
     }
 
 
-    public interface OnLoadMoreListener{
+    public interface OnLoadMoreListener {
         void onLoadMore();
     }
 

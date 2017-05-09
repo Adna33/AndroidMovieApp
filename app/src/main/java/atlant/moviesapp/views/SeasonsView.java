@@ -11,5 +11,6 @@ import atlant.moviesapp.model.Episode;
 public interface SeasonsView {
     void ShowSeasonList(Integer seasonNum, Integer id);
     void ShowEpisodes(List<Episode> episodes);
+    void ShowYear(String year);
 
 }

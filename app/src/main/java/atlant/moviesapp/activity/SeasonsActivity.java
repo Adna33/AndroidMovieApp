@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,9 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     @BindView(R.id.toolbarClassic)
     Toolbar toolbar;
+
+    @BindView(R.id.season_year)
+    TextView seasonYear;
 
     private Integer seriesId, seasonId, seasonNum;
 
@@ -96,6 +100,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     @Override
     public void ShowEpisodes(final List<Episode> episodes) {
+
         episodesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         episodesRecyclerView.setAdapter(new EpisodeAdapter(episodes, R.layout.season_episode_item, this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(episodesRecyclerView.getContext(),
@@ -119,6 +124,11 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         }));
 
 
+    }
+
+    @Override
+    public void ShowYear(String year) {
+        seasonYear.setText(year);
     }
 
     @Override

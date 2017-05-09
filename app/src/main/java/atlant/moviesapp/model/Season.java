@@ -63,4 +63,9 @@ public class Season {
     public void setSeasonNumber(int seasonNumber) {
         this.seasonNumber = seasonNumber;
     }
+
+    public String getAirYear()
+    { if(this.getAirDate()!=null){ String year=this.getAirDate();
+    return year.substring(0, Math.min(year.length(), 4));}
+    else return "-";}
 }

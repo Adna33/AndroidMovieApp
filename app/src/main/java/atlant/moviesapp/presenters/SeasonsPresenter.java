@@ -46,6 +46,7 @@ public class SeasonsPresenter {
 
                     episodes= response.body().getEpisodes();
                     view.ShowEpisodes(episodes);
+                    view.ShowYear(response.body().getAirYear());
 
                 } else {
                     //TODO onFailure

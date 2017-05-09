@@ -109,7 +109,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         edit.putString("password", pass);
         edit.apply();
         Toast.makeText(this, "Welcome "+ApplicationState.getUser().getUsername(),Toast.LENGTH_SHORT).show();
-        finish();
+        Intent i= new Intent(this,MainActivity.class);
+        startActivity(i);
 
     }
 

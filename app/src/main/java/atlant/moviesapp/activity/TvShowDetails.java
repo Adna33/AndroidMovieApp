@@ -198,7 +198,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
             seasons.add(i);
         }
 
-        releaseDate.setText(series.getFirstAirDate());
+        releaseDate.setText(series.getAiring());
         rating.setText(series.getVoteAverage().toString()+ "/10");
         overview.setText(series.getOverview());
         seasonNum = seasons.size();

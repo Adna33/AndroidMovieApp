@@ -147,4 +147,18 @@ public class TvShowDetail {
         return "http://image.tmdb.org/t/p/w500" + posterPath;
 
     }
+
+    public String getAiring() {
+        if (this.firstAirDate != null) {
+            String year = this.getFirstAirDate();
+            if (this.lastAirDate != null) {
+                String toYear = this.getLastAirDate();
+                String lastYear=  toYear.substring(0, Math.min(year.length(),4));
+                if(lastYear.equals("2017")){ return "TV Series ( " + year.substring(0, Math.min(year.length(), 4)) + "  - ) ";}
+                else
+                return "TV Series ( " + year.substring(0, Math.min(year.length(), 4)) + " - " + toYear.substring(0, Math.min(year.length(), 4)) + " ) ";
+            } else return "TV Series ( " + year.substring(0, Math.min(year.length(), 4)) + "  - ) ";
+        } else return "TV Series ( - ) ";
+
+    }
 }

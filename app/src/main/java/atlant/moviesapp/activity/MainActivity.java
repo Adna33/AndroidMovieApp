@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             action.setDisplayShowHomeEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             setupDrawerToggle();
-
+            bottomNavigation.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
             Fragment fragment = null;
             switch (mSelectedItem) {
@@ -396,6 +396,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 }
             });
             bottomNavigation.setVisibility(View.INVISIBLE);
+            bottomNavigation.getLayoutParams().height = 0;
 
             action.setDisplayShowCustomEnabled(true);
             action.setCustomView(R.layout.search_bar);
@@ -412,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (edtSeach.getText() != null)
                             doSearch(edtSeach.getText());
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                         return true;
                     }
                     return false;
@@ -478,17 +479,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
 
-
     @Override
     protected void onStart() {
-       // if(!isSearchOpened){setupDrawerToggle();}
+
         super.onStart();
     }
 
     @Override
     protected void onPostResume() {
-        if(!isSearchOpened){setupDrawerToggle();Log.d("HEHE","nije");getSupportActionBar().setDisplayHomeAsUpEnabled(false);}
-        else getSupportActionBar().setDisplayHomeAsUpEnabled(true);;
+        if (!isSearchOpened) {
+            setupDrawerToggle();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } else getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         checkLogin();
 
