@@ -96,7 +96,6 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
     public void showMovies(final List<Movie> data) {
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
         } else {
             movies.addAll(data);
             adapter.notifyDataChanged();

@@ -70,7 +70,7 @@ public class ActorAdapter extends RecyclerView.Adapter<ActorAdapter.ActorViewHol
         holder.role.setText(cast.get(position).getCharacter());
         Glide.with(mcontext).load(cast.get(position).getImagePath())
                 .crossFade().centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(holder.image);
 
 

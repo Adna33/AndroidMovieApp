@@ -97,9 +97,7 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView {
 
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            //telling adapter to stop calling load more as no more server data available
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
-        } else {
+           } else {
             series.addAll(data);
             adapter.notifyDataChanged();
         }

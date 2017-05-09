@@ -98,6 +98,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
 
     }
 
+
     @Override
     public void onStop() {
         super.onStop();

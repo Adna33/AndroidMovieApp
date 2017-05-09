@@ -61,7 +61,7 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
         ButterKnife.bind(this, v);
         presenter=new UserRatingsPresenter(this);
         ratedMovies=new ArrayList<>();
-        adapter = new UserListAdapter(ratedMovies, R.layout.search_result_item, recyclerView.getContext());
+        adapter = new UserListAdapter(ratedMovies, R.layout.user_list_item, recyclerView.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL);
@@ -119,7 +119,6 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
     public void showMovies(List<Movie> data) {
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_SHORT).show();
         } else {
             ratedMovies.addAll(data);
             adapter.notifyDataChanged();

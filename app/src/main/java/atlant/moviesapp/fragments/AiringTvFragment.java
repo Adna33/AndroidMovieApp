@@ -96,7 +96,6 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
     public void showTvShows(final List<TvShow> data) {
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
         } else {
             series.addAll(data);
             adapter.notifyDataChanged();

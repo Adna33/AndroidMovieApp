@@ -84,21 +84,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-simplexml\2.2.0\3585dc3d225e2ca03af1a2cece159eb511fa0528\converter-simplexml-2.2.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3585dc3d225e2ca03af1a2cece159eb511fa0528">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\converter-simplexml-2.2.0_c8b5eab30d9fd2b860c00eb95b66f54fa6910e37.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="70f23cb87278f89aa51e6f57e8f0fd5266572d95">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.3.0_94d6c415fc084ef8e3742394e7dc6502b74a7099.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-simplexml\2.2.0\3585dc3d225e2ca03af1a2cece159eb511fa0528\converter-simplexml-2.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3585dc3d225e2ca03af1a2cece159eb511fa0528">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\converter-simplexml-2.2.0_c8b5eab30d9fd2b860c00eb95b66f54fa6910e37.jar" />
     </item>
     <item
         is-multidex="false"

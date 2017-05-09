@@ -100,7 +100,6 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
 
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
         } else {
             series.addAll(data);
             adapter.notifyDataChanged();

@@ -187,7 +187,8 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         final List<Integer> seasons = new ArrayList<>();
         director.setText("");
         String year=series.getFirstAirDate();
-        title.setText(series.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
+        if(year!=null){
+        title.setText(series.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");}
         if (series.getGenres() == null) {
             genre.setText(R.string.genre_unknown);
         } else

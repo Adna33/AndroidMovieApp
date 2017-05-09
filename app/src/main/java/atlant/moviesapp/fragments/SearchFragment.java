@@ -121,7 +121,6 @@ public class SearchFragment extends Fragment implements SearchView {
     public void DisplayResults(final List<SearchResult> data) {
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getActivity().getApplicationContext(), "No More Data Available", Toast.LENGTH_LONG).show();
         } else {
             search.addAll(data);
             adapter.notifyDataChanged();

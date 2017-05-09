@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.Result
 
     public static class ResultViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.search_item)
-        RelativeLayout itemLayout;
+        LinearLayout itemLayout;
 
         @BindView(R.id.result_title)
         TextView resultTitle;

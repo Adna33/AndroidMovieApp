@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -78,13 +79,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private MainActivityPresenter presenter;
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
-    private String[] mNavigationDrawerItemTitles;
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     EditText edtSeach;
     private int mSelectedId;
-
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         }
         mSelectedItem = presenter.selectFragment(selectedItem);
-
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         checkLogin();
 
@@ -218,7 +218,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public void onBackPressed() {
         if (isSearchOpened) {
+            if (getCurrentFocus().getWindowToken() != null)
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            setupDrawerToggle();
             handleMenuSearch();
+
 
             return;
         }
@@ -280,17 +284,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             drawerList.getMenu().clear();
             drawerList.inflateMenu(R.menu.menu_drawer_login);
 
-            View header=drawerList.getHeaderView(0);
-            TextView name = (TextView)header.findViewById(R.id.nav_header_username);
-             name.setText(ApplicationState.getUser().getUsername());
-
+            View header = drawerList.getHeaderView(0);
+            TextView name = (TextView) header.findViewById(R.id.nav_header_username);
+            name.setText(ApplicationState.getUser().getUsername());
 
 
         } else {
             drawerList.getMenu().clear();
             drawerList.inflateMenu(R.menu.menu_drawer_logout);
-            View header=drawerList.getHeaderView(0);
-            TextView name = (TextView)header.findViewById(R.id.nav_header_username);
+            View header = drawerList.getHeaderView(0);
+            TextView name = (TextView) header.findViewById(R.id.nav_header_username);
             name.setText("");
 
         }
@@ -352,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             action.setDisplayShowTitleEnabled(true); //show the title in the action bar
 
             //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
 
             //add the search icon in the action bar
@@ -360,6 +362,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             action.setDisplayHomeAsUpEnabled(false);
             action.setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            setupDrawerToggle();
+
 
             Fragment fragment = null;
             switch (mSelectedItem) {
@@ -395,8 +400,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             action.setDisplayShowCustomEnabled(true);
             action.setCustomView(R.layout.search_bar);
             action.setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             edtSeach = (EditText) action.getCustomView().findViewById(R.id.editSearch); //the text editor
+            edtSeach.getBackground().clearColorFilter();
 
 
             edtSeach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -405,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (edtSeach.getText() != null)
                             doSearch(edtSeach.getText());
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
                         return true;
                     }
                     return false;
@@ -444,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             edtSeach.requestFocus();
 
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
             imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
 
 
@@ -464,21 +472,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         fragobj.setArguments(bundle);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, fragobj, fragobj.getTag());
+        ft.replace(R.id.container, fragobj, "Search");
+
         ft.commit();
     }
 
+
+
     @Override
     protected void onStart() {
-        //checkLogin();
+       // if(!isSearchOpened){setupDrawerToggle();}
         super.onStart();
     }
 
     @Override
     protected void onPostResume() {
-        checkLogin();
+        if(!isSearchOpened){setupDrawerToggle();Log.d("HEHE","nije");getSupportActionBar().setDisplayHomeAsUpEnabled(false);}
+        else getSupportActionBar().setDisplayHomeAsUpEnabled(true);;
 
+        checkLogin();
 
         super.onPostResume();
     }
+
+
 }
