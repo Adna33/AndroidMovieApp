@@ -76,7 +76,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp" />
 
             <TextView
                 android:id="@+id/tv_overview"
@@ -89,7 +91,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText"
+                android:layout_marginTop="15dp" />
 
             <TextView
                 android:text="@string/cast_title"
