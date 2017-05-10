@@ -10,4 +10,6 @@ import android.view.MenuItem;
 
 public interface MainActivityView {
      void showFragment(Fragment f, MenuItem item);
+     void setupToolbar(String s);
+     void checkLogin();
 }

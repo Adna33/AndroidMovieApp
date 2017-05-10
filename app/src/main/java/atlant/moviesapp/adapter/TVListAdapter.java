@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.TvGenre;
@@ -32,8 +33,14 @@ import butterknife.ButterKnife;
 public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHolder> {
 
     private List<TvShow> series;
-    private int rowLayout;
     private Context context;
+    private Date date;
+
+
+    public OnLoadMoreListener loadMoreListener;
+    public boolean isLoading = false,
+            isMoreDataAvailable = true;
+
 
     public static class TvViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.movies_layout)
@@ -62,22 +69,28 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         }
     }
 
-    public TVListAdapter(List<TvShow> series, int rowLayout, Context context) {
+    public TVListAdapter(List<TvShow> series, Context context) {
         this.series = series;
-        this.rowLayout = rowLayout;
         this.context = context;
+        date=new Date(context);
     }
 
     @Override
     public TVListAdapter.TvViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         return new TVListAdapter.TvViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TVListAdapter.TvViewHolder holder, final int position) {
+
+        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+        }
+
         holder.seriesName.setText(series.get(position).getName());
-        holder.releaseDate.setText(series.get(position).getReleaseDate());
+        holder.releaseDate.setText(date.getFormatedDate(series.get(position).getReleaseDate()));
         holder.rating.setText(series.get(position).getRatingString());
         if (series.get(position).getGenreIds().isEmpty()) {
             holder.genre.setText(R.string.genre_unknown);
@@ -144,6 +157,30 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+
+
+
+
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
+        isMoreDataAvailable = moreDataAvailable;
+    }
+
+    /* notifyDataSetChanged is final method so we can't override it
+         call adapter.notifyDataChanged(); after update the list
+         */
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
+        isLoading = false;
+    }
+
+
+    public interface OnLoadMoreListener{
+        void onLoadMore();
+    }
+
+    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
     }
 
 

@@ -1,9 +1,12 @@
 package atlant.moviesapp.fragments;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,8 +37,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
     @BindView(R.id.news_progress_bar)
     ProgressBar progressBar;
 
-    @BindView(R.id.toolbarClassic)
-    Toolbar toolbar;
+
 
     @BindView(R.id.feed_recycler_view)
     RecyclerView recyclerView;
@@ -52,12 +54,11 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
         ButterKnife.bind(this, v);
-
+        showProgress();
         presenter = new NewsFeedPresenter(this);
         presenter.getNews();
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.newsfeed_title);
+
 
         return v;
     }
@@ -82,10 +83,25 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
     }
 
     @Override
+    public void showError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Error loading data, please check your connection")
+                .setTitle("Error");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+
+    @Override
     public void onStop() {
         super.onStop();
-        if (presenter != null)
-            presenter.onStop();
     }
 
     @Override

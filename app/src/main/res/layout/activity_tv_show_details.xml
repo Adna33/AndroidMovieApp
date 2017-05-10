@@ -29,11 +29,11 @@
                 <ImageView
                     android:id="@+id/tv_poster"
                     android:layout_width="match_parent"
-                    android:layout_height="171.3dp" />
+                    android:layout_height="200dp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="171.3dp"
+                    android:layout_height="200dp"
                     android:background="@drawable/gradient_detail" />
 
 
@@ -42,7 +42,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -50,132 +50,152 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Title"
-                    android:textSize="16sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/tv_genre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Genre"
-                    android:textSize="8sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_release_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="release date"
-                    android:textSize="8sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv1"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
                     android:text="@string/director_title"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_director"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:textColor="@color/fadedText"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv2"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
                     android:text="@string/writers_title"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_writers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textColor="@color/fadedText"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv3"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/seasons_title"
-                    android:textSize="9.3sp" />
+                    android:layout_width="60dp"
+                    android:text="@string/stars_title"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_stars"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:textColor="@color/fadedText"
                     android:text="@string/unknown_field"
-                    android:textSize="9.3sp" />
+                    android:textSize="14sp" />
 
 
             </LinearLayout>
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
             <TextView
                 android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/star"
+                android:drawableLeft="@drawable/star_fill_icon"
+                android:drawablePadding="3dp"
                 android:text="TextView"
-                android:textSize="9.3sp" />
+                android:textSize="14sp" />
+            <TextView
+                android:text=" |"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/divider" />
+
+            <TextView
+                android:text="Rate this"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rate_txtBtn"
+                android:drawablePadding="3dp"
+                android:drawableLeft="@drawable/star_no_fill_icon"
+                android:layout_weight="1"
+                android:paddingLeft="3dp" /></LinearLayout>
 
             <TextView
                 android:id="@+id/tv_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="Overview text"
-                android:textSize="9.3sp" />
+                android:textSize="14sp" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/fadedText"/>
+                android:background="@color/fadedText"
+                android:layout_marginTop="24dp" />
 
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                android:layout_margin="15dp">
 
                 <TextView
                     android:text="@string/seasons_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="8sp"
+                    android:textSize="12sp"
                     android:layout_weight="1" />
 
                 <TextView
@@ -187,10 +207,18 @@
                     android:textColor="@color/standardYellow"
 
                     android:layout_gravity="right"
-                    android:textSize="8sp"
+                    android:textSize="12sp"
                     android:foregroundGravity="right"
                     android:gravity="right" />
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/seasons_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -202,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="9.3sp"/>
+                android:textSize="14sp"/>
 
 
             <android.support.v7.widget.RecyclerView
@@ -211,28 +239,8 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="horizontal"
                 android:layout_marginLeft="6dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="15dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/fadedText"/>
-
-            <TextView
-                android:text="@string/reviews_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvReviews"
-                android:layout_margin="10dp"
-                android:textSize="9.3sp"/>
-
-
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/reviews_recycler_view"
-                android:scrollbars="vertical"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

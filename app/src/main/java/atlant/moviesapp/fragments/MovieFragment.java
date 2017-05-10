@@ -11,15 +11,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.MoviePagerAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static atlant.moviesapp.R.id.toolbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +36,6 @@ public class MovieFragment extends Fragment {
     @BindView(R.id.main_tab_layout)
     TabLayout tabLayout;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
 
     public MovieFragment() {
@@ -55,10 +54,9 @@ public class MovieFragment extends Fragment {
         viewPager.setAdapter(new MoviePagerAdapter(getActivity(), getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.movies_title);
 
         return v;
     }
+
 
 }

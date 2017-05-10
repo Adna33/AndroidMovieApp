@@ -1,6 +1,8 @@
 package atlant.moviesapp.activity;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,10 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.NewsFeedAdapter;
 import atlant.moviesapp.adapter.ReviewAdapter;
+import atlant.moviesapp.fragments.YouTubeFragment;
+import atlant.moviesapp.helper.Date;
+import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
@@ -30,6 +36,7 @@ import atlant.moviesapp.presenters.MovieDetailsPresenter;
 import atlant.moviesapp.views.MovieDetailsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsView {
 
@@ -69,14 +76,50 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
 
+    @BindView(R.id.play_button)
+    ImageView playButton;
+
+    @OnClick(R.id.play_button)
+    public void showTrailer() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", movie.getId());
+        YouTubeFragment f = new YouTubeFragment();
+        f.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.main, f, f.getTag());
+        // ft.replace(R.id.container, f, f.getTag());
+        ft.commit();
+    }
+
+    @BindView(R.id.rate_txtBtn)
+    TextView rateTxt;
+    private static final int TAG = 0;
+
+    @OnClick(R.id.rate_txtBtn)
+    void rate() {
+        Intent i = new Intent(this, RatingActivity.class);
+        i.putExtra("title", "Rate this movie");
+        i.putExtra("id", movie.getId());
+        i.putExtra("tag", TAG);
+        startActivity(i);
+
+    }
+
+    @BindView(R.id.divider)
+    TextView divider;
 
     private MovieDetailsPresenter presenter;
+    private Movie movie;
+    private Date date;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
+
+        checkLogin();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.movies_title);
@@ -89,19 +132,29 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 onBackPressed();
             }
         });
-
+        date = new Date(this);
 
         Intent intent = getIntent();
-        Movie movie = intent.getParcelableExtra("movie");
+        movie = intent.getParcelableExtra("movie");
         director.setText("");
-        title.setText(movie.getTitle());
-        if (MovieGenre.getGenreById(movie.getGenreIds().get(0)) == null || movie.getGenreIds().isEmpty())
+        String year = movie.getReleaseDate();
+        title.setText(movie.getTitle() + " (" + year.substring(0, Math.min(year.length(), 4)) + ")");
+        if (movie.getGenreIds().isEmpty())
+            genre.setText(R.string.genre_unknown);
+        else if (MovieGenre.getGenreById(movie.getGenreIds().get(0)) == null)
             genre.setText(R.string.genre_unknown);
         else
             genre.setText(MovieGenre.getGenreById(movie.getGenreIds().get(0)).getName());
-        releaseDate.setText(movie.getReleaseDate());
-        rating.setText(movie.getRatingString());
+        releaseDate.setText(date.getFormatedDate(movie.getReleaseDate()));
+        rating.setText(movie.getRatingString() + "/10");
         overview.setText(movie.getOverview());
+
+        if (movie.isVideo()) {
+            playButton.setVisibility(View.VISIBLE);
+            playButton.bringToFront();
+            Log.d("BOOL", "TRUE");
+        } else Log.d("BOOL", movie.getId() + "");
+
         showPoster(movie);
         presenter = new MovieDetailsPresenter(this);
         presenter.getCredits(movie.getId());
@@ -110,7 +163,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     }
 
     @Override
-    public void showCast(List<Cast> cast) {
+    public void showCast(final List<Cast> cast) {
         String castString = "";
         for (int i = 0; i < cast.size(); i++) {
             if (i < 4) {
@@ -121,6 +174,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
+        castRecyclerView.addOnItemTouchListener(new ActorAdapter.RecyclerTouchListener(this, castRecyclerView, new ActorAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(MovieDetailsActivity.this, ActorActivity.class);
+                intent.putExtra("actorId", cast.get(position).getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
 
     }
@@ -150,10 +216,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showPoster(Movie movie) {
-        Glide.with(this).load(movie.getImagePath())
-                .crossFade().centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(poster);
+        if (movie.getBackdropPath() == null) {
+            Glide.with(this).load(movie.getImagePath())
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(poster);
+            playButton.setVisibility(View.INVISIBLE);
+
+        } else {
+            Glide.with(this).load(movie.getBackdropImagePath())
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(poster);
+            playButton.setVisibility(View.VISIBLE);
+            playButton.bringToFront();
+        }
     }
 
     @Override
@@ -162,6 +239,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ReviewAdapter(reviews, R.layout.review_item, this));
 
+    }
+
+    public void checkLogin() {
+        if (ApplicationState.isLoggedIn()) {
+            rateTxt.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+        } else {
+            rateTxt.setVisibility(View.INVISIBLE);
+            divider.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

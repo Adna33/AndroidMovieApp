@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/actor_details_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0f100f"
+    android:orientation="vertical"
+    tools:context="atlant.moviesapp.activity.ActorActivity">
+
+    <include layout="@layout/appbarlayoutclassic" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/actor_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="270dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@drawable/gradient_detail"
+                    android:layout_height="270dp" />
+
+                <TextView
+                    android:id="@+id/actor_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="24sp"
+                    android:layout_alignBottom="@id/actor_image"
+                    android:layout_margin="15dp" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_height="wrap_content"
+                    android:text="Date of birth:"
+                    android:textSize="14sp"
+                    android:layout_width="90dp" />
+
+                <TextView
+                    android:id="@+id/actor_birth_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/unknown_field"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_height="wrap_content"
+                    android:text="Website"
+                    android:textSize="14sp"
+                    android:layout_width="90dp" />
+
+                <TextView
+                    android:id="@+id/actor_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/unknown_field"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/fadedText"/>
+            <TextView
+                android:id="@+id/tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:text="Biography:"
+                android:textSize="14sp"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:id="@+id/actor_biography"
+                android:layout_width="match_parent"
+                android:maxLines="4"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Biography"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/actor_full_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="See Full Bio"
+                android:textSize="14sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp"
+                android:clickable="true"
+                android:textColor="@color/colorAccent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/fadedText"/>
+
+            <TextView
+                android:text="Filmography:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textSize="14sp"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/film_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:layout_marginLeft="6dp"
+                android:layout_marginBottom="10dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/fadedText"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

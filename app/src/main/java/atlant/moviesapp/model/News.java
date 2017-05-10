@@ -16,7 +16,7 @@ public class News {
     @Element(name = "link")
     private String link;
 
-    @Element(name = "description")
+    @Element(name = "description", required = false)
     private String description;
 
     @Element(name = "author")

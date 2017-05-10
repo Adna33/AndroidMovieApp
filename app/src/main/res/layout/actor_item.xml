@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="52.6dp"
+    android:orientation="vertical" android:layout_width="78.9dp"
     android:layout_height="match_parent"
     android:id="@+id/actor_item"
     android:layout_margin="4dp">
     <ImageView
         android:id="@+id/actor_image"
-        android:layout_width="52.6dp"
-        android:layout_height="78.8dp" />
+        android:layout_width="78.9dp"
+        android:layout_height="118.2dp" />
 
     <TextView
         android:text="Full Name"
@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/actor_name"
         android:textColor="@color/fadedText"
-        android:textSize="8sp"/>
+        android:textSize="12sp"/>
 
     <TextView
         android:text="Role"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/actor_role"
-        android:textSize="8sp"/>
+        android:textSize="12sp"/>
 
 
 </LinearLayout>

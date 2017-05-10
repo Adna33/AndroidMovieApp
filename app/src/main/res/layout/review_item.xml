@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/review_item_layout"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:paddingLeft="20dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -17,16 +18,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/username_review"
             android:textColor="@color/fadedText"
-            android:textSize="9.3sp"
+            android:textSize="14sp"
             android:layout_marginRight="10dp" />
 
-        <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rating_review"
-            android:textColor="@color/fadedText"
-            android:textSize="6.7sp"
+
  />
 
     </LinearLayout>
@@ -36,8 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/overview_review"
-        android:textSize="9.3sp"
-        android:layout_marginBottom="10dp" />
+        android:textSize="14sp"
+        android:layout_marginBottom="10dp"
+       android:maxLines="4" />
 
     <TextView
         android:text="@string/read_more"
@@ -45,5 +41,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/read_more_review"
         android:textColor="@color/standardYellow"
-        android:textSize="9.3sp"/>
+        android:textSize="14sp"
+        android:clickable="true" />
 </LinearLayout>

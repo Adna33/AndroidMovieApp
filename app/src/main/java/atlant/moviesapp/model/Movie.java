@@ -16,6 +16,9 @@ public class Movie implements Parcelable {
     @SerializedName("title")
     private String title;
 
+    @SerializedName("backdrop_path")
+    private String backdropPath;
+
     @SerializedName("poster_path")
     private String posterPath;
 
@@ -41,7 +44,7 @@ public class Movie implements Parcelable {
     //TODO for details:  crew- director,writers, stars(cast), reviews
 
 
-    public Movie(Integer id, String title, String posterPath, String overview, double rating, String releaseDate, boolean video) {
+    public Movie(Integer id, String title, String posterPath, String overview, double rating, String releaseDate, boolean video,List<Integer> genreIds, String backdropPath) {
         this.id = id;
         this.title = title;
         this.posterPath = posterPath;
@@ -49,6 +52,8 @@ public class Movie implements Parcelable {
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.video = video;
+        this.genreIds = genreIds;
+        this.backdropPath=backdropPath;
     }
 
 
@@ -104,9 +109,7 @@ public class Movie implements Parcelable {
         return rating;
     }
 
-    public String getRatingString() {
-        return Double.toString(rating);
-    }
+    public String getRatingString(){return String.format("%.2f", rating);}
 
     public void setRating(double rating) {
         this.rating = rating;
@@ -132,6 +135,17 @@ public class Movie implements Parcelable {
         return "http://image.tmdb.org/t/p/w500" + posterPath;
 
     }
+    public String getBackdropImagePath(){
+        return "http://image.tmdb.org/t/p/w500" + backdropPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
 
     @Override
     public int describeContents() {
@@ -148,6 +162,7 @@ public class Movie implements Parcelable {
         dest.writeString(this.releaseDate);
         dest.writeList(this.genreIds);
         dest.writeByte(isVideo() ? (byte) 1 : (byte) 0);
+        dest.writeString(this.backdropPath);
 
 
     }
@@ -161,6 +176,7 @@ public class Movie implements Parcelable {
         genreIds = new ArrayList<Integer>();
         in.readList(genreIds, null);
         this.video = in.readByte() != 0;
+        this.backdropPath=in.readString();
 
     }
 }

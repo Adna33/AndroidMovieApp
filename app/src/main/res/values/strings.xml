@@ -7,6 +7,11 @@
     <string name="favorites_title">Favorites</string>
     <string name="newsfeed_title">News Feed</string>
     <string name="menu_feed_title">Feed</string>
+    <string name="actor_title">Actor</string>
+    <string name="login_title">Login</string>
+    <string name="settings_title">Settings</string>
+    <string name="rating_title">Rate this movie</string>
+
 
     <string name="director_title">Director:</string>
     <string name="seasons_title">Seasons:</string>
@@ -19,11 +24,18 @@
 
     <string name="genre_unknown">Unknown Genre</string>
     <string name="unknown_field">Unknown</string>
+    <string name="search">Search</string>
+    <string name="forgot_passord">Forgot your details?</string>
+    <string name="new_account">Create a new account</string>
 
     <string-array name="tabs">
         <item>Most popular</item>
         <item>Latest</item>
         <item>Highest rated</item>
+    </string-array>
+    <string-array name="userTabs">
+        <item>Movies</item>
+        <item>TvShows</item>
     </string-array>
 
     <string-array name="TvTabs">
@@ -31,6 +43,18 @@
         <item>Latest</item>
         <item>Highest rated</item>
         <item>Airing</item>
+    </string-array>
+
+    <string-array name="navigation_drawer_items_array">
+        <item>Login</item>
+    </string-array>
+
+    <string-array name="navigation_drawer_items_array_login">
+        <item>Your Favourites</item>
+        <item>Your Watchlist</item>
+        <item>Your Ratings</item>
+        <item>Settings</item>
+        <item>Logout</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
