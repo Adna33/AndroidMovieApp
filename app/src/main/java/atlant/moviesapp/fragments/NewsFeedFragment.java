@@ -38,7 +38,6 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
     ProgressBar progressBar;
 
 
-
     @BindView(R.id.feed_recycler_view)
     RecyclerView recyclerView;
 
@@ -59,7 +58,6 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         presenter.getNews();
 
 
-
         return v;
     }
 
@@ -72,23 +70,25 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
     @Override
     public void showError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Error loading data, please check your connection")
-                .setTitle("Error");
+        builder.setMessage(R.string.errorMessage)
+                .setTitle(R.string.errorTitle);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.OkButton, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }

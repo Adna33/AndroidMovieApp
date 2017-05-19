@@ -21,7 +21,7 @@ public class SignupActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent myIntent = getIntent();
-        String url = myIntent.getStringExtra("WebSite");
+        String url = myIntent.getStringExtra(getString(R.string.website));
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);

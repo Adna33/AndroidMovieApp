@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @OnClick(R.id.signup)
     public void onClick() {
         Intent intent = new Intent(this, SignupActivity.class);
-        intent.putExtra("WebSite","https://www.themoviedb.org/account/signup");
+        intent.putExtra(getString(R.string.website),getString(R.string.signupLink));
         startActivity(intent);
 
     }
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @OnClick(R.id.login_forgot)
     public void onForgot() {
         Intent intent = new Intent(this, SignupActivity.class);
-        intent.putExtra("WebSite","https://www.themoviedb.org/account/reset-password");
+        intent.putExtra(getString(R.string.website),getString(R.string.resetLink));
         startActivity(intent);
 
     }
@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @OnClick(R.id.login_button)
     public void onClickButton()
     {
-        Log.d("ACCOUNT","usao");
         username=loginName.getText().toString();
         password=loginPassword.getText().toString();
         presenter.requestToken(username,password);
@@ -101,14 +100,20 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     public void loggedUser(String pass) {
 
         Gson gson = new Gson();
-        SharedPreferences userDetails = this.getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences userDetails = this.getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
         SharedPreferences.Editor edit = userDetails.edit();
         edit.clear();
         String user = gson.toJson(ApplicationState.getUser());
-        edit.putString("user", user);
-        edit.putString("password", pass);
+        edit.putString(getString(R.string.user), user);
+        edit.putString(getString(R.string.password), pass);
         edit.apply();
         Toast.makeText(this, "Welcome "+ApplicationState.getUser().getUsername(),Toast.LENGTH_SHORT).show();
+        presenter.getMovieFavorites(1);
+        presenter.getSeriesFavorites(1);
+        presenter.getMovieRatings(1);
+        presenter.getSeriesRatings(1);
+        presenter.getMovieWatchlist(1);
+        presenter.getSeriesWatchlist(1);
         Intent i= new Intent(this,MainActivity.class);
         startActivity(i);
 
@@ -119,15 +124,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         loginName.setText("");
         loginPassword.setText("");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Wrong username or password, please try again")
-                .setTitle("Error");
+        builder.setMessage(R.string.LoginError)
+                .setTitle(R.string.ErrorTitle);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.OkButton, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (presenter != null)
+            presenter.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (presenter != null)
+            presenter.onDestroy();
+        super.onDestroy();
     }
 }

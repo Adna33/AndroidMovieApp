@@ -18,8 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.activity.LoginActivity;
 import atlant.moviesapp.activity.TvShowDetails;
 import atlant.moviesapp.adapter.TVListAdapter;
+import atlant.moviesapp.helper.OnItemClick;
+import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
+import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.TvShowListPresenter;
 import atlant.moviesapp.views.TvShowListView;
@@ -61,19 +66,58 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView {
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
 
-        recyclerView.addOnItemTouchListener(new TVListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new TVListAdapter.ClickListener() {
+        adapter.setItemClick(new OnItemClick() {
             @Override
-            public void onClick(View view, int position) {
+            public void onfavouriteClicked(int position) {
+                if (ApplicationState.isLoggedIn()) {
+                    TvShow m = series.get(position);
+                    if (ApplicationState.getUser().getFavouriteSeries().contains(m.getId())) {
+                        ApplicationState.getUser().removeFavoriteShow(m.getId());
+                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), false);
+                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ApplicationState.getUser().addFavouriteShow(m.getId());
+                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), true);
+                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    showLoginError();
+                }
+            }
+
+            @Override
+            public void onwatchlistClicked(int position) {
+                TvShow m = series.get(position);
+                if (ApplicationState.isLoggedIn()) {
+                    if (ApplicationState.getUser().getWatchListSeries().contains(m.getId())) {
+                        ApplicationState.getUser().removeWatchlistShow(m.getId());
+                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), false);
+                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ApplicationState.getUser().addWatchlistShow(m.getId());
+                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), true);
+                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistAdded), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    showLoginError();
+                }
+            }
+
+            @Override
+            public void onposterClicked(int position) {
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                intent.putExtra("series", series.get(position).getId());
+                intent.putExtra(getString(R.string.series), series.get(position).getId());
                 startActivity(intent);
             }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+        });
         adapter.setLoadMoreListener(new TVListAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -97,7 +141,7 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView {
 
         if (!(data.size() > 0)) {
             adapter.setMoreDataAvailable(false);
-           } else {
+        } else {
             series.addAll(data);
             adapter.notifyDataChanged();
         }
@@ -107,13 +151,15 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -134,12 +180,33 @@ public class HighestRatedTvFragment extends Fragment implements TvShowListView {
     @Override
     public void showError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Error loading data, please check your connection")
-                .setTitle("Error");
+        builder.setMessage(getString(R.string.errorMessage))
+                .setTitle(getString(R.string.errorTitle));
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.OkButton), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    public void showLoginError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.loginAcces)
+                .setTitle(R.string.loginAccessTitle);
+
+        builder.setNegativeButton(R.string.notNow, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
+            }
+        });
+        builder.setPositiveButton(R.string.loginButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(getContext(),LoginActivity.class);
+                getContext().startActivity(intent);
             }
         });
         AlertDialog dialog = builder.create();

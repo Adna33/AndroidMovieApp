@@ -51,14 +51,12 @@ public class SearchFragment extends Fragment implements SearchView {
     String query;
 
     public SearchFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, v);
         presenter = new SearchPresenter(this);
@@ -71,14 +69,14 @@ public class SearchFragment extends Fragment implements SearchView {
         recyclerView.addOnItemTouchListener(new SearchResultAdapter.RecyclerTouchListener(getActivity(), recyclerView, new SearchResultAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (search.get(position).getMediaType().equals("tv")) {
+                if (search.get(position).getMediaType().equals(getString(R.string.tv))) {
                     Intent intent = new Intent(getActivity(), TvShowDetails.class);
-                    intent.putExtra("series", search.get(position).getId());
+                    intent.putExtra(getString(R.string.series), search.get(position).getId());
                     startActivity(intent);
-                } else if (search.get(position).getMediaType().equals("movie")) {
+                } else if (search.get(position).getMediaType().equals(getString(R.string.movie))) {
                     Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                     Movie movie = search.get(position).getMovie();
-                    intent.putExtra("movie", movie);
+                    intent.putExtra(getString(R.string.movie), movie);
                     startActivity(intent);
                 }
 
@@ -108,7 +106,7 @@ public class SearchFragment extends Fragment implements SearchView {
 
         if (getArguments() != null) {
 
-            query = getArguments().getString("edttext");
+            query = getArguments().getString(getString(R.string.edttext));
             if (query.length() > 3)
                 presenter.getSearchResults(query, currentPage);
         }

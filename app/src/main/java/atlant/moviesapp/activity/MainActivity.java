@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         presenter = new MainActivityPresenter(this);
-
+       // isSearchOpened = false;
         //bottom navigation
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -152,13 +152,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         //save selected item so it will remains same even after orientation change
-        outState.putInt("SELECTED_ID", mSelectedId);
+        outState.putInt(getString(R.string.selectedId), mSelectedId);
     }
 
     private void selectItem(int mSelectedId) {
 
         switch (mSelectedId) {
-            case R.id.nav_favourites:
+           case R.id.nav_favourites:
                 Intent fav = new Intent(this, UserFavoritesActivity.class);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(fav);
@@ -178,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             case R.id.nav_logout:
                 ApplicationState.setUser(null);
-                SharedPreferences sp = getSharedPreferences("userdetails", MODE_PRIVATE);
-                sp.edit().remove("user").apply();
-                sp.edit().remove("password").apply();
+                SharedPreferences sp = getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
+                sp.edit().remove(getString(R.string.user)).apply();
+                sp.edit().remove(getString(R.string.password)).apply();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 recreate();
                 break;
@@ -275,10 +275,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         drawerLayout.setDrawerListener(mDrawerToggle);
         drawerList.setNavigationItemSelectedListener(this);
         setupDrawerToggle();
-
-
-        Log.d("naj", ApplicationState.isLoggedIn() + "");
-
 
         if (ApplicationState.isLoggedIn()) {
             drawerList.getMenu().clear();
@@ -467,13 +463,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         String str = s.toString();
         Bundle bundle = new Bundle();
-        bundle.putString("edttext", str);
+        bundle.putString(getString(R.string.edttext), str);
 
         SearchFragment fragobj = new SearchFragment();
         fragobj.setArguments(bundle);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, fragobj, "Search");
+        ft.replace(R.id.container, fragobj, getString(R.string.search));
 
         ft.commit();
     }
@@ -481,6 +477,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     protected void onStart() {
+        if (!isSearchOpened) {
+            setupDrawerToggle();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } else getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         super.onStart();
     }

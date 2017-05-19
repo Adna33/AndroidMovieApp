@@ -4,7 +4,7 @@
         <item android:id="@+id/navigation_your_list" android:title="YOUR LIST" >
 
             <menu>
-                <item android:id="@+id/nav_favourites"  android:icon="@drawable/like_grey_icon" android:title="Your Favourites"/>
+        <item android:id="@+id/nav_favourites"  android:icon="@drawable/like_grey_icon" android:title="Your Favourites"/>
                 <item android:id="@+id/nav_watchlist" android:icon="@drawable/bookmark_grey_icon" android:title="Your WatchList"/>
                 <item android:id="@+id/nav_ratings" android:icon="@drawable/star_grey_icon" android:title="Your Ratings"/>
             </menu>
@@ -14,7 +14,7 @@
 
             <menu>
                 <item android:id="@+id/nav_settings" android:icon="@drawable/group_12copy" android:title="Settings"/>
-                <item android:id="@+id/nav_logout" android:icon="@drawable/redo_48" android:title="Logout"/>
+                <item android:id="@+id/nav_logout" android:icon="@drawable/logout_icon" android:title="Logout"/>
             </menu>
 
         </item>

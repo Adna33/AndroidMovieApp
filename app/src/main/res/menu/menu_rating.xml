@@ -5,7 +5,8 @@
         android:id="@+id/action_done"
         android:title="done"
         android:orderInCategory="200"
-        android:icon="@drawable/checkmark"
-        app:showAsAction="ifRoom"
+        android:icon="@drawable/check"
+        android:padding="5dp"
+        app:showAsAction="always"
         />
 </menu>

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,6 +27,8 @@ import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
+import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
@@ -79,30 +82,86 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.play_button)
     ImageView playButton;
 
+    @BindView(R.id.heart_detail)
+    ImageView favourite;
+
+    @BindView(R.id.bookmark_detail)
+    ImageView watchlist;
+
     @OnClick(R.id.play_button)
     public void showTrailer() {
         Bundle bundle = new Bundle();
-        bundle.putInt("id", movie.getId());
+        bundle.putInt(getString(R.string.id), movie.getId());
         YouTubeFragment f = new YouTubeFragment();
         f.setArguments(bundle);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.main, f, f.getTag());
-        // ft.replace(R.id.container, f, f.getTag());
         ft.commit();
     }
 
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 0;
+    private BodyFavourite bodyFavourite;
+    private BodyWatchlist bodyWatchlist;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
         Intent i = new Intent(this, RatingActivity.class);
-        i.putExtra("title", "Rate this movie");
-        i.putExtra("id", movie.getId());
-        i.putExtra("tag", TAG);
+        i.putExtra(getString(R.string.title), getString(R.string.rateThisMovie));
+        i.putExtra(getString(R.string.id), movie.getId());
+        i.putExtra(getString(R.string.tag), TAG);
         startActivity(i);
 
+    }
+
+    @OnClick(R.id.heart_detail)
+    void addToFavorites() {
+        if (ApplicationState.getUser().getFavouriteMovies().contains(movie.getId())) {
+            ApplicationState.getUser().removeFavouriteMovie(movie.getId());
+            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), false);
+            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
+            Glide.with(this).load(R.drawable.like)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(favourite);
+
+        } else {
+            ApplicationState.getUser().addFavouriteMovie(movie.getId());
+            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), true);
+            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            Toast.makeText(this, R.string.addedFavorite, Toast.LENGTH_SHORT).show();
+            Glide.with(this).load(R.drawable.like_active_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(favourite);
+
+        }
+
+    }
+
+
+    @OnClick(R.id.bookmark_detail)
+    void addToWatchlist() {
+
+        if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
+            ApplicationState.getUser().removeWatchlistMovie(movie.getId());
+            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), false);
+            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(watchlist);
+        } else {
+            ApplicationState.getUser().addWatchlistMovie(movie.getId());
+            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), true);
+            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            Glide.with(this).load(R.drawable.bookmark_active_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(watchlist);
+        }
     }
 
     @BindView(R.id.divider)
@@ -135,7 +194,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         date = new Date(this);
 
         Intent intent = getIntent();
-        movie = intent.getParcelableExtra("movie");
+        movie = intent.getParcelableExtra(getString(R.string.movieIntent));
         director.setText("");
         String year = movie.getReleaseDate();
         title.setText(movie.getTitle() + " (" + year.substring(0, Math.min(year.length(), 4)) + ")");
@@ -146,19 +205,49 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         else
             genre.setText(MovieGenre.getGenreById(movie.getGenreIds().get(0)).getName());
         releaseDate.setText(date.getFormatedDate(movie.getReleaseDate()));
-        rating.setText(movie.getRatingString() + "/10");
+        rating.setText(movie.getRatingString());
         overview.setText(movie.getOverview());
 
         if (movie.isVideo()) {
             playButton.setVisibility(View.VISIBLE);
             playButton.bringToFront();
-            Log.d("BOOL", "TRUE");
-        } else Log.d("BOOL", movie.getId() + "");
+        } else {
+        }
 
         showPoster(movie);
         presenter = new MovieDetailsPresenter(this);
         presenter.getCredits(movie.getId());
         presenter.getReviews(movie.getId());
+        if (ApplicationState.isLoggedIn()) {
+            watchlist.setVisibility(View.VISIBLE);
+            favourite.setVisibility(View.VISIBLE);
+            if (ApplicationState.getUser().getFavouriteMovies().contains(movie.getId())) {
+                Glide.with(this).load(R.drawable.like_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(favourite);
+            } else {
+                Glide.with(this).load(R.drawable.like)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(favourite);
+            }
+            if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
+                Glide.with(this).load(R.drawable.bookmark_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(watchlist);
+            } else {
+                Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(watchlist);
+            }
+
+        } else {
+            watchlist.setVisibility(View.INVISIBLE);
+            favourite.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -178,7 +267,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(MovieDetailsActivity.this, ActorActivity.class);
-                intent.putExtra("actorId", cast.get(position).getId());
+                intent.putExtra(getString(R.string.actorId), cast.get(position).getId());
                 startActivity(intent);
             }
 
@@ -195,7 +284,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     public void showCrew(List<Crew> crew) {
         String directorsString = "";
         for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getJob().equals("Director")) {
+            if (crew.get(i).getJob().equals(getString(R.string.director))) {
                 directorsString = directorsString + crew.get(i).getName() + "  ";
             }
 
@@ -204,7 +293,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         String writersString = "";
         int num = 0;
         for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getDepartment().equals("Writing") && num < 3) {
+            if (crew.get(i).getDepartment().equals(getString(R.string.writing)) && num < 3) {
                 num++;
                 writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
             }

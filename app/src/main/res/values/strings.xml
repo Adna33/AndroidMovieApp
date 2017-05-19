@@ -27,6 +27,12 @@
     <string name="search">Search</string>
     <string name="forgot_passord">Forgot your details?</string>
     <string name="new_account">Create a new account</string>
+    <string name="full_rating">/10</string>
+
+    <string name="series_id_intent">seriesid</string>
+    <string name="season_id_intent">seasonid</string>
+    <string name="show_id_intent">showId</string>
+    <string name="season_num_intent">seasonNum</string>
 
     <string-array name="tabs">
         <item>Most popular</item>
@@ -59,5 +65,43 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fullBio">See Full Bio</string>
+    <string name="hide">Hide</string>
+    <string name="episodeIntent">episode</string>
+    <string name="seriesId">seriesid</string>
+    <string name="seasonId">seasonid</string>
+    <string name="actorId">actorId</string>
+    <string name="movieIntent">movie</string>
+    <string name="user">user</string>
+    <string name="password">password</string>
+    <string name="userDetails">userdetails</string>
+    <string name="LoginError">Wrong username or password, please try again</string>
+    <string name="ErrorTitle">Error</string>
+    <string name="OkButton">OK</string>
+    <string name="website">WebSite</string>
+    <string name="signupLink">https://www.themoviedb.org/account/signup</string>
+    <string name="resetLink">https://www.themoviedb.org/account/reset-password</string>
+    <string name="selectedId">SELECTED_ID</string>
+    <string name="edttext">edttext</string>
+    <string name="director">Director</string>
+    <string name="writing">Writing</string>
+    <string name="title">title</string>
+    <string name="id">id</string>
+    <string name="tag">tag</string>
+    <string name="ratethisTVshow">Rate this TV show</string>
+    <string name="series">series</string>
+    <string name="tv">tv</string>
+    <string name="movie">movie</string>
+    <string name="addedFavorite">Favorite added</string>
+    <string name="removedFavorite">Favorite removed</string>
+    <string name="rateThisMovie">Rate this movie</string>
+    <string name="watchlistRemoved">Watchlist item removed</string>
+    <string name="errorMessage">Error loading data, please check your connection</string>
+    <string name="errorTitle">Error</string>
+    <string name="watchlistAdded">watchlist added</string>
+    <string name="loginAcces">Login to rate movies, manage your Watchlist, and more.</string>
+    <string name="loginAccessTitle">Login to Popular Movies</string>
+    <string name="notNow">NOT NOW</string>
+    <string name="loginButton">LOGIN</string>
 
 </resources>

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rating"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/star"
+            android:drawableLeft="@drawable/rating_icon"
             android:drawablePadding="3dp"
             android:textSize="12sp"
             android:gravity="center_vertical"

@@ -63,9 +63,9 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         });
 
         Intent intent = getIntent();
-        seriesId = intent.getIntExtra("showId", 0);
-        seasonId = intent.getIntExtra("seasonId", 0);
-        seasonNum = intent.getIntExtra("seasonNum", 0);
+        seriesId = intent.getIntExtra(getString(R.string.show_id_intent), 0);
+        seasonId = intent.getIntExtra(getString(R.string.season_id_intent), 0);
+        seasonNum = intent.getIntExtra(getString(R.string.season_num_intent), 0);
 
         ShowSeasonList(seasonNum, seriesId);
         presenter = new SeasonsPresenter(this);
@@ -110,11 +110,10 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(SeasonsActivity.this, EpisodeActivity.class);
-                intent.putExtra("episode", presenter.getEpisodes().get(position));
-                intent.putExtra("seriesid", seriesId);
-                intent.putExtra("seasonid", seasonId);
+                intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
+                intent.putExtra(getString(R.string.seriesId), seriesId);
+                intent.putExtra(getString(R.string.seasonId), seasonId);
                 startActivity(intent);
-
             }
 
             @Override

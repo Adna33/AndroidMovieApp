@@ -44,22 +44,29 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/fadedText"
-            android:drawableLeft="@drawable/star"
+            android:drawableLeft="@drawable/rating_icon"
+            android:drawablePadding="3dp"
             android:id="@+id/result_rating"
             android:layout_weight="2"
             android:gravity="center_vertical" />
 
     </LinearLayout>
 
-    <TextView
-        android:text=">"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
+    <ImageButton
         android:id="@+id/textView2"
-        android:layout_toRightOf="@id/data"
         android:textSize="18sp"
         android:gravity="right|center_vertical"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:src="@drawable/go_into_icon"
+        android:background="@android:color/transparent"
+        android:layout_height="14dp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="false"
+        android:layout_width="12dp" />
 
 
 </RelativeLayout>

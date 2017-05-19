@@ -18,9 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.activity.LoginActivity;
 import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.adapter.MovieListAdapter;
 import atlant.moviesapp.adapter.TVListAdapter;
+import atlant.moviesapp.helper.OnItemClick;
+import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
+import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.MovieListPresenter;
 import atlant.moviesapp.views.MovieListView;
@@ -36,6 +41,7 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
     private int currentPage = 1;
     List<Movie> movies;
     MovieListAdapter adapter;
+    private BodyFavourite bodyFavourite;
 
 
     @BindView(R.id.movies_recycler_view)
@@ -59,20 +65,60 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new MovieListAdapter(movies, R.layout.list_item, getActivity().getApplicationContext());
 
-        recyclerView.addOnItemTouchListener(new MovieListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new MovieListAdapter.ClickListener() {
+        adapter.setItemClick(new OnItemClick() {
             @Override
-            public void onClick(View view, int position) {
+            public void onfavouriteClicked(int position) {
+                if (ApplicationState.isLoggedIn()) {
 
+                    Movie m = movies.get(position);
+                    if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
+                        ApplicationState.getUser().removeFavouriteMovie(m.getId());
+                        bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), false);
+                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ApplicationState.getUser().addFavouriteMovie(m.getId());
+                        bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), true);
+                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    showLoginError();
+                }
+            }
+
+            @Override
+            public void onwatchlistClicked(int position) {
+                if (ApplicationState.isLoggedIn()) {
+                    Movie m = movies.get(position);
+                    if (ApplicationState.getUser().getWatchListMovies().contains(m.getId())) {
+                        ApplicationState.getUser().removeWatchlistMovie(m.getId());
+                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), false);
+                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ApplicationState.getUser().addWatchlistMovie(m.getId());
+                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), true);
+                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    showLoginError();
+                }
+            }
+
+            @Override
+            public void onposterClicked(int position) {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movie", movies.get(position));
                 startActivity(intent);
             }
+        });
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
         adapter.setLoadMoreListener(new MovieListAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -108,17 +154,18 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void showError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Error loading data, please check your connection")
-                .setTitle("Error");
+        builder.setMessage(getString(R.string.errorMessage))
+                .setTitle(getString(R.string.errorTitle));
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.OkButton), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
@@ -130,7 +177,8 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -146,5 +194,26 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         if (presenter != null)
             presenter.onDestroy();
         super.onDestroy();
+    }
+
+    public void showLoginError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.loginAcces)
+                .setTitle(R.string.loginAccessTitle);
+
+        builder.setNegativeButton(R.string.notNow, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        builder.setPositiveButton(R.string.loginButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(getContext(),LoginActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 }

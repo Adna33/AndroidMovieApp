@@ -6,13 +6,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.fragments.HighestRatedMoviesFragment;
-import atlant.moviesapp.fragments.LatestMoviesFragment;
-import atlant.moviesapp.fragments.MostPopularMoviesFragment;
+import atlant.moviesapp.fragments.MovieFavoritesFragment;
 import atlant.moviesapp.fragments.MovieRatingsFragment;
+import atlant.moviesapp.fragments.SeriesFavoritesFragment;
 import atlant.moviesapp.fragments.SeriesRatingsFragment;
-import atlant.moviesapp.fragments.UserMoviesFragment;
-import atlant.moviesapp.fragments.UserSeriesFragment;
+import atlant.moviesapp.fragments.MovieWatchlistFragment;
+import atlant.moviesapp.fragments.SeriesWatchlistFragment;
 
 /**
  * Created by Korisnik on 07.05.2017..
@@ -50,9 +49,9 @@ public class TypeAdapter extends FragmentPagerAdapter {
         else  if(tag==1)
             switch (position) {
                 case MOVIES:
-                    return new MovieRatingsFragment();
+                    return new MovieFavoritesFragment();
                 case TVSHOWS:
-                    return new UserSeriesFragment();
+                    return new SeriesFavoritesFragment();
 
                 default:
                     throw new UnsupportedOperationException("Undefined Fragment index: " + position);
@@ -60,9 +59,9 @@ public class TypeAdapter extends FragmentPagerAdapter {
         else
             switch (position) {
                 case MOVIES:
-                    return new UserMoviesFragment();
+                    return new MovieWatchlistFragment();
                 case TVSHOWS:
-                    return new UserSeriesFragment();
+                    return new SeriesWatchlistFragment();
 
                 default:
                     throw new UnsupportedOperationException("Undefined Fragment index: " + position);

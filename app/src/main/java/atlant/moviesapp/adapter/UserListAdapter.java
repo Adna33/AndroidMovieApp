@@ -165,4 +165,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.Result
     public void setLoadMoreListener(UserListAdapter.OnLoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }
+    public void clear() {
+        int size = this.results.size();
+        this.results.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+    public void removeItem(int position) {
+        results.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, results.size());
+    }
 }

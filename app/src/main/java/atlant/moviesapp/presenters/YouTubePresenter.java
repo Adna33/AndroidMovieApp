@@ -5,8 +5,6 @@ import android.util.Log;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
-import atlant.moviesapp.model.Actor;
-import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Video;
 import atlant.moviesapp.model.VideosResponse;
 import atlant.moviesapp.rest.ApiClient;
@@ -47,7 +45,7 @@ public class YouTubePresenter {
                     for (int i = 0; i < videos.size(); i++) {
                         if (videos.get(i).getType().equals("Trailer") && videos.get(i).getSite().equals("YouTube")) {
 
-                            view.ShowVideo(videos.get(i).getKey());
+                            view.showVideo(videos.get(i).getKey());
                             break;
                         }
                     }

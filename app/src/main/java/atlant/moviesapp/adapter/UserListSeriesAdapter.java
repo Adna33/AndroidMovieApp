@@ -152,9 +152,6 @@ public class UserListSeriesAdapter extends RecyclerView.Adapter<UserListSeriesAd
         isMoreDataAvailable = moreDataAvailable;
     }
 
-    /* notifyDataSetChanged is final method so we can't override it
-         call adapter.notifyDataChanged(); after update the list
-         */
     public void notifyDataChanged() {
         notifyDataSetChanged();
         isLoading = false;
@@ -167,5 +164,15 @@ public class UserListSeriesAdapter extends RecyclerView.Adapter<UserListSeriesAd
 
     public void setLoadMoreListener(UserListSeriesAdapter.OnLoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
+    }
+    public void clear() {
+        int size = this.results.size();
+        this.results.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+    public void removeItem(int position) {
+        results.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, results.size());
     }
 }

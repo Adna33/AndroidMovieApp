@@ -73,23 +73,21 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         });
 
         Intent intent = getIntent();
-        Episode episode = intent.getParcelableExtra("episode");
-        Integer seriesId=intent.getIntExtra("seriesid",0);
-        Integer seasonId=intent.getIntExtra("seasonid",0);
+        Episode episode = intent.getParcelableExtra(getString(R.string.episodeIntent));
+        Integer seriesId=intent.getIntExtra(getString(R.string.seriesId),0);
+        Integer seasonId=intent.getIntExtra(getString(R.string.seasonId),0);
 
         date=new Date(this);
         String year=episode.getAirDate();
         title.setText(episode.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
         releaseDate.setText(date.getFormatedDate(episode.getAirDate()));
-        rating.setText(episode.getRatingString()+"/10");
+        rating.setText(episode.getRatingString());
         overview.setText(episode.getOverview());
         Glide.with(this).load(episode.getImagePath())
                 .crossFade().centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(poster);
         presenter=new EpisodePresenter(this);
-
-    //    Log.d("TAG", seriesId+"  "+seasonId+"  "+episode.getId());
 
         presenter.getCredits(seriesId,seasonId,episode.getEpisodeNumber());
 
@@ -104,7 +102,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(EpisodeActivity.this, ActorActivity.class);
-                intent.putExtra("actorId", cast.get(position).getId());
+                intent.putExtra(getString(R.string.actorId), cast.get(position).getId());
                 startActivity(intent);
             }
 

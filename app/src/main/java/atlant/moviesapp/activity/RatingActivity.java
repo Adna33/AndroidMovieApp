@@ -42,9 +42,9 @@ public class RatingActivity extends AppCompatActivity implements RatingView{
         ButterKnife.bind(this);
         presenter=new RatingPresenter(this);
         Intent intent = getIntent();
-        title = intent.getStringExtra("title");
-        id = intent.getIntExtra("id",0);
-        TAG=intent.getIntExtra("tag",0);
+        title = intent.getStringExtra(getString(R.string.title));
+        id = intent.getIntExtra(getString(R.string.id),0);
+        TAG=intent.getIntExtra(getString(R.string.tag),0);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
@@ -81,8 +81,6 @@ public class RatingActivity extends AppCompatActivity implements RatingView{
             case R.id.action_done:
                 if(ratingBar!=null)
                 rating = ratingBar.getRating();
-                else Log.d("rat","Rating bar je null");
-
                 bodyRating=new BodyRating((double)ratingBar.getRating());
                 presenter.postRating(id, ApplicationState.getUser().getSessionId(),bodyRating,TAG);
                 finish();

@@ -27,6 +27,9 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.helper.Date;
+import atlant.moviesapp.helper.OnItemClick;
+
+import android.view.View.OnClickListener;
 import atlant.moviesapp.model.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,12 +41,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private int rowLayout;
     private Context context;
     private Date date;
+    private OnItemClick itemClick;
 
     public MovieListAdapter.OnLoadMoreListener loadMoreListener;
     public boolean isLoading = false,
             isMoreDataAvailable = true;
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         @BindView(R.id.movies_layout)
         RelativeLayout moviesLayout;
 
@@ -73,21 +77,38 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         public MovieViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            favorite.setClickable(true);
+            favorite.setOnClickListener(this);
+
+            watchlist.setClickable(true);
+            watchlist.setOnClickListener(this);
+
+            moviePoster.setClickable(true);
+            moviePoster.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
 
-            //Proba
             if (v.getId() == favorite.getId()){
-                Toast.makeText(v.getContext(), "FAVOURITE ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+               itemClick.onfavouriteClicked(getAdapterPosition());
             }
             if (v.getId() == watchlist.getId()){
-                Toast.makeText(v.getContext(), "WATCHLIST ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                itemClick.onwatchlistClicked(getAdapterPosition()); }
+            if(v.getId()==moviePoster.getId())
+            {
+                itemClick.onposterClicked(getAdapterPosition());
             }
 
 
         }
+    }
+    public OnItemClick getItemClick() {
+        return itemClick;
+    }
+
+    public void setItemClick(OnItemClick itemClick) {
+        this.itemClick = itemClick;
     }
 
     public MovieListAdapter(List<Movie> movies, int rowLayout, Context context) {
@@ -129,54 +150,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return movies.size();
     }
 
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private MovieListAdapter.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final MovieListAdapter.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
         isMoreDataAvailable = moreDataAvailable;
