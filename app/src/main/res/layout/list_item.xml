@@ -97,23 +97,21 @@
             android:paddingTop="9dp" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             app:srcCompat="@drawable/bookmark_black_tool_symbol"
             android:id="@+id/bookmark_btn"
-            android:layout_weight="1"
-            android:layout_gravity="right"
-            android:backgroundTint="@color/endGradient" />
+            android:layout_gravity="right|center_vertical"
+            android:backgroundTint="@color/endGradient"
+            android:layout_width="18dp"
+            android:layout_height="20dp" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             app:srcCompat="@drawable/like"
             android:id="@+id/like_btn"
-            android:layout_weight="1"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center_vertical"
             android:backgroundTint="@color/endGradient"
-            android:layout_marginLeft="4dp" />
+            android:layout_marginLeft="4dp"
+            android:layout_height="16dp"
+            android:layout_width="18dp" />
     </LinearLayout>
 
 </RelativeLayout>
