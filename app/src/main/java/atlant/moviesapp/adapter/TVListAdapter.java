@@ -21,6 +21,7 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.OnItemClick;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.TvGenre;
@@ -135,6 +136,39 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.seriesPoster);
+        if (ApplicationState.isLoggedIn()) {
+            if (ApplicationState.getUser().getFavouriteMovies().contains(series.get(position).getId())) {
+                Glide.with(context).load(R.drawable.like_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            } else {
+                Glide.with(context).load(R.drawable.like)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            }
+            if (ApplicationState.getUser().getWatchListMovies().contains(series.get(position).getId())) {
+                Glide.with(context).load(R.drawable.bookmark_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.watchlist);
+            } else {
+                Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.watchlist);
+            }
+        } else {
+            Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.watchlist);
+            Glide.with(context).load(R.drawable.like)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.favorite);
+        }
 
     }
 
