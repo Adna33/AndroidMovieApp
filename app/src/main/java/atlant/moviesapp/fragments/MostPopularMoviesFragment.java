@@ -1,8 +1,11 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -49,6 +52,7 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
 
     @BindView(R.id.movies_progress_bar)
     ProgressBar progressBar;
+    boolean isConnected;
 
     private MovieListPresenter presenter;
 
@@ -64,25 +68,28 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new MovieListAdapter(movies, R.layout.list_item, getActivity().getApplicationContext());
-
+        isConnected=isNetworkAvailable();
         adapter.setItemClick(new OnItemClick() {
             @Override
             public void onfavouriteClicked(int position) {
                 if (ApplicationState.isLoggedIn()) {
 
-                    Movie m = movies.get(position);
-                    if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
-                        ApplicationState.getUser().removeFavouriteMovie(m.getId());
-                        bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), false);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
+                    if (isConnected) {
+                        Movie m = movies.get(position);
+                        if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
+                            ApplicationState.getUser().removeFavouriteMovie(m.getId());
+                            bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), false);
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
 
+                        } else {
+                            ApplicationState.getUser().addFavouriteMovie(m.getId());
+                            bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), true);
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
+
+                        }
                     } else {
-                        ApplicationState.getUser().addFavouriteMovie(m.getId());
-                        bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), true);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
-
                     }
                 } else {
                     showLoginError();
@@ -92,19 +99,21 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
             @Override
             public void onwatchlistClicked(int position) {
                 if (ApplicationState.isLoggedIn()) {
-                    Movie m = movies.get(position);
-                    if (ApplicationState.getUser().getWatchListMovies().contains(m.getId())) {
-                        ApplicationState.getUser().removeWatchlistMovie(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), false);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
+                    if (isConnected) {
+                        Movie m = movies.get(position);
+                        if (ApplicationState.getUser().getWatchListMovies().contains(m.getId())) {
+                            ApplicationState.getUser().removeWatchlistMovie(m.getId());
+                            BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), false);
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        ApplicationState.getUser().addWatchlistMovie(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), true);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                        Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
+                        } else {
+                            ApplicationState.getUser().addWatchlistMovie(m.getId());
+                            BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), true);
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                            Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
 
+                        }
                     }
                 } else {
                     showLoginError();
@@ -127,7 +136,11 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
                     @Override
                     public void run() {
 
-                        presenter.getHighestRatedMovies(TAG, ++currentPage);
+                        if (isConnected) {
+                            presenter.getHighestRatedMovies(TAG, ++currentPage);
+                        } else {
+                            presenter.setUpMovies(TAG, ++currentPage);
+                        }
 
                     }
                 });
@@ -135,7 +148,13 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         });
         recyclerView.setAdapter(adapter);
 
-        presenter.getHighestRatedMovies(TAG, 1);
+        if (isConnected) {
+            showProgress();
+            presenter.getHighestRatedMovies(TAG, 1);
+        } else {
+            presenter.setUpMovies(TAG,1);
+            hideProgress();
+        }
         return view;
 
     }
@@ -174,7 +193,13 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         dialog.show();
 
     }
+    public boolean isNetworkAvailable() {
 
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void hideProgress() {
         if (progressBar != null)

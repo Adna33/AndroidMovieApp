@@ -2,11 +2,14 @@ package atlant.moviesapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 25.04.2017..
  */
 
-public class Actor {
+public class Actor extends RealmObject {
 
     @SerializedName("biography")
     private String biography;
@@ -19,6 +22,7 @@ public class Actor {
     private String homepage;
 
     @SerializedName("id")
+    @PrimaryKey
     private int id;
 
     @SerializedName("imdb_id")
@@ -33,6 +37,16 @@ public class Actor {
 
     @SerializedName("profile_path")
     private String profilePath;
+
+    public void setActor(Actor a) {
+        this.imdbId = a.imdbId;
+        this.name = a.name;
+        this.placeOfBirth = a.placeOfBirth;
+        this.profilePath = a.profilePath;
+        this.homepage = a.homepage;
+        this.birthday = a.birthday;
+        this.biography = a.biography;
+    }
 
     public String getBiography() {
         return biography;

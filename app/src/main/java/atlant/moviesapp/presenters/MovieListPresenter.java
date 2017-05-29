@@ -1,7 +1,6 @@
 package atlant.moviesapp.presenters;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -9,12 +8,11 @@ import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.BodyFavourite;
-import atlant.moviesapp.model.BodyRating;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Movie;
-import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.PostResponse;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.MovieListView;
@@ -44,13 +42,11 @@ public class MovieListPresenter {
     private Call<PostResponse> postCallWatchlist;
 
 
-
-
     public MovieListPresenter(MovieListView view) {
         this.view = view;
     }
 
-    public void getHighestRatedMovies(int tag, int page) {
+    public void getHighestRatedMovies(final int tag, final int page) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
@@ -67,6 +63,17 @@ public class MovieListPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
+
+                    if (RealmUtil.getInstance().getRealmList(page) == null)
+                        RealmUtil.getInstance().createMoviesList(page);
+
+                    if (tag == MOST_POPULAR)
+                        RealmUtil.getInstance().addPopularMovies(page, movies);
+                    else if (tag == LATEST)
+                        RealmUtil.getInstance().addLatestMovies(page, movies);
+                    else
+                        RealmUtil.getInstance().addHighestRatedMovies(page, movies);
+
                     view.hideProgress();
                     view.showMovies(movies);
                 } else {
@@ -90,6 +97,21 @@ public class MovieListPresenter {
             }
         });
 
+
+    }
+
+    public void setUpMovies(final int tag, int page) {
+        List<Movie> list = new ArrayList<>();
+        if (RealmUtil.getInstance().getRealmList(page) != null) {
+            if (tag == MOST_POPULAR)
+                list = RealmUtil.getInstance().getPopularMovies(page);
+            else if (tag == LATEST)
+                list = RealmUtil.getInstance().getLatestMovies(page);
+            else
+                list = RealmUtil.getInstance().getHighestRatedMovies(page);
+            if (list != null)
+                view.showMovies(list);
+        }
 
     }
 
@@ -119,6 +141,7 @@ public class MovieListPresenter {
 
 
     }
+
     public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);

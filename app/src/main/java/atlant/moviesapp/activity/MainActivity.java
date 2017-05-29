@@ -2,6 +2,7 @@ package atlant.moviesapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.PersistableBundle;
@@ -32,7 +33,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,8 +46,15 @@ import atlant.moviesapp.fragments.NewsFeedFragment;
 import atlant.moviesapp.fragments.SearchFragment;
 import atlant.moviesapp.fragments.TvShowFragment;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
+import atlant.moviesapp.model.BodyRating;
+import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.NavItem;
 import atlant.moviesapp.presenters.MainActivityPresenter;
+import atlant.moviesapp.realm.RealmPostMovie;
+import atlant.moviesapp.realm.RealmPostSeries;
+import atlant.moviesapp.realm.RealmUtil;
+import atlant.moviesapp.receivers.ConnectivityStateReceiver;
 import atlant.moviesapp.views.MainActivityView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +63,7 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MainActivityView, NavigationView.OnNavigationItemSelectedListener, ConnectivityStateReceiver.ConnectivityStateReceiverListener {
 
     private static final String SELECTED_ITEM = "arg_selected_item";
 
@@ -77,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     private int mSelectedItem;
     private MainActivityPresenter presenter;
+    private ConnectivityStateReceiver receiver;
+    private boolean registeredReceiver=false;
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
@@ -85,12 +97,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     EditText edtSeach;
     private int mSelectedId;
     InputMethodManager imm;
+    private static final int MOVIE = 0;
+    private static final int TVSHOW = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+
+        receiver = new ConnectivityStateReceiver();
+        receiver.addListener(this);
+        this.registerReceiver(receiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+        registeredReceiver=true;
+
 
 
         ButterKnife.bind(this);
@@ -178,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             case R.id.nav_logout:
                 ApplicationState.setUser(null);
+               // RealmUtil.getInstance().deleteRealmAccount();
                 SharedPreferences sp = getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
                 sp.edit().remove(getString(R.string.user)).apply();
                 sp.edit().remove(getString(R.string.password)).apply();
@@ -493,9 +514,71 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         } else getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         checkLogin();
+        if(!registeredReceiver) {
+            receiver = new ConnectivityStateReceiver();
+            receiver.addListener(this);
+            this.registerReceiver(receiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+            registeredReceiver = true;
+        }
 
         super.onPostResume();
     }
 
 
+    @Override
+    public void networkAvailable() {
+
+        Toast.makeText(this,"connected",Toast.LENGTH_SHORT).show();
+       /*
+        List<RealmPostMovie> postMovies= RealmUtil.getInstance().getAllPostMovies();
+        List<RealmPostSeries> postSeries= RealmUtil.getInstance().getAllPostSeries();
+        for(RealmPostMovie movie: postMovies){
+           BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), movie.isFavorite());
+            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            BodyWatchlist   bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), movie.isInWatchlist());
+            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if(movie.getRating()!=null)
+            {
+                BodyRating bodyRating=new BodyRating( Double.parseDouble(movie.getRating()));
+                presenter.postRating(movie.getId(), ApplicationState.getUser().getSessionId(),bodyRating,MOVIE);
+            }
+
+        }
+        for(RealmPostSeries series: postSeries){
+            BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), series.getId(), series.isFavorite());
+            presenter.postFavorite(series.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            BodyWatchlist  bodyWatchlist= new BodyWatchlist(getString(R.string.tv),series.getId(), series.isInWatchlist());
+            presenter.postWatchlist(series.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if(series.getRating()!=null)
+            {
+                BodyRating bodyRating=new BodyRating( Double.parseDouble(series.getRating()));
+                presenter.postRating(series.getId(), ApplicationState.getUser().getSessionId(),bodyRating,TVSHOW);
+            }
+        }
+        RealmUtil.getInstance().deleteAllPostMovies();
+        RealmUtil.getInstance().deleteAllPostSeries();*/
+
+       /* runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                recreate();
+            }
+        });*/
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this,"disconnected",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onStop();
+        if(registeredReceiver) {
+            unregisterReceiver(receiver);
+            registeredReceiver = false;
+        }
+    }
 }

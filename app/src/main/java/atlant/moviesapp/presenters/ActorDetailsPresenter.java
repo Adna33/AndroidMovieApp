@@ -12,6 +12,7 @@ import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.ReviewsResponse;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.ActorView;
@@ -45,25 +46,21 @@ public class ActorDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     Actor actor= response.body();
+                    RealmUtil.getInstance().addActorDetails(actor.getId(),actor);
                     view.showActor(actor);
-
                 } else {
                     //TODO onFailure
                     Log.e("TAG", "Error");
                 }
-
             }
-
             @Override
             public void onFailure(Call<Actor> call, Throwable t) {
                 //TODO onFailure
                 Log.e("TAG", t.toString());
-
             }
         });
-
     }
-    public void getHighestRatedMovies(int actorID) {
+    public void getHighestRatedMovies(final int actorID) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
@@ -76,6 +73,7 @@ public class ActorDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
+                    RealmUtil.getInstance().addRealmActorMovies(actorID,movies);
                     view.showMovies(movies);
                 } else {
                     //TODO onFailure
@@ -97,6 +95,15 @@ public class ActorDetailsPresenter {
         });
 
 
+    }
+    public void setUpActor(int id)
+    {
+        if(RealmUtil.getInstance().getActor(id)!=null){
+            view.showActor(RealmUtil.getInstance().getActor(id));
+        if(RealmUtil.getInstance().getRealmActor(id)!=null && RealmUtil.getInstance().getRealmActorMovies(id)!=null ){
+            view.showMovies(RealmUtil.getInstance().getRealmActorMovies(id));
+        }
+        }
     }
     public void onStop() {
         if(call!=null)

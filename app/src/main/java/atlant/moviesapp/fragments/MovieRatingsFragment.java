@@ -115,8 +115,8 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=ratedMovies.get(position).getId();
                     adapter.removeItem(position);
-                    int id=  ApplicationState.getUser().getRatedMovies().get(position);
                     ApplicationState.getUser().removeRatingMovies(id);
                     presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 0);
 

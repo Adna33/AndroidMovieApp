@@ -15,6 +15,8 @@ import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.Review;
 import atlant.moviesapp.model.ReviewsResponse;
+import atlant.moviesapp.realm.RealmMovie;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.MovieDetailsView;
@@ -51,8 +53,9 @@ public class MovieDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Cast> cast = response.body().getCast();
-                    Log.d("REV", id + "");
                     List<Crew> crew = response.body().getCrew();
+                    RealmUtil.getInstance().addRealmMovieActors(id, cast);
+                    RealmUtil.getInstance().addRealmMovieWriters(id, crew);
                     view.showCast(cast);
                     view.showCrew(crew);
 
@@ -73,7 +76,7 @@ public class MovieDetailsPresenter {
 
     }
 
-    public void getReviews(int id) {
+    public void getReviews(final int id) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
         call = apiservice.getMovieReviews(id, API_KEY);
@@ -83,7 +86,8 @@ public class MovieDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Review> reviews = response.body().getResults();
-                    //Log.d("REVIEWS",reviews.size()+"");
+                    RealmUtil.getInstance().addRealmMovieReviews(id, reviews);
+
                     view.showReviews(reviews);
 
                 } else {
@@ -103,6 +107,20 @@ public class MovieDetailsPresenter {
 
 
     }
+
+    public void setUpMovie(int id) {
+        if (RealmUtil.getInstance().getMovieDetailsFromRealm(id) != null) {
+            RealmMovie m = RealmUtil.getInstance().getMovieDetailsFromRealm(id);
+            if (m.getReviews() != null)
+                view.showReviews(m.getReviews());
+            if (m.getWriters() != null)
+                view.showCrew(m.getWriters());
+            if (m.getActors() != null)
+                view.showCast(m.getActors());
+        }
+    }
+
+
     public void postFavorite(int id, String session_id, BodyFavourite favorite) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCall = apiservice.addFavorite(id, API_KEY, session_id, favorite);
@@ -129,6 +147,7 @@ public class MovieDetailsPresenter {
 
 
     }
+
     public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);

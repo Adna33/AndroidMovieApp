@@ -7,18 +7,25 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 19.04.2017..
  */
 
-public class Episode implements Parcelable {
+public class Episode extends RealmObject implements Parcelable {
+
     @SerializedName("id")
+    @PrimaryKey
     private int id;
 
     @SerializedName("air_date")
     private String airDate;
 
     @SerializedName("guest_stars")
+    @Ignore
     private List<Cast> crew;
 
     @SerializedName("episode_number")
@@ -40,7 +47,7 @@ public class Episode implements Parcelable {
     private double rating;
 
     protected Episode(Parcel in) {
-        id=in.readInt();
+        id = in.readInt();
         airDate = in.readString();
         episodeNumber = in.readInt();
         name = in.readString();
@@ -122,7 +129,9 @@ public class Episode implements Parcelable {
         return rating;
     }
 
-    public String getRatingString(){return String.format("%.2f", rating);}
+    public String getRatingString() {
+        return String.format("%.2f", rating);
+    }
 
     public void setRating(double rating) {
         this.rating = rating;
@@ -156,5 +165,8 @@ public class Episode implements Parcelable {
         dest.writeInt(seasonNumber);
         dest.writeString(image);
         dest.writeDouble(rating);
+    }
+
+    public Episode() {
     }
 }

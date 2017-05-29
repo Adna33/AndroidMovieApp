@@ -1,6 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
 
 import atlant.moviesapp.presenters.TvDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.TvDetailsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -172,7 +176,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         checkLogin();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
-
+        boolean isConnected = isNetworkAvailable();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -186,8 +190,14 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.series), 0);
         presenter = new TvDetailsPresenter(this);
-        presenter.getDetails(seriesId);
-        presenter.getCredits(seriesId);
+        if (isConnected) {
+            if (RealmUtil.getInstance().getTvShowDetailFromRealm(seriesId) == null ||RealmUtil.getInstance().getShowDetailsFromRealm(seriesId) == null )
+                RealmUtil.getInstance().createRealmSeriesObject(seriesId);
+            presenter.getDetails(seriesId);
+            presenter.getCredits(seriesId);
+        } else {
+            presenter.setUpTvShow(seriesId);
+        }
 
         if (ApplicationState.isLoggedIn()) {
             watchlist.setVisibility(View.VISIBLE);
@@ -221,6 +231,13 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         }
 
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

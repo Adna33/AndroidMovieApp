@@ -11,7 +11,11 @@ import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.PostResponse;
+import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowDetail;
+import atlant.moviesapp.realm.RealmMovie;
+import atlant.moviesapp.realm.RealmSeries;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.TvDetailsView;
@@ -38,7 +42,7 @@ public class TvDetailsPresenter {
     private Call<PostResponse> postCall;
     private Call<PostResponse> postCallWatchlist;
 
-    public void getCredits(int id) {
+    public void getCredits(final int id) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
@@ -49,8 +53,9 @@ public class TvDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Cast> cast = response.body().getCast();
-                    Log.d("CAST", cast.size() + "");
                     List<Crew> crew = response.body().getCrew();
+                    RealmUtil.getInstance().addRealmSeriesActors(id, cast);
+                    RealmUtil.getInstance().addRealmSeriesWriters(id, crew);
                     view.showCast(cast);
                     view.showCrew(crew);
 
@@ -72,6 +77,20 @@ public class TvDetailsPresenter {
 
     }
 
+    public void setUpTvShow(int id) {
+        if (RealmUtil.getInstance().getTvShowDetailFromRealm(id) != null) {
+            TvShowDetail details = RealmUtil.getInstance().getTvShowDetailFromRealm(id);
+            view.showDetails(details);
+        }
+        if (RealmUtil.getInstance().getTvShowDetailFromRealm(id) != null) {
+            RealmSeries m = RealmUtil.getInstance().getShowDetailsFromRealm(id);
+            if (m.getWriters() != null)
+                view.showCrew(m.getWriters());
+            if (m.getActors() != null)
+                view.showCast(m.getActors());
+        }
+    }
+
     public void getDetails(int id) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         call = apiservice.getTvShow(id, API_KEY);
@@ -80,8 +99,9 @@ public class TvDetailsPresenter {
             public void onResponse(Call<TvShowDetail> call, Response<TvShowDetail> response) {
                 int statusCode = response.code();
                 if (statusCode == 200) {
-                    Log.d("T",response.toString());
-                    TvShowDetail series= response.body();
+                    Log.d("T", response.toString());
+                    TvShowDetail series = response.body();
+                    RealmUtil.getInstance().addRealmSeriesDetails(series.getId(), series);
 
                     view.showDetails(series);
 
@@ -103,6 +123,7 @@ public class TvDetailsPresenter {
 
 
     }
+
     public void postFavorite(int id, String session_id, BodyFavourite favorite) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCall = apiservice.addFavorite(id, API_KEY, session_id, favorite);
@@ -129,6 +150,7 @@ public class TvDetailsPresenter {
 
 
     }
+
     public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);

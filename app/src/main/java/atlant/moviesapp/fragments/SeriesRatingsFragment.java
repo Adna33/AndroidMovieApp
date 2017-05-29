@@ -116,9 +116,8 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=ratedSeries.get(position).getId();
                     adapter.removeItem(position);
-                    //user fav movies check!!!
-                    int id=  ApplicationState.getUser().getRatedSeries().get(position);
                     ApplicationState.getUser().removeRatingShow(id);
                     presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
 

@@ -9,6 +9,7 @@ import atlant.moviesapp.model.News;
 import atlant.moviesapp.model.NewsResponse;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowsResponse;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.MovieListView;
@@ -22,6 +23,7 @@ import retrofit2.Response;
  */
 
 public class NewsFeedPresenter {
+
     private NewsFeedView view;
     private Call<NewsResponse> call;
 
@@ -31,7 +33,6 @@ public class NewsFeedPresenter {
 
     public void getNews() {
         final ApiInterface apiservice = ApiClient.getClientNewsFeed().create(ApiInterface.class);
-
         call = apiservice.getNews();
 
         call.enqueue(new Callback<NewsResponse>() {
@@ -39,7 +40,9 @@ public class NewsFeedPresenter {
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 int statusCode = response.code();
                 if (statusCode == 200) {
+                    Log.d("newfeed","in");
                     List<News> news = response.body().getChannel().getNews();
+                    RealmUtil.getInstance().addNewsToRealm(news);
                     view.hideProgress();
                     view.showNews(news);
                 } else {
@@ -67,6 +70,12 @@ public class NewsFeedPresenter {
             }
         });
 
+
+    }
+    public void setUpNews()
+    {
+       List<News> list =  RealmUtil.getInstance().getNewsFromRealm();
+        view.showNews(list);
 
     }
 

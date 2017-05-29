@@ -2,12 +2,13 @@ package atlant.moviesapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Korisnik on 15.04.2017..
- */
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Review {
+public class Review extends RealmObject {
+
     @SerializedName("id")
+    @PrimaryKey
     private String id;
 
     @SerializedName("author")
@@ -25,6 +26,9 @@ public class Review {
         this.author = author;
         this.content = content;
         this.url = url;
+    }
+
+    public Review() {
     }
 
     public String getId() {

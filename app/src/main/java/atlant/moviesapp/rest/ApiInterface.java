@@ -44,12 +44,6 @@ public interface ApiInterface {
     @GET("movie/{id}/reviews")
     Call<ReviewsResponse> getMovieReviews(@Path("id") int id, @Query("api_key") String apiKey);
 
-    @GET("tv/{id}/reviews")
-    Call<ReviewsResponse> getSeriesReviews(@Path("id") int id, @Query("api_key") String apiKey);
-
-    @GET("review/{id}")
-    Call<Review> getReviewDetail(@Path("id") int id, @Query("api_key") String apiKey);
-
     @GET("data/rss.php?file=topstories.xml")
     Call<NewsResponse> getNews();
 

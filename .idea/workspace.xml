@@ -6,19 +6,80 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="new" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5d7233f-53fb-4b0a-ac9d-bae7682124f0" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/rxjava_1_1_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmAccount.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmActor.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmEpisode.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmInt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmLists.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmMovie.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostMovie.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostSeries.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeason.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeries.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/receivers/ConnectivityStateReceiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/generated/mockable-android-25.jar" afterPath="$PROJECT_DIR$/build/generated/mockable-android-25.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Actor.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Actor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/ApplicationState.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/ApplicationState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Cast.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Cast.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Creators.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Creators.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Crew.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Crew.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Episode.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Episode.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Movie.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Movie.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/News.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/News.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Review.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Review.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Season.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Season.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShow.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShowDetail.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShowDetail.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/ActorDetailsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/ActorDetailsPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/EpisodePresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/EpisodePresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/NewsFeedPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/NewsFeedPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/SeasonsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/SeasonsPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiInterface.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiInterface.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="AndroidMovieApp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,77 +114,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MostPopularTvFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="78" column="33" selection-start-line="78" selection-start-column="33" selection-end-line="78" selection-end-column="33" />
-              <folding />
+            <state relative-caret-position="140">
+              <caret line="200" column="17" selection-start-line="200" selection-start-column="17" selection-end-line="200" selection-end-column="17" />
+              <folding>
+                <marker date="1496078552011" expanded="false" signature="18359:18384" ph="&quot;movie&quot;" />
+                <marker date="1496078552011" expanded="false" signature="18592:18617" ph="&quot;movie&quot;" />
+                <marker date="1496078552011" expanded="false" signature="19163:19185" ph="&quot;tv&quot;" />
+                <marker date="1496078552011" expanded="false" signature="19395:19417" ph="&quot;tv&quot;" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MovieListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/MovieListAdapter.java">
+      <file leaf-file-name="RealmAccount.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmAccount.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="966">
-              <caret line="178" column="9" selection-start-line="146" selection-start-column="8" selection-end-line="178" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TVListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="139" column="79" selection-start-line="139" selection-start-column="79" selection-end-line="139" selection-end-column="79" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_login.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="list_item.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/list_item.xml">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="99" column="12" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/UserListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2232">
-              <caret line="170" column="27" selection-start-line="170" selection-start-column="27" selection-end-line="170" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MovieDetailsActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1496">
-              <caret line="127" column="37" selection-start-line="124" selection-start-column="12" selection-end-line="127" selection-end-column="37" />
+            <state relative-caret-position="64">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -1740,7 +1750,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="D:\Praksa\AndroidMovieApp" value="4482281145187" />
+        <entry key="D:\Praksa\AndroidMovieApp" value="4482908305541" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2021,57 +2031,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SignupActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/OnItemClick.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_details.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/views/UserFavoritesView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/views/UserWatchlistView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Cast.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/CreditsResponse.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Episode.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/receivers/ConnectivityStateReceiver.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmInstance.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Movie.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/News.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiInterface.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TypeAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_favorites.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_user_movies.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_user_series.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_series_favorites.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Account.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmMovie.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeries.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmMovieList.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmAccount.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmActor.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmInt.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Season.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmLists.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostMovie.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostSeries.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/ApplicationState.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_tv_show_details.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShow.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/UserListAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/UserListSeriesAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShowDetail.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/ActorDetailsPresenter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/NewsFeedPresenter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserWatchlistPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserFavoritesPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/LoginPresenter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserRatingsPresenter.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SearchFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/YouTubeFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/MovieListAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Actor.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmEpisode.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeason.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/SeasonsPresenter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/EpisodePresenter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -2106,6 +2116,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane />
@@ -2131,38 +2143,6 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidMovieApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidMovieApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -2195,8 +2175,26 @@
               <option name="myItemId" value="moviesapp" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="AndroidMovieApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="moviesapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="realm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2217,38 +2215,18 @@
               <option name="myItemId" value="moviesapp" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidMovieApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="moviesapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adapter" />
+              <option name="myItemId" value="activity" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SessionsUsingSharedPreferences" />
     <property name="device.picker.selection" value="ad96aa23" />
@@ -2595,41 +2573,41 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41421145" sideWeight="0.5151745" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34812286" sideWeight="0.4848255" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40443686" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32423207" sideWeight="0.49394855" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3267776" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31569967" sideWeight="0.4969651" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1996587" sideWeight="0.52723145" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36006826" sideWeight="0.47276855" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.82935154" sideWeight="0.49394855" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2753404" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2730711" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40443686" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928944" sideWeight="0.4939302" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3267776" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.49092284" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2684,450 +2662,394 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Season.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/BodyRating.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="122">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_tv_show_details.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Movie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
+        <state relative-caret-position="-289">
+          <caret line="16" column="2" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmMovie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-68">
+          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="26" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostMovie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostSeries.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="83" column="16" selection-start-line="83" selection-start-column="16" selection-end-line="84" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/receivers/ConnectivityStateReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
           <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/ApplicationState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/UserListSeriesAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2584">
-          <caret line="176" column="5" selection-start-line="176" selection-start-column="5" selection-end-line="176" selection-end-column="5" />
+        <state relative-caret-position="130">
+          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <element signature="e#531#549#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.realm/realm-android-library/3.2.0/deeca02d7eca1a26fc5ab4b2a931c94249e742f9/realm-android-library-3.2.0-sources.jar!/io/realm/BaseRealm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="347" column="0" selection-start-line="347" selection-start-column="0" selection-end-line="347" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-146">
+          <caret line="13" column="52" selection-start-line="13" selection-start-column="52" selection-end-line="13" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="71" column="39" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/News.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="156" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="150" column="9" selection-start-line="150" selection-start-column="9" selection-end-line="150" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmLists.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="19" column="41" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="146" column="42" selection-start-line="146" selection-start-column="42" selection-end-line="146" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="152" column="9" selection-start-line="146" selection-start-column="8" selection-end-line="152" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="152" column="9" selection-start-line="152" selection-start-column="9" selection-end-line="152" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="142" column="9" selection-start-line="142" selection-start-column="9" selection-end-line="142" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build/generated/source/apt/debug/atlant/moviesapp/fragments/SeriesFavoritesFragment_ViewBinding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="226" column="11" selection-start-line="226" selection-start-column="11" selection-end-line="227" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="53" column="4" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2686">
+          <caret line="198" column="42" selection-start-line="198" selection-start-column="42" selection-end-line="198" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="107" column="42" selection-start-line="107" selection-start-column="42" selection-end-line="107" selection-end-column="42" />
+        <state relative-caret-position="183">
+          <caret line="87" column="23" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/TvShowDetail.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="67" column="27" selection-start-line="67" selection-start-column="27" selection-end-line="67" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="137" column="21" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
+        <state relative-caret-position="80">
+          <caret line="66" column="20" selection-start-line="66" selection-start-column="20" selection-end-line="66" selection-end-column="75" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="88" column="78" selection-start-line="88" selection-start-column="78" selection-end-line="88" selection-end-column="78" />
+        <state relative-caret-position="187">
+          <caret line="63" column="60" selection-start-line="63" selection-start-column="60" selection-end-line="63" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="56" column="63" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="137" column="25" selection-start-line="137" selection-start-column="25" selection-end-line="137" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Actor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Episode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/ActorDetailsPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="75" column="63" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="108" column="12" selection-start-line="108" selection-start-column="12" selection-end-line="109" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7123">
+          <caret line="449" column="35" selection-start-line="449" selection-start-column="35" selection-end-line="449" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmEpisode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeries.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/NewsFeedPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeason.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/EpisodePresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="46" column="73" selection-start-line="46" selection-start-column="73" selection-end-line="46" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+          <caret line="102" column="42" selection-start-line="102" selection-start-column="42" selection-end-line="102" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/SeasonsPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="74" column="83" selection-start-line="74" selection-start-column="83" selection-end-line="74" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+          <folding>
+            <element signature="e#1986#2138#0" expanded="true" />
+            <element signature="e#2137#2138#0" expanded="true" />
+            <element signature="e#5161#5194#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmAccount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="90" column="43" selection-start-line="90" selection-start-column="43" selection-end-line="90" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MainActivityPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserWatchlistPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="92" column="20" selection-start-line="92" selection-start-column="20" selection-end-line="92" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/LoginPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="260" column="88" selection-start-line="260" selection-start-column="88" selection-end-line="260" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-544">
-          <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserFavoritesPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="47" column="70" selection-start-line="47" selection-start-column="70" selection-end-line="47" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="115" column="40" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/UserFavoritesActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-238">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserRatingsPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="137" column="19" selection-start-line="137" selection-start-column="19" selection-end-line="137" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3143">
-          <caret line="112" column="57" selection-start-line="112" selection-start-column="33" selection-end-line="112" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/PostResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/rest/ApiInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="96" column="166" selection-start-line="96" selection-start-column="166" selection-end-line="96" selection-end-column="166" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-343">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/YouTubeFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-647">
-          <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2210">
-          <caret line="83" column="57" selection-start-line="83" selection-start-column="57" selection-end-line="83" selection-end-column="57" />
+        <state relative-caret-position="140">
+          <caret line="200" column="17" selection-start-line="200" selection-start-column="17" selection-end-line="200" selection-end-column="17" />
           <folding>
-            <element signature="e#3270#3295#0" expanded="false" />
+            <marker date="1496078552011" expanded="false" signature="18359:18384" ph="&quot;movie&quot;" />
+            <marker date="1496078552011" expanded="false" signature="18592:18617" ph="&quot;movie&quot;" />
+            <marker date="1496078552011" expanded="false" signature="19163:19185" ph="&quot;tv&quot;" />
+            <marker date="1496078552011" expanded="false" signature="19395:19417" ph="&quot;tv&quot;" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1843">
-          <caret line="171" column="11" selection-start-line="171" selection-start-column="11" selection-end-line="171" selection-end-column="11" />
-          <folding>
-            <element signature="e#3183#3208#0" expanded="false" />
-            <element signature="e#7126#7158#0" expanded="false" />
-            <element signature="e#7186#7216#0" expanded="false" />
-            <element signature="e#7254#7282#0" expanded="false" />
-            <element signature="e#7284#7455#0" expanded="false" />
-            <element signature="e#7454#7455#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/NewsFeedFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1051">
-          <caret line="87" column="49" selection-start-line="87" selection-start-column="49" selection-end-line="87" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SearchFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1139">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-629">
-          <caret line="166" column="11" selection-start-line="166" selection-start-column="11" selection-end-line="166" selection-end-column="11" />
-          <folding>
-            <element signature="e#7156#7188#0" expanded="true" />
-            <element signature="e#7216#7246#0" expanded="true" />
-            <element signature="e#7284#7312#0" expanded="true" />
-            <element signature="e#7314#7485#0" expanded="true" />
-            <element signature="e#7484#7485#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
-          <caret line="172" column="11" selection-start-line="172" selection-start-column="11" selection-end-line="172" selection-end-column="11" />
-          <folding>
-            <element signature="e#3188#3214#0" expanded="true" />
-            <element signature="e#7206#7238#0" expanded="true" />
-            <element signature="e#7266#7296#0" expanded="true" />
-            <element signature="e#7334#7362#0" expanded="true" />
-            <element signature="e#7364#7535#0" expanded="true" />
-            <element signature="e#7534#7535#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
-          <caret line="165" column="11" selection-start-line="165" selection-start-column="11" selection-end-line="165" selection-end-column="11" />
-          <folding>
-            <element signature="e#3068#3094#0" expanded="true" />
-            <element signature="e#7217#7249#0" expanded="true" />
-            <element signature="e#7277#7307#0" expanded="true" />
-            <element signature="e#7345#7373#0" expanded="true" />
-            <element signature="e#7375#7546#0" expanded="true" />
-            <element signature="e#7545#7546#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/TvShowFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-122">
-          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="78" column="35" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/OnItemClick.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="215" column="5" selection-start-line="196" selection-start-column="3" selection-end-line="215" selection-end-column="5" />
-          <folding>
-            <element signature="e#7434#7449#0" expanded="true" />
-            <element signature="e#7659#7679#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="101" column="23" selection-start-line="101" selection-start-column="18" selection-end-line="101" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="211" column="5" selection-start-line="211" selection-start-column="5" selection-end-line="211" selection-end-column="5" />
-          <folding>
-            <element signature="e#7477#7492#0" expanded="true" />
-            <element signature="e#7702#7722#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="214" column="5" selection-start-line="214" selection-start-column="5" selection-end-line="214" selection-end-column="5" />
-          <folding>
-            <element signature="e#7294#7313#0" expanded="false" />
-            <element signature="e#7341#7366#0" expanded="false" />
-            <element signature="e#7404#7419#0" expanded="false" />
-            <element signature="e#7629#7649#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="205" column="16" selection-start-line="205" selection-start-column="16" selection-end-line="205" selection-end-column="16" />
-          <folding>
-            <element signature="e#7320#7339#0" expanded="false" />
-            <element signature="e#7367#7392#0" expanded="false" />
-            <element signature="e#7430#7445#0" expanded="false" />
-            <element signature="e#7614#7634#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="214" column="5" selection-start-line="214" selection-start-column="5" selection-end-line="214" selection-end-column="5" />
-          <folding>
-            <element signature="e#7279#7298#0" expanded="true" />
-            <element signature="e#7326#7351#0" expanded="true" />
-            <element signature="e#7389#7404#0" expanded="true" />
-            <element signature="e#7614#7634#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1901">
-          <caret line="211" column="5" selection-start-line="211" selection-start-column="5" selection-end-line="211" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1496">
-          <caret line="127" column="37" selection-start-line="124" selection-start-column="12" selection-end-line="127" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/user_list_item.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/list_item.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="99" column="12" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/views/LoginView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="78" column="33" selection-start-line="78" selection-start-column="33" selection-end-line="78" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/UserListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2232">
-          <caret line="170" column="27" selection-start-line="170" selection-start-column="27" selection-end-line="170" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/MovieListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="178" column="9" selection-start-line="146" selection-start-column="8" selection-end-line="178" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="139" column="79" selection-start-line="139" selection-start-column="79" selection-end-line="139" selection-end-column="79" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
   </component>

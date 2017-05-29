@@ -8,6 +8,7 @@ import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Crew;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.EpisodeView;
@@ -32,7 +33,7 @@ public class EpisodePresenter {
 
     private Call<CreditsResponse> callCredits;
 
-    public void getCredits(int id, int season, int episode) {
+    public void getCredits(int id, int season, int episode, final String realmId) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
@@ -43,6 +44,7 @@ public class EpisodePresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Cast> cast = response.body().getCast();
+                    RealmUtil.getInstance().addRealmEpisodeActors(realmId,cast);
                     view.showCast(cast);
 
                 } else {
@@ -63,6 +65,12 @@ public class EpisodePresenter {
 
     }
 
+    public void setUpEpisode(String id) {
+        if (RealmUtil.getInstance().getRealmEpisode(id) != null)
+        {
+            view.showCast(RealmUtil.getInstance().getRealmEpisode(id).getCast());
+        }
+    }
     public void onStop() {
         if (callCredits != null)
             callCredits.cancel();

@@ -1,6 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.EpisodePresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.EpisodeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +57,8 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
 
     private EpisodePresenter presenter;
     private Date date;
+    int episodeId;
+    String realmId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +77,12 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
                 onBackPressed();
             }
         });
-
+        boolean isConnected = isNetworkAvailable();
         Intent intent = getIntent();
         Episode episode = intent.getParcelableExtra(getString(R.string.episodeIntent));
         Integer seriesId=intent.getIntExtra(getString(R.string.seriesId),0);
         Integer seasonId=intent.getIntExtra(getString(R.string.seasonId),0);
-
+        episodeId=episode.getId();
         date=new Date(this);
         String year=episode.getAirDate();
         title.setText(episode.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
@@ -88,14 +94,21 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(poster);
         presenter=new EpisodePresenter(this);
-
-        presenter.getCredits(seriesId,seasonId,episode.getEpisodeNumber());
+        realmId=seriesId+""+seasonId+""+episode.getEpisodeNumber();
+        if (isConnected) {
+            if(RealmUtil.getInstance().getRealmEpisode(realmId)==null)
+            {RealmUtil.getInstance().createRealmEpisode(realmId);}
+            presenter.getCredits(seriesId,seasonId,episode.getEpisodeNumber(),realmId);
+        } else {
+            presenter.setUpEpisode(realmId);
+        }
 
     }
 
 
     @Override
     public void showCast(final List<Cast> cast) {
+
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
         castRecyclerView.addOnItemTouchListener(new ActorAdapter.RecyclerTouchListener(this, castRecyclerView, new ActorAdapter.ClickListener() {
@@ -119,7 +132,12 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         if (presenter != null)
             presenter.onStop();
     }
-
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void onDestroy() {
         if (presenter != null)

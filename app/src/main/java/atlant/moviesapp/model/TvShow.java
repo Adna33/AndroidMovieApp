@@ -8,13 +8,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 11.04.2017..
  */
 
-public class TvShow implements Parcelable {
+public class TvShow extends RealmObject implements Parcelable {
 
     @SerializedName("id")
+    @PrimaryKey
     private Integer id;
 
     @SerializedName("name")
@@ -34,6 +39,7 @@ public class TvShow implements Parcelable {
 
 
     @SerializedName("genre_ids")
+    @Ignore
     private List<Integer> genreIds = new ArrayList<Integer>();
 
     public TvShow(Integer id, String name, String posterPath, String overview, double rating, String releaseDate, List<Integer> genreIds) {
@@ -47,8 +53,8 @@ public class TvShow implements Parcelable {
     }
 
 
-//TODO crew cast reviews director writers
-
+    public TvShow() {
+    }
 
     public Integer getId() {
         return id;

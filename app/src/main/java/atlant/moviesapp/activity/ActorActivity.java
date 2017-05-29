@@ -1,6 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.ActorDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.ActorView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +80,6 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +99,20 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             }
         });
 
+        boolean isConnected = isNetworkAvailable();
+
         Intent intent = getIntent();
         Integer actorId = intent.getIntExtra("actorId", 0);
-
         presenter = new ActorDetailsPresenter(this);
-        presenter.getActor(actorId);
-        presenter.getHighestRatedMovies(actorId);
+
+        if (isConnected) {
+            if (RealmUtil.getInstance().getRealmActor(actorId) == null)
+                RealmUtil.getInstance().createRealmActor(actorId);
+            presenter.getActor(actorId);
+            presenter.getHighestRatedMovies(actorId);
+        } else {
+            presenter.setUpActor(actorId);
+        }
 
 
     }
@@ -140,6 +151,13 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
         }));
 
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

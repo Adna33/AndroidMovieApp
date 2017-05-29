@@ -1,8 +1,11 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -48,7 +51,7 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
     private int currentPage = 1;
     List<Movie> movies;
     MovieListAdapter adapter;
-
+    boolean isConnected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +59,7 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
         View view = inflater.inflate(R.layout.fragment_latest, container, false);
 
         ButterKnife.bind(this, view);
+       isConnected= isNetworkAvailable();
         presenter = new MovieListPresenter(this);
         movies = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
@@ -124,7 +128,12 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
                     @Override
                     public void run() {
 
-                        presenter.getHighestRatedMovies(TAG, ++currentPage);
+                        if (isConnected) {
+                            presenter.getHighestRatedMovies(TAG, ++currentPage);
+                        } else {
+                            presenter.setUpMovies(TAG, ++currentPage);
+                        }
+
 
                     }
                 });
@@ -133,7 +142,13 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
         });
         recyclerView.setAdapter(adapter);
 
-        presenter.getHighestRatedMovies(TAG, 1);
+        if (isConnected) {
+            showProgress();
+            presenter.getHighestRatedMovies(TAG, 1);
+        } else {
+            presenter.setUpMovies(TAG, 1);
+            hideProgress();
+        }
         return view;
     }
 
@@ -212,5 +227,12 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

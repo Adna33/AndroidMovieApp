@@ -108,9 +108,8 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=watchlistSeries.get(position).getId();
                     adapter.removeItem(position);
-                    //user fav movies check!!!
-                    int id=  ApplicationState.getUser().getWatchListSeries().get(position);
                     ApplicationState.getUser().removeWatchlistShow(id);
                     BodyWatchlist bodyWatchlist = new BodyWatchlist(getString(R.string.tv), id, false);
                     presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), bodyWatchlist);

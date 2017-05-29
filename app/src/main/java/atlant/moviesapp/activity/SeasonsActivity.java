@@ -1,6 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -21,6 +24,7 @@ import atlant.moviesapp.adapter.NewsFeedAdapter;
 import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.presenters.SeasonsPresenter;
 import atlant.moviesapp.presenters.TvDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.SeasonsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +44,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     @BindView(R.id.season_year)
     TextView seasonYear;
-
+    String realmId;
     private Integer seriesId, seasonId, seasonNum;
 
     @Override
@@ -61,15 +65,22 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
                 onBackPressed();
             }
         });
-
+        boolean isConnected = isNetworkAvailable();
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.show_id_intent), 0);
         seasonId = intent.getIntExtra(getString(R.string.season_id_intent), 0);
         seasonNum = intent.getIntExtra(getString(R.string.season_num_intent), 0);
-
+        realmId= seriesId+""+seasonId;
+        Log.d("sezona",realmId);
         ShowSeasonList(seasonNum, seriesId);
         presenter = new SeasonsPresenter(this);
-        presenter.getSeasonEpisodes(seriesId, seasonId);
+        if (isConnected) {
+            if (RealmUtil.getInstance().getRealmSeason(realmId) == null)
+                RealmUtil.getInstance().createRealmSeason(realmId);
+            presenter.getSeasonEpisodes(seriesId, seasonId,realmId);
+        } else {
+            presenter.setUpSeason(realmId);
+        }
 
     }
 
@@ -86,7 +97,13 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         seasonRecyclerView.addOnItemTouchListener(new HorizontalAdapter.RecyclerTouchListener(this, seasonRecyclerView, new HorizontalAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                presenter.getSeasonEpisodes(id, seasons.get(position));
+                realmId= seriesId+""+seasons.get(position);
+                if(isNetworkAvailable()) {
+                    presenter.getSeasonEpisodes(id, seasons.get(position), realmId);
+                }
+                else {
+                    presenter.setUpSeason(realmId);
+                }
 
             }
 
@@ -110,7 +127,12 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(SeasonsActivity.this, EpisodeActivity.class);
-                intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
+
+                if (isNetworkAvailable()) {
+                    intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
+                } else {
+                    intent.putExtra(getString(R.string.episodeIntent), episodes.get(position));
+                }
                 intent.putExtra(getString(R.string.seriesId), seriesId);
                 intent.putExtra(getString(R.string.seasonId), seasonId);
                 startActivity(intent);
@@ -125,6 +147,12 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     }
 
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void ShowYear(String year) {
         seasonYear.setText(year);

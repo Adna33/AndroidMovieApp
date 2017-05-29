@@ -69,6 +69,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'com.jakewharton:butterknife:8.5.1'

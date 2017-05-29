@@ -110,9 +110,8 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=favoriteSeries.get(position).getId();
                     adapter.removeItem(position);
-                    //user fav movies check!!!
-                    int id=  ApplicationState.getUser().getFavouriteSeries().get(position);
                     ApplicationState.getUser().removeFavoriteShow(id);
                     BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), id, false);
                     presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), bodyFavourite);

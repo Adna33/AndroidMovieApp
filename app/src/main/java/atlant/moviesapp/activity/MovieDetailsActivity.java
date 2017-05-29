@@ -1,6 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +39,7 @@ import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.Review;
 import atlant.moviesapp.model.TvGenre;
 import atlant.moviesapp.presenters.MovieDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.MovieDetailsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,7 +151,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeWatchlistMovie(movie.getId());
-            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), false);
+            bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), false);
             presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
             Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
@@ -155,7 +159,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistMovie(movie.getId());
-            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), true);
+            bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), true);
             presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
             Glide.with(this).load(R.drawable.bookmark_active_icon)
                     .crossFade().centerCrop()
@@ -177,7 +181,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
-
+        boolean isConnected = isNetworkAvailable();
         checkLogin();
 
         setSupportActionBar(toolbar);
@@ -208,16 +212,26 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         rating.setText(movie.getRatingString());
         overview.setText(movie.getOverview());
 
-        if (movie.isVideo()) {
+
+        if (movie.isVideo() && isConnected) {
             playButton.setVisibility(View.VISIBLE);
             playButton.bringToFront();
         } else {
+            playButton.setVisibility(View.INVISIBLE);
         }
 
         showPoster(movie);
         presenter = new MovieDetailsPresenter(this);
-        presenter.getCredits(movie.getId());
-        presenter.getReviews(movie.getId());
+
+        if (isConnected) {
+            if (RealmUtil.getInstance().getMovieDetailsFromRealm(movie.getId()) == null)
+                RealmUtil.getInstance().createRealmMovieObject(movie.getId());
+            presenter.getCredits(movie.getId());
+            presenter.getReviews(movie.getId());
+        } else {
+            presenter.setUpMovie(movie.getId());
+
+        }
         if (ApplicationState.isLoggedIn()) {
             watchlist.setVisibility(View.VISIBLE);
             favourite.setVisibility(View.VISIBLE);
@@ -278,6 +292,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         }));
 
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

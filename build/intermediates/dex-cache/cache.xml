@@ -12,138 +12,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.0\jars\classes.jar"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.1.0\748f0546d5c3c27f1aef07270ffea0c45f0c42a4\rxjava-1.1.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="425c7b17887e5c3f8cbdf67ba171bc246f29b42c">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.3.0_ef5acc1266293b4ee1301ac2bea82c201b17d83c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9ab787a20aae245b5b3651ae0b9c38459eb37715">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-design-25.3.0_15dd5e2ecfa3023f9d1decb8738483e6fb090e75.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\beta\1.2.4\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8c8243677105d9c78cfbf553b55e256b3d4bea39">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-beta-1.2.4_d3061e79f1fde6edabd4c948d26e0144855a2891.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="70f23cb87278f89aa51e6f57e8f0fd5266572d95">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.3.0_94d6c415fc084ef8e3742394e7dc6502b74a7099.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\io.fabric.sdk.android\fabric\1.3.16\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="263c1c941f603469ecbaf8745f7b2d18ae85c5c0">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\io.fabric.sdk.android-fabric-1.3.16_58b5fdbed81142659458f379c80ddaef8539d90c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.2.0\41e67dba73c3347e4503761642c39d0e06ca1f2\retrofit-2.2.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="041e67dba73c3347e4503761642c39d0e06ca1f2">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\retrofit-2.2.0_19429fbdea052bf664b2e9d172addfe80ed4f3bc.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.0\support-annotations-25.3.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="dd84903d2e1af25a6081ef9038ad863cb14ca3a0">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\support-annotations-25.3.0_4c5b4521d2a146ad5aac58ab771e6f15ae94bdcb.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\answers\1.3.12\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="5c812ad0773ab307151802099a33575fa7bb270b">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-answers-1.3.12_9abdba9f3f3aadd6ea893d89831e334f9cb0fc30.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\io.realm\realm-annotations\3.2.0\f975a4d720c4085dc6043f51a736a14a2c85656d\realm-annotations-3.2.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f975a4d720c4085dc6043f51a736a14a2c85656d">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\realm-annotations-3.2.0_926d754bc88e9238122053894b36de6cf33cc5e0.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\libs\YouTubeAndroidPlayerApi.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3c4f96ff493456651cc7bdb0b47e10eb25545a16">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\YouTubeAndroidPlayerApi_f0bd162ba02ffa6a5c84e32861ab6eea80912e3f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\glide-3.7.0_e3f2ad95b0d4985044c7012d6605a6062d4a65ef.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="93c1199fcb0a34b980e6fff8350daff62e696ec2">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.3.0_70ae005955ab68f55dbed5d2b45337b138af1fb4.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.7\751f548c85fa49f330cecbb1875893f971b33c4e\gson-2.7.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\gson-2.7_8a255e6919d6a0d46ed74fc7708c587eea7bd643.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="518768f3200963fbfec652f498da2c9d39245234">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.3.0_1db7240500e50d841f0adab4c830215b273b0b1d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife-annotations\8.5.1\bb67dad90bab7cd77a8f7f1b8442b47e3a2326bc\butterknife-annotations-8.5.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="bb67dad90bab7cd77a8f7f1b8442b47e3a2326bc">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\butterknife-annotations-8.5.1_10a7001fe0fdf9a1654e4b11e9e212b488ceb88b.jar" />
+        sha1="748f0546d5c3c27f1aef07270ffea0c45f0c42a4">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\rxjava-1.1.0_b144b2a9dc5ab9a29bff01d631cb38d83a441a9c.jar" />
     </item>
     <item
         is-multidex="false"
@@ -174,12 +48,30 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="425c7b17887e5c3f8cbdf67ba171bc246f29b42c">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.3.0_ef5acc1266293b4ee1301ac2bea82c201b17d83c.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.3.0_623558016b5ac34d097d5317551c7d7d6d06ce8d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9ab787a20aae245b5b3651ae0b9c38459eb37715">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-design-25.3.0_15dd5e2ecfa3023f9d1decb8738483e6fb090e75.jar" />
     </item>
     <item
         is-multidex="false"
@@ -192,12 +84,48 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\beta\1.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8c8243677105d9c78cfbf553b55e256b3d4bea39">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-beta-1.2.4_d3061e79f1fde6edabd4c948d26e0144855a2891.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="70f23cb87278f89aa51e6f57e8f0fd5266572d95">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.3.0_94d6c415fc084ef8e3742394e7dc6502b74a7099.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-simplexml\2.2.0\3585dc3d225e2ca03af1a2cece159eb511fa0528\converter-simplexml-2.2.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="3585dc3d225e2ca03af1a2cece159eb511fa0528">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\converter-simplexml-2.2.0_c8b5eab30d9fd2b860c00eb95b66f54fa6910e37.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\io.fabric.sdk.android\fabric\1.3.16\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="263c1c941f603469ecbaf8745f7b2d18ae85c5c0">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\io.fabric.sdk.android-fabric-1.3.16_58b5fdbed81142659458f379c80ddaef8539d90c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.2.0\41e67dba73c3347e4503761642c39d0e06ca1f2\retrofit-2.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="041e67dba73c3347e4503761642c39d0e06ca1f2">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\retrofit-2.2.0_19429fbdea052bf664b2e9d172addfe80ed4f3bc.jar" />
     </item>
     <item
         is-multidex="false"
@@ -216,6 +144,15 @@
         revision="25.0.2"
         sha1="fbb206f7a119f66ce171d95aae1225a5b209a8b7">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-transition-25.3.0_64488f28c07594d02e206874c73222a4f07d321d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.0\support-annotations-25.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="dd84903d2e1af25a6081ef9038ad863cb14ca3a0">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\support-annotations-25.3.0_4c5b4521d2a146ad5aac58ab771e6f15ae94bdcb.jar" />
     </item>
     <item
         is-multidex="false"
@@ -246,12 +183,30 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\answers\1.3.12\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5c812ad0773ab307151802099a33575fa7bb270b">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-answers-1.3.12_9abdba9f3f3aadd6ea893d89831e334f9cb0fc30.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="d6a04527c17597019dad82777c5094a3d60d1c33">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.3.0_6839cbe5b01d54973683de3ff9cd96f548b1e8af.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\io.realm\realm-annotations\3.2.0\f975a4d720c4085dc6043f51a736a14a2c85656d\realm-annotations-3.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f975a4d720c4085dc6043f51a736a14a2c85656d">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\realm-annotations-3.2.0_926d754bc88e9238122053894b36de6cf33cc5e0.jar" />
     </item>
     <item
         is-multidex="false"
@@ -264,12 +219,48 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\libs\YouTubeAndroidPlayerApi.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3c4f96ff493456651cc7bdb0b47e10eb25545a16">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\YouTubeAndroidPlayerApi_f0bd162ba02ffa6a5c84e32861ab6eea80912e3f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\glide-3.7.0_e3f2ad95b0d4985044c7012d6605a6062d4a65ef.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.6.0\69edde9fc4b01c9fd51d25b83428837478c27254\okhttp-3.6.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\okhttp-3.6.0_53753a7889fc931b20feb3e072993ea7c495db75.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="93c1199fcb0a34b980e6fff8350daff62e696ec2">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.3.0_70ae005955ab68f55dbed5d2b45337b138af1fb4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.7\751f548c85fa49f330cecbb1875893f971b33c4e\gson-2.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\gson-2.7_8a255e6919d6a0d46ed74fc7708c587eea7bd643.jar" />
     </item>
     <item
         is-multidex="false"
@@ -297,6 +288,24 @@
         revision="25.0.2"
         sha1="5cc5ef8347a6bafa14556cbd35230aa9b3431bb0">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.3.0_89198956978671441b0a866a4c50f5062c1d06be.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="518768f3200963fbfec652f498da2c9d39245234">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.3.0_1db7240500e50d841f0adab4c830215b273b0b1d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife-annotations\8.5.1\bb67dad90bab7cd77a8f7f1b8442b47e3a2326bc\butterknife-annotations-8.5.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bb67dad90bab7cd77a8f7f1b8442b47e3a2326bc">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\butterknife-annotations-8.5.1_10a7001fe0fdf9a1654e4b11e9e212b488ceb88b.jar" />
     </item>
 
 </items>

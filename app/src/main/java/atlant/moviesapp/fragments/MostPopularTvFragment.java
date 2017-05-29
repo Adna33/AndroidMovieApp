@@ -1,8 +1,11 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -50,7 +53,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
     private int currentPage = 1;
     List<TvShow> series;
     TVListAdapter adapter;
-
+    boolean isConnected;
 
     public MostPopularTvFragment() {
         // Required empty public constructor
@@ -66,6 +69,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
 
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
+        isConnected = isNetworkAvailable();
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
@@ -130,13 +134,23 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
                     @Override
                     public void run() {
 
-                        presenter.getHighestRatedSeries(TAG, currentPage++);
+                        if (isConnected) {
+                            presenter.getHighestRatedSeries(TAG, ++currentPage);
+                        } else {
+                            presenter.setUpSeries(TAG, ++currentPage);
+                        }
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getHighestRatedSeries(TAG, 1);
+        if (isConnected) {
+            showProgress();
+            presenter.getHighestRatedSeries(TAG, 1);
+        } else {
+            presenter.setUpSeries(TAG, 1);
+            hideProgress();
+        }
         return view;
     }
 
@@ -196,7 +210,13 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
             presenter.onDestroy();
         super.onDestroy();
     }
+    public boolean isNetworkAvailable() {
 
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     public void showLoginError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.loginAcces)

@@ -1,7 +1,10 @@
 package atlant.moviesapp.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -46,7 +49,7 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
     private int currentPage = 1;
     List<TvShow> series;
     TVListAdapter adapter;
-
+    boolean isConnected;
 
     public AiringTvFragment() {
         // Required empty public constructor
@@ -62,6 +65,7 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
 
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
+        isConnected=isNetworkAvailable();
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
@@ -127,7 +131,11 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
                     @Override
                     public void run() {
 
-                        presenter.getHighestRatedSeries(TAG, ++currentPage);
+                        if (isConnected) {
+                            presenter.getHighestRatedSeries(TAG, ++currentPage);
+                        } else {
+                            presenter.setUpSeries(TAG, ++currentPage);
+                        }
 
                     }
                 });
@@ -155,6 +163,14 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
         if (progressBar != null)
             progressBar.setVisibility(View.VISIBLE);
 
+    }
+
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

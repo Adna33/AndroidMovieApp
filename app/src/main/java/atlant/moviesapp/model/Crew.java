@@ -2,11 +2,14 @@ package atlant.moviesapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 15.04.2017..
  */
 
-public class Crew {
+public class Crew extends RealmObject{
 
 
     @SerializedName("credit_id")
@@ -16,6 +19,7 @@ public class Crew {
     private String department;
 
     @SerializedName("id")
+    @PrimaryKey
     private int id;
 
     @SerializedName("job")
@@ -34,6 +38,9 @@ public class Crew {
         this.job = job;
         this.name = name;
         this.path = path;
+    }
+
+    public Crew() {
     }
 
     public String getCreditId() {
