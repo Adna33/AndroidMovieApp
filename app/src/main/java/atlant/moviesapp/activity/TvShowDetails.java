@@ -23,9 +23,8 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
-import atlant.moviesapp.adapter.TVListAdapter;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
@@ -88,6 +87,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     private Integer seriesId;
     private Integer seasonNum;
     private Date date;
+    private StringUtils stringUtils;
 
     private BodyFavourite bodyFavourite;
     private BodyWatchlist bodyWatchlist;
@@ -95,25 +95,31 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 1;
+
     @OnClick(R.id.rate_txtBtn)
-    void rate()
-    {
+    void rate() {
         Intent i = new Intent(this, RatingActivity.class);
-        i.putExtra(getString(R.string.title),getString(R.string.ratethisTVshow));
-        i.putExtra(getString(R.string.id),seriesId);
-        i.putExtra(getString(R.string.tag),TAG);
+        i.putExtra(getString(R.string.title), getString(R.string.ratethisTVshow));
+        i.putExtra(getString(R.string.id), seriesId);
+        i.putExtra(getString(R.string.tag), TAG);
         startActivity(i);
 
     }
+
     @BindView(R.id.divider)
     TextView divider;
 
     @OnClick(R.id.heart_detail)
-    void addToFavorites() {
+    void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteSeries().contains(seriesId)) {
             ApplicationState.getUser().removeFavoriteShow(seriesId);
-            bodyFavourite = new BodyFavourite(getString(R.string.tv),seriesId, false);
-            presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), bodyFavourite);
+            if (isNetworkAvailable()) {
+
+                presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), false);
+            } else {
+                presenter.removeFavoriteRealm(seriesId);
+
+            }
             Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like)
                     .crossFade().centerCrop()
@@ -122,8 +128,12 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
         } else {
             ApplicationState.getUser().addFavouriteShow(seriesId);
-            bodyFavourite = new BodyFavourite(getString(R.string.tv), seriesId, true);
-            presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), bodyFavourite);
+            if (isNetworkAvailable()) {
+                presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), true);
+            } else {
+                presenter.postFavoriteRealm(seriesId);
+
+            }
             Toast.makeText(this, R.string.addedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like_active_icon)
                     .crossFade().centerCrop()
@@ -136,20 +146,26 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
 
     @OnClick(R.id.bookmark_detail)
-    void addToWatchlist() {
+    void updateWatchlist() {
 
         if (ApplicationState.getUser().getWatchListSeries().contains(seriesId)) {
             ApplicationState.getUser().removeWatchlistShow(seriesId);
-            bodyWatchlist= new BodyWatchlist(getString(R.string.tv), seriesId, false);
-            presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (isNetworkAvailable()) {
+                presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), false);
+            } else {
+                presenter.removeWatchlistRealm(seriesId);
+            }
             Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistShow(seriesId);
-            bodyWatchlist= new BodyWatchlist(getString(R.string.tv),seriesId, true);
-            presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (isNetworkAvailable()) {
+                presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), true);
+            } else {
+                presenter.postWatchlistRealm(seriesId);
+            }
 
             Glide.with(this).load(R.drawable.bookmark_active_icon)
                     .crossFade().centerCrop()
@@ -185,13 +201,13 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
                 onBackPressed();
             }
         });
-
-        date=new Date(this);
+        stringUtils = new StringUtils(this);
+        date = new Date(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.series), 0);
         presenter = new TvDetailsPresenter(this);
         if (isConnected) {
-            if (RealmUtil.getInstance().getTvShowDetailFromRealm(seriesId) == null ||RealmUtil.getInstance().getShowDetailsFromRealm(seriesId) == null )
+            if (RealmUtil.getInstance().getTvShowDetailFromRealm(seriesId) == null || RealmUtil.getInstance().getShowDetailsFromRealm(seriesId) == null)
                 RealmUtil.getInstance().createRealmSeriesObject(seriesId);
             presenter.getDetails(seriesId);
             presenter.getCredits(seriesId);
@@ -242,10 +258,11 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     @Override
     public void showCast(final List<Cast> cast) {
-        String castString = "";
+        String castString = stringUtils.emptyString();
+        ;
         for (int i = 0; i < cast.size(); i++) {
             if (i < 4) {
-                castString = castString + cast.get(i).getName() + " ";
+                castString = stringUtils.getCast(castString, cast.get(i).getName());
             }
 
         }
@@ -270,23 +287,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = "";
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getJob().equals(getString(R.string.director))) {
-                directorsString = directorsString + crew.get(i).getName() + "  ";
-            }
-
-        }
+        String directorsString = stringUtils.getDirectorString(crew);
         director.setText(directorsString);
-        String writersString = "";
-        int num = 0;
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getDepartment().equals(getString(R.string.writing)) && num < 3) {
-                num++;
-                writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
-            }
-
-        }
+        String writersString = stringUtils.getWritersString(crew);
         writers.setText(writersString);
 
     }
@@ -295,14 +298,14 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     public void showDetails(final TvShowDetail series) {
         final List<Integer> seasons = new ArrayList<>();
         director.setText("");
-        String year=series.getFirstAirDate();
-        if(year!=null){
-        title.setText(series.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");}
+        String year = series.getFirstAirDate();
+        if (year != null) {
+            title.setText(stringUtils.getTitle(series.getName(), year));
+        }
         if (series.getGenres() == null) {
             genre.setText(R.string.genre_unknown);
         } else
-            for (int i = 0; i < series.getGenres().size(); i++)
-                genre.setText(series.getGenres().get(i).getName() + " ");
+            genre.setText(stringUtils.getGenre(series));
         for (int i = 1; i <= series.getNumberOfSeasons(); i++) {
             seasons.add(i);
         }
@@ -342,12 +345,12 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         if (ApplicationState.isLoggedIn()) {
             rateTxt.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             rateTxt.setVisibility(View.INVISIBLE);
             divider.setVisibility(View.INVISIBLE);
         }
     }
+
     public void showPoster(TvShowDetail series) {
         Glide.with(this).load(series.getImagePath())
                 .crossFade().centerCrop()

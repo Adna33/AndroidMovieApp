@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,11 +22,10 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
-import atlant.moviesapp.adapter.NewsFeedAdapter;
 import atlant.moviesapp.adapter.ReviewAdapter;
 import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
@@ -37,7 +34,6 @@ import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.Review;
-import atlant.moviesapp.model.TvGenre;
 import atlant.moviesapp.presenters.MovieDetailsPresenter;
 import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.MovieDetailsView;
@@ -106,8 +102,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 0;
-    private BodyFavourite bodyFavourite;
-    private BodyWatchlist bodyWatchlist;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -120,12 +114,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     }
 
     @OnClick(R.id.heart_detail)
-    void addToFavorites() {
+    void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeFavouriteMovie(movie.getId());
-            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), false);
-            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-            Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
+            if (isNetworkAvailable()) {
+                presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), false);
+                Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
+
+
+            } else {
+                presenter.removeFavoriteRealm(movie.getId());
+            }
             Glide.with(this).load(R.drawable.like)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -133,8 +132,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         } else {
             ApplicationState.getUser().addFavouriteMovie(movie.getId());
-            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), true);
-            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            if (isNetworkAvailable()) {
+                presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), true);
+
+            } else {
+                presenter.postFavoriteRealm(movie.getId());
+            }
             Toast.makeText(this, R.string.addedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like_active_icon)
                     .crossFade().centerCrop()
@@ -147,20 +150,26 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
 
     @OnClick(R.id.bookmark_detail)
-    void addToWatchlist() {
+    void updateWatchlist() {
 
         if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeWatchlistMovie(movie.getId());
-            bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), false);
-            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (isNetworkAvailable()) {
+                presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), false);
+            } else {
+                presenter.removeWatchlistRealm(movie.getId());
+            }
             Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistMovie(movie.getId());
-            bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), true);
-            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (isNetworkAvailable()) {
+                presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), true);
+            } else {
+                presenter.postWatchlistRealm(movie.getId());
+            }
             Glide.with(this).load(R.drawable.bookmark_active_icon)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -174,6 +183,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private MovieDetailsPresenter presenter;
     private Movie movie;
     private Date date;
+    private StringUtils stringUtils;
 
 
     @Override
@@ -196,12 +206,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             }
         });
         date = new Date(this);
+        stringUtils = new StringUtils(this);
 
         Intent intent = getIntent();
         movie = intent.getParcelableExtra(getString(R.string.movieIntent));
-        director.setText("");
+        director.setText(stringUtils.emptyString());
         String year = movie.getReleaseDate();
-        title.setText(movie.getTitle() + " (" + year.substring(0, Math.min(year.length(), 4)) + ")");
+        title.setText(stringUtils.getTitle(movie.getTitle(), year));
         if (movie.getGenreIds().isEmpty())
             genre.setText(R.string.genre_unknown);
         else if (MovieGenre.getGenreById(movie.getGenreIds().get(0)) == null)
@@ -267,10 +278,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCast(final List<Cast> cast) {
-        String castString = "";
+        String castString = stringUtils.emptyString();
         for (int i = 0; i < cast.size(); i++) {
             if (i < 4) {
-                castString = castString + cast.get(i).getName() + " ";
+                castString = stringUtils.getCast(castString, cast.get(i).getName());
             }
 
         }
@@ -303,23 +314,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = "";
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getJob().equals(getString(R.string.director))) {
-                directorsString = directorsString + crew.get(i).getName() + "  ";
-            }
-
-        }
+        String directorsString = stringUtils.getDirectorString(crew);
         director.setText(directorsString);
-        String writersString = "";
-        int num = 0;
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getDepartment().equals(getString(R.string.writing)) && num < 3) {
-                num++;
-                writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
-            }
-
-        }
+        String writersString = stringUtils.getWritersString(crew);
         writers.setText(writersString);
 
     }

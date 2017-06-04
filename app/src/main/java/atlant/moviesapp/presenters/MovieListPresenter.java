@@ -65,7 +65,7 @@ public class MovieListPresenter {
                     List<Movie> movies = response.body().getResults();
 
                     if (RealmUtil.getInstance().getRealmList(page) == null)
-                        RealmUtil.getInstance().createMoviesList(page);
+                        RealmUtil.getInstance().createRealmList(page);
 
                     if (tag == MOST_POPULAR)
                         RealmUtil.getInstance().addPopularMovies(page, movies);
@@ -114,8 +114,44 @@ public class MovieListPresenter {
         }
 
     }
+    public void postFavoriteRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().addFavoriteMovie(id);
+        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), true);
+    }
 
-    public void postFavorite(int id, String session_id, BodyFavourite favorite) {
+    public void removeFavoriteRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), false);
+    }
+
+    public void postWatchlistRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().addMovieWatchlist(id);
+        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), true);
+    }
+
+    public void removeWatchlistRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
+    }
+    public void postFavorite(int id, String session_id, Boolean b) {
+        BodyFavourite favorite = new BodyFavourite("movie", id, b);
+        if (b) {
+            RealmUtil.getInstance().addFavoriteMovie(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCall = apiservice.addFavorite(id, API_KEY, session_id, favorite);
         postCall.enqueue(new Callback<PostResponse>() {
@@ -142,7 +178,13 @@ public class MovieListPresenter {
 
     }
 
-    public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
+    public void postWatchlist(int id, String session_id, Boolean b) {
+        if (b) {
+            RealmUtil.getInstance().addMovieWatchlist(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
+        BodyWatchlist watchlist = new BodyWatchlist("movie", id, b);
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);
         postCallWatchlist.enqueue(new Callback<PostResponse>() {

@@ -184,42 +184,42 @@ public class Account implements Parcelable {
 
     public void removeFavouriteMovie(Integer id) {
         for (int i = 0; i < this.getFavouriteMovies().size(); i++) {
-            if (this.getFavouriteMovies().get(0).equals(id))
+            if (this.getFavouriteMovies().get(i).equals(id))
                 this.favouriteMovies.remove(i);
 
         }
     }
     public void removeFavoriteShow(Integer id) {
         for (int i = 0; i < this.getFavouriteSeries().size(); i++) {
-            if (this.getFavouriteSeries().get(0).equals(id))
+            if (this.getFavouriteSeries().get(i).equals(id))
                 this.favouriteSeries.remove(i);
 
         }
     }
     public void removeWatchlistMovie(Integer id) {
         for (int i = 0; i < this.getWatchListMovies().size(); i++) {
-            if (this.getWatchListMovies().get(0).equals(id))
+            if (this.getWatchListMovies().get(i).equals(id))
                 this.watchListMovies.remove(i);
 
         }
     }
     public void removeWatchlistShow(Integer id) {
         for (int i = 0; i < this.getWatchListSeries().size(); i++) {
-            if (this.getWatchListSeries().get(0).equals(id))
+            if (this.getWatchListSeries().get(i).equals(id))
                 this.watchListSeries.remove(i);
 
         }
     }
     public void removeRatingShow(Integer id) {
         for (int i = 0; i < this.getRatedSeries().size(); i++) {
-            if (this.getRatedSeries().get(0).equals(id))
+            if (this.getRatedSeries().get(i).equals(id))
                 this.ratedSeries.remove(i);
 
         }
     }
     public void removeRatingMovies(Integer id) {
         for (int i = 0; i < this.getRatedMovies().size(); i++) {
-            if (this.getRatedMovies().get(0).equals(id))
+            if (this.getRatedMovies().get(i).equals(id))
                 this.ratedMovies.remove(i);
 
         }

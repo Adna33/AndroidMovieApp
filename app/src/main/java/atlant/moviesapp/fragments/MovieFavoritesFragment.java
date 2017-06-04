@@ -1,18 +1,17 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +33,7 @@ import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserFavoritesPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserFavoritesView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +41,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieFavoritesFragment extends Fragment implements UserFavoritesView{
+public class MovieFavoritesFragment extends Fragment implements UserFavoritesView {
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView recyclerView;
@@ -58,6 +57,7 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
     UserListAdapter adapter;
     private Paint p = new Paint();
     private Paint t = new Paint();
+
     public MovieFavoritesFragment() {
         // Required empty public constructor
     }
@@ -67,10 +67,10 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_movie_favorites, container, false);
+        View v = inflater.inflate(R.layout.fragment_movie_favorites, container, false);
         ButterKnife.bind(this, v);
-        presenter= new UserFavoritesPresenter(this);
-        favoriteMovies= new ArrayList<>();
+        presenter = new UserFavoritesPresenter(this);
+        favoriteMovies = new ArrayList<>();
         adapter = new UserListAdapter(favoriteMovies, R.layout.user_list_item, recyclerView.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -98,14 +98,24 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
                     @Override
                     public void run() {
 
-                        presenter.getMovieFavorites(++currentPage);
+                        if (isNetworkAvailable()) {
+                            presenter.getMovieFavorites(++currentPage);
+                        }
 
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getMovieFavorites(1);
+
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getMovieFavorites(currentPage);
+        } else {
+            presenter.setUpFavoriteMovies();
+            hideProgress();
+
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -113,40 +123,49 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                if (direction == ItemTouchHelper.LEFT){
-                    int id=favoriteMovies.get(position).getId();
+                if (direction == ItemTouchHelper.LEFT) {
+                    int id = favoriteMovies.get(position).getId();
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeFavouriteMovie(id);
-                    BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), id, false);
-                    presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+                    if (isNetworkAvailable()) {
+                        presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), 0);
+                    } else {
+                        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+                            RealmUtil.getInstance().createPostMovie(id);
+                        }
+                        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), false);
+
+                    }
 
                 }
             }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
 
                     }
                 }
@@ -194,13 +213,15 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -209,6 +230,14 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
         super.onStop();
         if (presenter != null)
             presenter.onStop();
+    }
+
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
@@ -228,7 +257,14 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
         }
         adapter.clear();
         favoriteMovies.clear();
-        presenter.getMovieFavorites(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getMovieFavorites(1);
+        } else {
+            presenter.setUpFavoriteMovies();
+            hideProgress();
+
+        }
     }
 
 }

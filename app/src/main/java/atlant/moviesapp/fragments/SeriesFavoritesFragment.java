@@ -1,12 +1,15 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +33,7 @@ import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserFavoritesPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserFavoritesView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,14 +95,22 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                     @Override
                     public void run() {
 
-                        presenter.getSeriesFavorites(++currentPage);
-
+                        if (isNetworkAvailable()) {
+                            presenter.getSeriesFavorites(++currentPage);
+                        }
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getSeriesFavorites(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getSeriesFavorites(currentPage);
+        } else {
+            presenter.setUpFavoriteSeries();
+            hideProgress();
+
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -113,8 +125,15 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                     int id=favoriteSeries.get(position).getId();
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeFavoriteShow(id);
-                    BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), id, false);
-                    presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+                    if (isNetworkAvailable()) {
+                        presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), 1);
+                    } else {
+                        if (RealmUtil.getInstance().getPostSeries(id) == null) {
+                            RealmUtil.getInstance().createPostSeries(id);
+                        }
+                        RealmUtil.getInstance().setSeriesFavorite(RealmUtil.getInstance().getPostSeries(id), false);
+                    }
 
                 }
             }
@@ -169,6 +188,13 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
 
     }
 
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void showMovies(List<Movie> data) {
 
@@ -223,6 +249,12 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
         }
         adapter.clear();
         favoriteSeries.clear();
-        presenter.getSeriesFavorites(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getSeriesFavorites(1);
+        } else {
+            presenter.setUpFavoriteSeries();
+            hideProgress();
+        }
     }
 }

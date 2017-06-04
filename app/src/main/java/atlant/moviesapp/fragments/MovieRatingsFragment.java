@@ -1,12 +1,15 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,20 +21,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.activity.MovieDetailsActivity;
-import atlant.moviesapp.activity.TvShowDetails;
-import atlant.moviesapp.adapter.SearchResultAdapter;
 import atlant.moviesapp.adapter.UserListAdapter;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserRatingsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserRatingsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,19 +57,21 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
     public MovieRatingsFragment() {
         // Required empty public constructor
     }
+
     List<Movie> ratedMovies;
     UserListAdapter adapter;
     private Paint p = new Paint();
     private Paint t = new Paint();
     private boolean resumeHasRun = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View v= inflater.inflate(R.layout.fragment_movie_ratings, container, false);
+        View v = inflater.inflate(R.layout.fragment_movie_ratings, container, false);
         ButterKnife.bind(this, v);
-        presenter=new UserRatingsPresenter(this);
-        ratedMovies=new ArrayList<>();
+        presenter = new UserRatingsPresenter(this);
+        ratedMovies = new ArrayList<>();
         adapter = new UserListAdapter(ratedMovies, R.layout.user_list_item, recyclerView.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -77,11 +80,11 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
         recyclerView.addOnItemTouchListener(new UserListAdapter.RecyclerTouchListener(getActivity(), recyclerView, new UserListAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                    Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                    Movie movie = ratedMovies.get(position);
-                    intent.putExtra(getString(R.string.movie), movie);
-                    startActivity(intent);
-              }
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                Movie movie = ratedMovies.get(position);
+                intent.putExtra(getString(R.string.movie), movie);
+                startActivity(intent);
+            }
 
             @Override
             public void onLongClick(View view, int position) {
@@ -96,14 +99,23 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
                     @Override
                     public void run() {
 
-                        presenter.getMovieRatings(++currentPage);
+                        if (isNetworkAvailable()) {
+                            presenter.getMovieRatings(++currentPage);
+                        }
 
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getMovieRatings(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getMovieRatings(currentPage);
+        } else {
+            presenter.setUpRatedMovies();
+            hideProgress();
+
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -111,39 +123,43 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                if (direction == ItemTouchHelper.LEFT){
-                    int id=ratedMovies.get(position).getId();
+                if (direction == ItemTouchHelper.LEFT) {
+                    int id = ratedMovies.get(position).getId();
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeRatingMovies(id);
-                    presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 0);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+                    if (isNetworkAvailable()) {
+                        presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 0);
+                    }
 
                 }
             }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
 
                     }
                 }
@@ -153,7 +169,6 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
 
 
         return v;
@@ -193,13 +208,15 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -226,6 +243,22 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
         }
         adapter.clear();
         ratedMovies.clear();
-        presenter.getMovieRatings(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getMovieRatings(1);
+        } else {
+            presenter.setUpRatedMovies();
+            hideProgress();
+
+        }
+
+    }
+
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

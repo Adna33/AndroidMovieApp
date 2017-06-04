@@ -24,13 +24,13 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.activity.LoginActivity;
 import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.adapter.MovieListAdapter;
-import atlant.moviesapp.adapter.TVListAdapter;
 import atlant.moviesapp.helper.OnItemClick;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.MovieListPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.MovieListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,50 +71,60 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         isConnected=isNetworkAvailable();
         adapter.setItemClick(new OnItemClick() {
             @Override
-            public void onfavouriteClicked(int position) {
+            public void onFavoriteClicked(int position) {
                 if (ApplicationState.isLoggedIn()) {
 
-                    if (isConnected) {
-                        Movie m = movies.get(position);
-                        if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
-                            ApplicationState.getUser().removeFavouriteMovie(m.getId());
-                            bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), false);
-                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
-
+                    Movie m = movies.get(position);
+                    if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), false);
                         } else {
-                            ApplicationState.getUser().addFavouriteMovie(m.getId());
-                            bodyFavourite = new BodyFavourite(getString(R.string.movie), m.getId(), true);
-                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
-
+                            presenter.removeFavoriteRealm(m.getId());
                         }
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
+
                     } else {
+                        ApplicationState.getUser().addFavouriteMovie(m.getId());
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postFavoriteRealm(m.getId());
+                        }
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
+
                     }
+
                 } else {
                     showLoginError();
                 }
             }
 
             @Override
-            public void onwatchlistClicked(int position) {
+            public void onWatchlistClicked(int position) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (isConnected) {
-                        Movie m = movies.get(position);
-                        if (ApplicationState.getUser().getWatchListMovies().contains(m.getId())) {
-                            ApplicationState.getUser().removeWatchlistMovie(m.getId());
-                            BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), false);
-                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
 
+                    Movie m = movies.get(position);
+                    if (ApplicationState.getUser().getWatchListMovies().contains(m.getId())) {
+                        ApplicationState.getUser().removeWatchlistMovie(m.getId());
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), false);
                         } else {
-                            ApplicationState.getUser().addWatchlistMovie(m.getId());
-                            BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), m.getId(), true);
-                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-                            Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
+                            presenter.removeWatchlistRealm(m.getId());
+                        }
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        ApplicationState.getUser().addWatchlistMovie(m.getId());
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postWatchlistRealm(m.getId());
 
                         }
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistAdded), Toast.LENGTH_SHORT).show();
+
                     }
+
                 } else {
                     showLoginError();
                 }

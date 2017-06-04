@@ -29,6 +29,7 @@ import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.TvShowListPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.TvShowListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,20 +65,27 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
 
         adapter.setItemClick(new OnItemClick() {
             @Override
-            public void onfavouriteClicked(int position) {
-                if (ApplicationState.isLoggedIn()) {
+            public void onFavoriteClicked(int position) {
 
+                if (ApplicationState.isLoggedIn()) {
                     TvShow m = series.get(position);
                     if (ApplicationState.getUser().getFavouriteSeries().contains(m.getId())) {
                         ApplicationState.getUser().removeFavoriteShow(m.getId());
-                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), false);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), false);
+                        } else {
+                            presenter.removeFavoriteRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
 
                     } else {
                         ApplicationState.getUser().addFavouriteShow(m.getId());
-                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), true);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postFavoriteRealm(m.getId());
+
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
 
                     }
@@ -87,19 +95,25 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
             }
 
             @Override
-            public void onwatchlistClicked(int position) {
+            public void onWatchlistClicked(int position) {
+                TvShow m = series.get(position);
                 if (ApplicationState.isLoggedIn()) {
-                    TvShow m = series.get(position);
                     if (ApplicationState.getUser().getWatchListSeries().contains(m.getId())) {
                         ApplicationState.getUser().removeWatchlistShow(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), false);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), false);
+                        } else {
+                            presenter.removeWatchlistRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
 
                     } else {
                         ApplicationState.getUser().addWatchlistShow(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), true);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postWatchlistRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
 
                     }

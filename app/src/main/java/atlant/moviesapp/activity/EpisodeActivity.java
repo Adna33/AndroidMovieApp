@@ -22,6 +22,7 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.helper.Date;
+import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Episode;
@@ -54,7 +55,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
 
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
-
+    private StringUtils stringUtils;
     private EpisodePresenter presenter;
     private Date date;
     int episodeId;
@@ -65,7 +66,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode);
         ButterKnife.bind(this);
-
+        stringUtils= new StringUtils(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
 
@@ -85,7 +86,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         episodeId=episode.getId();
         date=new Date(this);
         String year=episode.getAirDate();
-        title.setText(episode.getName()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
+        title.setText(stringUtils.getTitle(episode.getName(),year));
         releaseDate.setText(date.getFormatedDate(episode.getAirDate()));
         rating.setText(episode.getRatingString());
         overview.setText(episode.getOverview());
@@ -94,7 +95,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(poster);
         presenter=new EpisodePresenter(this);
-        realmId=seriesId+""+seasonId+""+episode.getEpisodeNumber();
+        realmId=seriesId+stringUtils.emptyString()+seasonId+stringUtils.emptyString()+episode.getEpisodeNumber();
         if (isConnected) {
             if(RealmUtil.getInstance().getRealmEpisode(realmId)==null)
             {RealmUtil.getInstance().createRealmEpisode(realmId);}

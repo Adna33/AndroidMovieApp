@@ -1,37 +1,37 @@
 package atlant.moviesapp.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +40,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.adapter.DrawerItemCustomAdapter;
 import atlant.moviesapp.fragments.MovieFragment;
 import atlant.moviesapp.fragments.NewsFeedFragment;
 import atlant.moviesapp.fragments.SearchFragment;
@@ -49,10 +48,9 @@ import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyRating;
 import atlant.moviesapp.model.BodyWatchlist;
-import atlant.moviesapp.model.NavItem;
 import atlant.moviesapp.presenters.MainActivityPresenter;
-import atlant.moviesapp.realm.RealmPostMovie;
-import atlant.moviesapp.realm.RealmPostSeries;
+import atlant.moviesapp.realm.models.RealmPostMovie;
+import atlant.moviesapp.realm.models.RealmPostSeries;
 import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.receivers.ConnectivityStateReceiver;
 import atlant.moviesapp.views.MainActivityView;
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private int mSelectedItem;
     private MainActivityPresenter presenter;
     private ConnectivityStateReceiver receiver;
-    private boolean registeredReceiver=false;
+    private boolean registeredReceiver = false;
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
@@ -109,14 +107,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         receiver = new ConnectivityStateReceiver();
         receiver.addListener(this);
         this.registerReceiver(receiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-        registeredReceiver=true;
-
+        registeredReceiver = true;
 
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         presenter = new MainActivityPresenter(this);
-       // isSearchOpened = false;
+        // isSearchOpened = false;
         //bottom navigation
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -178,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private void selectItem(int mSelectedId) {
 
         switch (mSelectedId) {
-           case R.id.nav_favourites:
+            case R.id.nav_favourites:
                 Intent fav = new Intent(this, UserFavoritesActivity.class);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(fav);
@@ -198,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             case R.id.nav_logout:
                 ApplicationState.setUser(null);
-               // RealmUtil.getInstance().deleteRealmAccount();
+                RealmUtil.getInstance().deleteRealmAccount();
                 SharedPreferences sp = getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
                 sp.edit().remove(getString(R.string.user)).apply();
                 sp.edit().remove(getString(R.string.password)).apply();
@@ -349,7 +346,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         switch (id) {
             case R.id.action_search:
-                handleMenuSearch();
+
+                if (isNetworkAvailable()) {
+                    handleMenuSearch();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage(getString(R.string.errorMessage))
+                            .setTitle(getString(R.string.errorTitle));
+                    builder.setPositiveButton(getString(R.string.OkButton), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 return true;
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -495,6 +505,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         ft.commit();
     }
 
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     protected void onStart() {
@@ -514,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         } else getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         checkLogin();
-        if(!registeredReceiver) {
+        if (!registeredReceiver) {
             receiver = new ConnectivityStateReceiver();
             receiver.addListener(this);
             this.registerReceiver(receiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
@@ -528,55 +544,51 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public void networkAvailable() {
 
-        Toast.makeText(this,"connected",Toast.LENGTH_SHORT).show();
-       /*
-        List<RealmPostMovie> postMovies= RealmUtil.getInstance().getAllPostMovies();
-        List<RealmPostSeries> postSeries= RealmUtil.getInstance().getAllPostSeries();
-        for(RealmPostMovie movie: postMovies){
-           BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), movie.isFavorite());
-            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-            BodyWatchlist   bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), movie.isInWatchlist());
-            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
-            if(movie.getRating()!=null)
-            {
-                BodyRating bodyRating=new BodyRating( Double.parseDouble(movie.getRating()));
-                presenter.postRating(movie.getId(), ApplicationState.getUser().getSessionId(),bodyRating,MOVIE);
-            }
+        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+
+        if (ApplicationState.isLoggedIn()) {
+            List<RealmPostMovie> postMovies = RealmUtil.getInstance().getAllPostMovies();
+            List<RealmPostSeries> postSeries = RealmUtil.getInstance().getAllPostSeries();
+            if (postMovies != null)
+                for (RealmPostMovie movie : postMovies) {
+                    BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), movie.isFavorite());
+                    presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    BodyWatchlist bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), movie.isInWatchlist());
+                    presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+                    if (movie.getRating() != null) {
+                        BodyRating bodyRating = new BodyRating(Double.parseDouble(movie.getRating()));
+                        presenter.postRating(movie.getId(), ApplicationState.getUser().getSessionId(), bodyRating, MOVIE);
+                    }
+
+                }
+            if (postSeries != null)
+                for (RealmPostSeries series : postSeries) {
+                    BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), series.getId(), series.isFavorite());
+                    presenter.postFavorite(series.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    BodyWatchlist bodyWatchlist = new BodyWatchlist(getString(R.string.tv), series.getId(), series.isInWatchlist());
+                    presenter.postWatchlist(series.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+                    if (series.getRating() != null) {
+                        BodyRating bodyRating = new BodyRating(Double.parseDouble(series.getRating()));
+                        presenter.postRating(series.getId(), ApplicationState.getUser().getSessionId(), bodyRating, TVSHOW);
+                    }
+                }
+            RealmUtil.getInstance().deleteAllPostMovies();
+            RealmUtil.getInstance().deleteAllPostSeries();
+
 
         }
-        for(RealmPostSeries series: postSeries){
-            BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), series.getId(), series.isFavorite());
-            presenter.postFavorite(series.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
-            BodyWatchlist  bodyWatchlist= new BodyWatchlist(getString(R.string.tv),series.getId(), series.isInWatchlist());
-            presenter.postWatchlist(series.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
-            if(series.getRating()!=null)
-            {
-                BodyRating bodyRating=new BodyRating( Double.parseDouble(series.getRating()));
-                presenter.postRating(series.getId(), ApplicationState.getUser().getSessionId(),bodyRating,TVSHOW);
-            }
-        }
-        RealmUtil.getInstance().deleteAllPostMovies();
-        RealmUtil.getInstance().deleteAllPostSeries();*/
-
-       /* runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                recreate();
-            }
-        });*/
-
 
     }
 
     @Override
     public void networkUnavailable() {
-        Toast.makeText(this,"disconnected",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onStop();
-        if(registeredReceiver) {
+        if (registeredReceiver) {
             unregisterReceiver(receiver);
             registeredReceiver = false;
         }

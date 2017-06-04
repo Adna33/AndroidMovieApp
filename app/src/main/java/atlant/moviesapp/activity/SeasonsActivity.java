@@ -21,6 +21,7 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.EpisodeAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
 import atlant.moviesapp.adapter.NewsFeedAdapter;
+import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.presenters.SeasonsPresenter;
 import atlant.moviesapp.presenters.TvDetailsPresenter;
@@ -46,7 +47,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
     TextView seasonYear;
     String realmId;
     private Integer seriesId, seasonId, seasonNum;
-
+    private StringUtils stringUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
-
+        stringUtils= new StringUtils(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -71,7 +72,6 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         seasonId = intent.getIntExtra(getString(R.string.season_id_intent), 0);
         seasonNum = intent.getIntExtra(getString(R.string.season_num_intent), 0);
         realmId= seriesId+""+seasonId;
-        Log.d("sezona",realmId);
         ShowSeasonList(seasonNum, seriesId);
         presenter = new SeasonsPresenter(this);
         if (isConnected) {
@@ -97,7 +97,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         seasonRecyclerView.addOnItemTouchListener(new HorizontalAdapter.RecyclerTouchListener(this, seasonRecyclerView, new HorizontalAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                realmId= seriesId+""+seasons.get(position);
+                realmId= stringUtils.getId(seriesId,seasons.get(position));
                 if(isNetworkAvailable()) {
                     presenter.getSeasonEpisodes(id, seasons.get(position), realmId);
                 }

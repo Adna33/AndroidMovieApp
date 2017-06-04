@@ -2,16 +2,20 @@ package atlant.moviesapp.presenters;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowsResponse;
+import atlant.moviesapp.realm.models.RealmInt;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.UserWatchlistView;
@@ -56,7 +60,6 @@ public class UserWatchlistPresenter {
                     view.showMovies(movies);
                 } else {
                     view.hideProgress();
-                    view.showError();
                 }
 
 
@@ -69,7 +72,6 @@ public class UserWatchlistPresenter {
                     Log.e("TAG", "request was cancelled");
                 }
                 view.hideProgress();
-                view.showError();
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -95,7 +97,6 @@ public class UserWatchlistPresenter {
                     view.showTvShows(shows);
                 } else {
                     view.hideProgress();
-                    view.showError();
                 }
 
 
@@ -108,7 +109,6 @@ public class UserWatchlistPresenter {
                     Log.e("TAG", "request was cancelled");
                 }
                 view.hideProgress();
-                view.showError();
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -117,7 +117,39 @@ public class UserWatchlistPresenter {
 
 
     }
-    public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
+
+    public void setUpWatchlistMovies()
+    {
+        List<RealmInt> movieIds= RealmUtil.getInstance().getRealmAccount().getWatchlistMovies();
+        List<Movie> movies= new ArrayList<>();
+        for(RealmInt m: movieIds) {
+            if (RealmUtil.getInstance().getMovieFromRealm(m.getId()) != null)
+                movies.add(RealmUtil.getInstance().getMovieFromRealm(m.getId()));
+
+
+        }
+        view.showMovies(movies);
+
+    }
+    public void setUpWatchlistSeries()
+    {
+        List<RealmInt> Ids= RealmUtil.getInstance().getRealmAccount().getWatchlistSeries();
+        List<TvShow> series= new ArrayList<>();
+        for(RealmInt m: Ids) {
+            if (RealmUtil.getInstance().getTvShowFromRealm(m.getId()) != null)
+                series.add(RealmUtil.getInstance().getTvShowFromRealm(m.getId()));
+
+
+        }
+        view.showTvShows(series);
+
+    }
+    public void postWatchlist(int id, String session_id, int t) {
+        BodyWatchlist watchlist;
+        if(t==0)
+            watchlist= new BodyWatchlist("movie", id, false);
+        else
+            watchlist= new BodyWatchlist("tv", id, false);
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);
         postCallWatchlist.enqueue(new Callback<PostResponse>() {

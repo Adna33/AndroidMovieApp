@@ -1,12 +1,15 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,21 +21,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.activity.TvShowDetails;
-import atlant.moviesapp.adapter.UserListAdapter;
 import atlant.moviesapp.adapter.UserListSeriesAdapter;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserRatingsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserRatingsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,14 +97,22 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                     @Override
                     public void run() {
 
-                        presenter.getSeriesRatings(++currentPage);
+                        if (isNetworkAvailable()) {
+                            presenter.getSeriesRatings(++currentPage);
+                        }
 
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getSeriesRatings(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getSeriesRatings(currentPage);
+        } else {
+            presenter.setUpRatedSeries();
+            hideProgress();
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -119,7 +127,13 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                     int id=ratedSeries.get(position).getId();
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeRatingShow(id);
-                    presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+
+                    if (isNetworkAvailable()) {
+                        presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
+                    } else {
+                       // RealmUtil.getInstance().
+                    }
 
                 }
             }
@@ -204,7 +218,13 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             progressBar.setVisibility(View.INVISIBLE);
 
     }
+    public boolean isNetworkAvailable() {
 
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void onStop() {
         super.onStop();
@@ -228,6 +248,12 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
         }
         adapter.clear();
         ratedSeries.clear();
-        presenter.getSeriesRatings(1);
+        if (isNetworkAvailable()) {
+            showProgress();
+            presenter.getSeriesRatings(1);
+        } else {
+            presenter.setUpRatedSeries();
+            hideProgress();
+        }
     }
 }

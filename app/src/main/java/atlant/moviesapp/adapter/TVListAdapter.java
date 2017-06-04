@@ -2,10 +2,7 @@ package atlant.moviesapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -22,8 +19,6 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.OnItemClick;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.Movie;
-import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.TvGenre;
 import atlant.moviesapp.model.TvShow;
 import butterknife.BindView;
@@ -90,10 +85,39 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         public void onClick(View v) {
 
             if (v.getId() == favorite.getId()) {
-                itemClick.onfavouriteClicked(getAdapterPosition());
+                if (ApplicationState.isLoggedIn()) {
+                if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.like_active_icon).getConstantState())) {
+
+                    Glide.with(context).load(R.drawable.like)
+                            .crossFade().centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                            .into(favorite);
+                } else {
+
+                    Glide.with(context).load(R.drawable.like_active_icon)
+                            .crossFade().centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                            .into(favorite);
+                }}
+                itemClick.onFavoriteClicked(getAdapterPosition());
+
             }
             if (v.getId() == watchlist.getId()) {
-                itemClick.onwatchlistClicked(getAdapterPosition());
+                if (ApplicationState.isLoggedIn()) {
+                    if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.bookmark_active_icon).getConstantState())) {
+                        Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                                .crossFade().centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(watchlist);
+                    }
+                    else{
+                        Glide.with(context).load(R.drawable.bookmark_active_icon)
+                                .crossFade().centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(watchlist);
+                    }
+                }
+                itemClick.onWatchlistClicked(getAdapterPosition());
             }
             if (v.getId() == seriesPoster.getId()) {
                 itemClick.onposterClicked(getAdapterPosition());
@@ -137,7 +161,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.seriesPoster);
         if (ApplicationState.isLoggedIn()) {
-            if (ApplicationState.getUser().getFavouriteMovies().contains(series.get(position).getId())) {
+            if (ApplicationState.getUser().getFavouriteSeries().contains(series.get(position).getId())) {
                 Glide.with(context).load(R.drawable.like_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -148,7 +172,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             }
-            if (ApplicationState.getUser().getWatchListMovies().contains(series.get(position).getId())) {
+            if (ApplicationState.getUser().getWatchListSeries().contains(series.get(position).getId())) {
                 Glide.with(context).load(R.drawable.bookmark_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -156,7 +180,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
             } else {
                 Glide.with(context).load(R.drawable.not_bookmarked_icon)
                         .crossFade().centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             }
         } else {

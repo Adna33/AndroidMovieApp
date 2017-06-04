@@ -1,8 +1,11 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -70,9 +73,23 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @OnClick(R.id.login_button)
     public void onClickButton()
     {
+        if(isNetworkAvailable()){
         username=loginName.getText().toString();
         password=loginPassword.getText().toString();
-        presenter.requestToken(username,password);
+        presenter.requestToken(username,password);}
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.errorMessage))
+                    .setTitle(getString(R.string.errorTitle));
+
+            builder.setPositiveButton(getString(R.string.OkButton), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
 
     }
     @Override
@@ -118,7 +135,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         startActivity(i);
 
     }
-
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void showError() {
         loginName.setText("");
