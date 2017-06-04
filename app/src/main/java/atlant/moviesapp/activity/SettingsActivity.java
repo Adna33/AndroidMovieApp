@@ -30,26 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.seriesSwitch)
     SwitchCompat seriesSwitch;
 
-   /* static Boolean isTouched = false;
-
-    @OnTouch(R.id.moviesSwitch)
-    public boolean changeMode() {
-        isTouched = true;
-        return false;
-    }
-
-    @OnCheckedChanged(R.id.moviesSwitch)
-    public void onCheckedChanged() {
-        if (isTouched) {
-            isTouched = false;
-            if (movieSwitch.isEnabled()) {
-                movieSwitch.setEnabled(false);
-            }
-            else {
-                movieSwitch.setEnabled(true);
-            }
-        }
-    }*/
+  
 
 
     @Override

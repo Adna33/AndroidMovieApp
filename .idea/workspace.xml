@@ -11,61 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5d7233f-53fb-4b0a-ac9d-bae7682124f0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/StringUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/ActorActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/EpisodeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/MovieListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/MovieListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/TVListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedMoviesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestMoviesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/LatestTvFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularMoviesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieFavoritesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieRatingsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MovieWatchlistFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/OnItemClick.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/OnItemClick.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Account.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Account.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/LoginPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/LoginPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieDetailsPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/RatingPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvShowListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserFavoritesPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserFavoritesPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserRatingsPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserRatingsPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserWatchlistPresenter.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserWatchlistPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmAccount.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmAccount.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmActor.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmActor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmEpisode.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmEpisode.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmInt.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmInt.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmLists.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmLists.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmMovie.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmMovie.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostMovie.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmPostMovie.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmPostSeries.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmPostSeries.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeason.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmSeason.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/RealmSeries.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/realm/models/RealmSeries.java" />
     </list>
     <ignored path="AndroidMovieApp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -127,8 +73,8 @@
       <file leaf-file-name="SettingsActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+            <state relative-caret-position="71">
+              <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -3101,8 +3047,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+        <state relative-caret-position="71">
+          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
           <folding />
         </state>
       </provider>
