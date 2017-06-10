@@ -100,7 +100,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     TextView rateTxt;
     String name, decription, link;
     private static final int TAG = 1;
-    private ShareActionProvider share = null;
+    private ShareActionProvider mShareActionProvider = null;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -379,13 +379,21 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
+        MenuItem item = menu.add(Menu.NONE, R.id.share, Menu.NONE, R.string.share);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        mShareActionProvider = new ShareActionProvider(this) {
+            @Override
+            public View onCreateActionView() {
+                return null;
+            }
+        };
 
-        MenuItem item = menu.findItem(R.id.share);
-        share = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        share.setOnShareTargetSelectedListener(this);
+        item.setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
+        mShareActionProvider.setOnShareTargetSelectedListener(this);
         setShareIntent(createShareIntent());
-        return (super.onCreateOptionsMenu(menu));
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
+
+        return(super.onCreateOptionsMenu(menu));
     }
 
     @Override
@@ -401,9 +409,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     }
 
     private void setShareIntent(Intent shareIntent) {
-        if (share != null) {
+        if (mShareActionProvider != null) {
 
-            share.setShareIntent(shareIntent);
+            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 
