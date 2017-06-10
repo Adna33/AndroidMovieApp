@@ -130,6 +130,9 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
             public void onposterClicked(int position) {
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
                 intent.putExtra(getString(R.string.series), series.get(position).getId());
+                intent.putExtra(getString(R.string.name), series.get(position).getName());
+                intent.putExtra(getString(R.string.link), series.get(position).getImagePath());
+                intent.putExtra(getString(R.string.overview), series.get(position).getOverview());
                 startActivity(intent);
             }
         });

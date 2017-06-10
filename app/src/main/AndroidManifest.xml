@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="atlant.moviesapp">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".model.ApplicationState"
@@ -43,6 +44,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ea42307ca851104bb199d9240e061904d42899b1" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SignupActivity" />
@@ -50,12 +54,26 @@
         <activity android:name=".activity.RatingActivity" />
         <activity android:name=".activity.UserRatingsActivity" />
         <activity android:name=".activity.UserFavoritesActivity" />
-        <activity android:name=".activity.UserWatchlistActivity"></activity>
+        <activity android:name=".activity.UserWatchlistActivity" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider680948758773609"
+            android:exported="true"></provider>
+
         <receiver android:name=".receivers.ConnectivityStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".receivers.MovieAlarmReceiver"
+            android:process=":remote" />
+        <receiver
+            android:name=".receivers.TvAlarmReciever"
+            android:process=":remote" />
+
+        <activity android:name=".activity.GalleryActivity"></activity>
     </application>
 
 </manifest>

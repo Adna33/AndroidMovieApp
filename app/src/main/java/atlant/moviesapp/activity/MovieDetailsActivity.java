@@ -2,14 +2,22 @@ package atlant.moviesapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +25,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.FacebookSdk;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import atlant.moviesapp.R;
@@ -27,8 +45,6 @@ import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
-import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
@@ -41,7 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsView {
+public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsView, ShareActionProvider.OnShareTargetSelectedListener {
 
     @BindView(R.id.movie_title)
     TextView title;
@@ -102,6 +118,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 0;
+    private ShareActionProvider share=null;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -183,7 +200,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private MovieDetailsPresenter presenter;
     private Movie movie;
     private Date date;
-    private StringUtils stringUtils;
 
 
     @Override
@@ -206,13 +222,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             }
         });
         date = new Date(this);
-        stringUtils = new StringUtils(this);
-
         Intent intent = getIntent();
         movie = intent.getParcelableExtra(getString(R.string.movieIntent));
-        director.setText(stringUtils.emptyString());
+        director.setText(getString(R.string.unknown_field));
         String year = movie.getReleaseDate();
-        title.setText(stringUtils.getTitle(movie.getTitle(), year));
+        title.setText(StringUtils.getTitle(movie.getTitle(), year));
         if (movie.getGenreIds().isEmpty())
             genre.setText(R.string.genre_unknown);
         else if (MovieGenre.getGenreById(movie.getGenreIds().get(0)) == null)
@@ -278,13 +292,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCast(final List<Cast> cast) {
-        String castString = stringUtils.emptyString();
-        for (int i = 0; i < cast.size(); i++) {
-            if (i < 4) {
-                castString = stringUtils.getCast(castString, cast.get(i).getName());
-            }
-
-        }
+        String castString = StringUtils.showCast(cast);
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
@@ -314,9 +322,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = stringUtils.getDirectorString(crew);
+        String directorsString = StringUtils.getDirectorString(crew,this);
         director.setText(directorsString);
-        String writersString = stringUtils.getWritersString(crew);
+        String writersString = StringUtils.getWritersString(crew,this);
         writers.setText(writersString);
 
     }
@@ -370,5 +378,58 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         if (presenter != null)
             presenter.onDestroy();
         super.onDestroy();
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+
+        MenuItem item=menu.findItem(R.id.share);
+        share=(ShareActionProvider)MenuItemCompat.getActionProvider(item);
+        share.setOnShareTargetSelectedListener(this);
+        setShareIntent(createShareIntent());
+        return(super.onCreateOptionsMenu(menu));
+    }
+    @Override
+    public boolean onShareTargetSelected(ShareActionProvider source,
+                                         Intent intent) {
+        final String appName = intent.getComponent().getPackageName();
+        if(appName.equals("com.facebook.katana")){setupFacebookShareIntent(); return true;}
+
+        return false;
+    }
+    private void setShareIntent(Intent shareIntent) {
+        if (share != null) {
+
+            share.setShareIntent(shareIntent);
+        }
+    }
+
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                movie.getTitle());
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                movie.getOverview());
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(movie.getImagePath()));
+        shareIntent.setType("image/*");
+
+        return shareIntent;
+    }
+
+    public void setupFacebookShareIntent() {
+      ShareDialog shareDialog;
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        shareDialog = new ShareDialog(this);
+
+        ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(movie.getOverview())
+                .setContentUrl(Uri.parse(movie.getImagePath()))
+                .build();
+        shareDialog.show(linkContent);
     }
 }

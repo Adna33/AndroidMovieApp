@@ -53,7 +53,7 @@ public class MovieListPresenter {
         if (tag == MOST_POPULAR)
             call = apiservice.discoverMovies("popularity.desc", API_KEY, page);
         else if (tag == LATEST)
-            call = apiservice.discoverMovies("release_date.desc", API_KEY, page);
+            call = apiservice.getUpcomingMovies( API_KEY, page);
         else call = apiservice.getHighestRatedMovies(API_KEY, page);
 
 

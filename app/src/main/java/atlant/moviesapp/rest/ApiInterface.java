@@ -25,6 +25,9 @@ public interface ApiInterface {
     @GET("movie/top_rated")
     Call<MoviesResponse> getHighestRatedMovies(@Query("api_key") String apiKey, @Query("page") int page);
 
+    @GET("movie/upcoming")
+    Call<MoviesResponse> getUpcomingMovies(@Query("api_key") String apiKey, @Query("page") int page);
+
     @GET("tv/top_rated")
     Call<TvShowsResponse> getHighestRatedSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
@@ -36,6 +39,9 @@ public interface ApiInterface {
 
     @GET("tv/{id}")
     Call<TvShowDetail> getTvShow(@Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("movie/{id}")
+    Call<TvShowDetail> getMovie(@Path("id") int id, @Query("api_key") String apiKey);
 
 
     @GET("tv/{id}/credits")
@@ -65,7 +71,13 @@ public interface ApiInterface {
     @GET("movie/{id}/videos")
     Call<VideosResponse> getMovieVideos(@Path("id") int id, @Query("api_key") String apiKey);
 
-    
+    @GET("movie/{id}/images")
+    Call<ImageResponse> getMovieImages(@Path("id") int movieId, @Query("api_key") String apiKey);
+
+    @GET("tv/{id}/images")
+    Call<ImageResponse> getSeriesImages(@Path("id") int tvSeriesId, @Query("api_key") String apiKey);
+
+
     //authentication
     @GET("authentication/token/new")
     Call<Token> requestToken(@Query("api_key") String apiKey);

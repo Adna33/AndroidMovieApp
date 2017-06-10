@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import java.util.List;
 
 import atlant.moviesapp.R;
+import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
 
@@ -14,26 +15,27 @@ import atlant.moviesapp.model.TvShowDetail;
  */
 
 public class StringUtils {
-    Context mContext;
 
-    public StringUtils(Context mContext) {
-        this.mContext = mContext;
-    }
+    private StringUtils(){}
 
-    public String emptyString() {
-        return "";
-    }
 
-    public String getTitle(String title, String year) {
+    public static String getTitle(String title, String year) {
         return title + " (" + year.substring(0, Math.min(year.length(), 4)) + ")";
     }
 
-    public String getCast(String cast, String castMemeber) {
-        return cast + castMemeber + emptyString();
+    public static String showCast(final List<Cast> cast) {
+        String castString = "";
+        for (int i = 0; i < cast.size(); i++) {
+            if (i < 4) {
+                castString += cast.get(i).getName();
+            }
+        }
+        return castString;
     }
 
-    public String getDirectorString(List<Crew> crew) {
-        String director = emptyString();
+
+    public static String getDirectorString(List<Crew> crew, Context mContext) {
+        String director = "";
         for (int i = 0; i < crew.size(); i++) {
             if (crew.get(i).getJob().equals(mContext.getString(R.string.director))) {
                 director = director + crew.get(i).getName() + " ";
@@ -43,8 +45,8 @@ public class StringUtils {
         return director;
     }
 
-    public String getWritersString(List<Crew> crew) {
-        String writersString = emptyString();
+    public static String getWritersString(List<Crew> crew, Context mContext) {
+        String writersString = "";
         int num = 0;
         for (int i = 0; i < crew.size(); i++) {
             if (crew.get(i).getDepartment().equals(mContext.getString(R.string.writing)) && num < 3) {
@@ -55,22 +57,17 @@ public class StringUtils {
         }
         return writersString;
     }
-    public String getGenre(TvShowDetail series)
+    public static String getGenre(TvShowDetail series)
     {
-        String genre=emptyString();
+        String genre="";
         for (int i = 0; i < series.getGenres().size(); i++)
             genre+= series.getGenres().get(i).getName() + ", ";
         return genre;
     }
 
-    public String getActorBirthData(String date, String place)
+    public static String getId(int series,int season)
     {
-        return date + ", " + place;
-    }
-
-    public String getId(int series,int season)
-    {
-        return series+emptyString()+season;
+        return series+""+season;
     }
 
 }

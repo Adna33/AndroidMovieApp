@@ -2,7 +2,9 @@ package atlant.moviesapp.presenters;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
@@ -53,7 +55,7 @@ public class UserWatchlistPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
-                    Log.d("proba",movies.size()+"");
+
 
 
                     view.hideProgress();

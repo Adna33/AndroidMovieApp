@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +22,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +35,6 @@ import atlant.moviesapp.adapter.HorizontalAdapter;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
-import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
@@ -39,7 +46,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
+
+public class TvShowDetails extends AppCompatActivity implements TvDetailsView, ShareActionProvider.OnShareTargetSelectedListener {
     @BindView(R.id.tv_title)
     TextView title;
 
@@ -83,18 +91,16 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     RecyclerView seasonRecyclerView;
 
     private TvDetailsPresenter presenter;
+    private TvShowDetail series;
 
     private Integer seriesId;
     private Integer seasonNum;
     private Date date;
-    private StringUtils stringUtils;
-
-    private BodyFavourite bodyFavourite;
-    private BodyWatchlist bodyWatchlist;
-
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
+    String name, decription, link;
     private static final int TAG = 1;
+    private ShareActionProvider share = null;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -201,10 +207,13 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
                 onBackPressed();
             }
         });
-        stringUtils = new StringUtils(this);
         date = new Date(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.series), 0);
+        name = intent.getStringExtra(getString(R.string.name));
+        link = intent.getStringExtra(getString(R.string.link));
+        decription = intent.getStringExtra(getString(R.string.overview));
+
         presenter = new TvDetailsPresenter(this);
         if (isConnected) {
             if (RealmUtil.getInstance().getTvShowDetailFromRealm(seriesId) == null || RealmUtil.getInstance().getShowDetailsFromRealm(seriesId) == null)
@@ -258,14 +267,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     @Override
     public void showCast(final List<Cast> cast) {
-        String castString = stringUtils.emptyString();
-        ;
-        for (int i = 0; i < cast.size(); i++) {
-            if (i < 4) {
-                castString = stringUtils.getCast(castString, cast.get(i).getName());
-            }
-
-        }
+        String castString = StringUtils.showCast(cast);
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
@@ -287,25 +289,26 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = stringUtils.getDirectorString(crew);
+        String directorsString = StringUtils.getDirectorString(crew, this);
         director.setText(directorsString);
-        String writersString = stringUtils.getWritersString(crew);
+        String writersString = StringUtils.getWritersString(crew, this);
         writers.setText(writersString);
 
     }
 
     @Override
     public void showDetails(final TvShowDetail series) {
+
         final List<Integer> seasons = new ArrayList<>();
-        director.setText("");
+        director.setText(getString(R.string.unknown_field));
         String year = series.getFirstAirDate();
         if (year != null) {
-            title.setText(stringUtils.getTitle(series.getName(), year));
+            title.setText(getString(R.string.getTitle, series.getName(), year));
         }
         if (series.getGenres() == null) {
             genre.setText(R.string.genre_unknown);
         } else
-            genre.setText(stringUtils.getGenre(series));
+            genre.setText(StringUtils.getGenre(series));
         for (int i = 1; i <= series.getNumberOfSeasons(); i++) {
             seasons.add(i);
         }
@@ -372,5 +375,63 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         if (presenter != null)
             presenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+
+        MenuItem item = menu.findItem(R.id.share);
+        share = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        share.setOnShareTargetSelectedListener(this);
+        setShareIntent(createShareIntent());
+        return (super.onCreateOptionsMenu(menu));
+    }
+
+    @Override
+    public boolean onShareTargetSelected(ShareActionProvider source,
+                                         Intent intent) {
+        final String appName = intent.getComponent().getPackageName();
+        if (appName.equals("com.facebook.katana")) {
+            setupFacebookShareIntent();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (share != null) {
+
+            share.setShareIntent(shareIntent);
+        }
+    }
+
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+        if (name != null)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, name);
+
+        if (decription != null)
+            shareIntent.putExtra(Intent.EXTRA_TEXT,decription);
+        if (link != null)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, link);
+        shareIntent.setType("image/*");
+
+        return shareIntent;
+    }
+
+    public void setupFacebookShareIntent() {
+        ShareDialog shareDialog;
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        shareDialog = new ShareDialog(this);
+        if (decription != null && link != null) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(decription)
+                    .setContentUrl(Uri.parse(link))
+                    .build();
+            shareDialog.show(linkContent);
+        }
     }
 }

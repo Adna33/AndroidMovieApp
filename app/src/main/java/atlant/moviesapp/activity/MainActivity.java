@@ -44,6 +44,7 @@ import atlant.moviesapp.fragments.MovieFragment;
 import atlant.moviesapp.fragments.NewsFeedFragment;
 import atlant.moviesapp.fragments.SearchFragment;
 import atlant.moviesapp.fragments.TvShowFragment;
+import atlant.moviesapp.helper.SharedPrefsUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyRating;
@@ -196,9 +197,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             case R.id.nav_logout:
                 ApplicationState.setUser(null);
                 RealmUtil.getInstance().deleteRealmAccount();
-                SharedPreferences sp = getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
-                sp.edit().remove(getString(R.string.user)).apply();
-                sp.edit().remove(getString(R.string.password)).apply();
+                SharedPrefsUtils.removePref(this,getString(R.string.userDetails));
                 drawerLayout.closeDrawer(GravityCompat.START);
                 recreate();
                 break;

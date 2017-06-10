@@ -62,7 +62,6 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
 
     private boolean isClicked = true;
-    private StringUtils stringUtils;
     private ActorDetailsPresenter presenter;
 
     @OnClick(R.id.actor_full_bio)
@@ -105,7 +104,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
         Intent intent = getIntent();
         Integer actorId = intent.getIntExtra("actorId", 0);
         presenter = new ActorDetailsPresenter(this);
-        stringUtils= new StringUtils(this);
+
         if (isConnected) {
             if (RealmUtil.getInstance().getRealmActor(actorId) == null)
                 RealmUtil.getInstance().createRealmActor(actorId);
@@ -121,7 +120,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     @Override
     public void showActor(Actor actor) {
         name.setText(actor.getName());
-        birthDate.setText(stringUtils.getActorBirthData(date.getFormatedDate(actor.getBirthday()), actor.getPlaceOfBirth()));
+        birthDate.setText(getString(R.string.actorBirthData,actor.getBirthday(),actor.getPlaceOfBirth()));
         website.setText(actor.getHomepage());
         biography.setText(actor.getBiography());
         Glide.with(this).load(actor.getImagePath())

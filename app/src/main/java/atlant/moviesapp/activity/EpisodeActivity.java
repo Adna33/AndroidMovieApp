@@ -66,7 +66,6 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode);
         ButterKnife.bind(this);
-        stringUtils= new StringUtils(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
 
@@ -95,7 +94,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(poster);
         presenter=new EpisodePresenter(this);
-        realmId=seriesId+stringUtils.emptyString()+seasonId+stringUtils.emptyString()+episode.getEpisodeNumber();
+        realmId=seriesId+""+seasonId+""+episode.getEpisodeNumber();
         if (isConnected) {
             if(RealmUtil.getInstance().getRealmEpisode(realmId)==null)
             {RealmUtil.getInstance().createRealmEpisode(realmId);}

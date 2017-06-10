@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.google.gson.Gson;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.fragments.YouTubeFragment;
+import atlant.moviesapp.helper.SharedPrefsUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.presenters.LoginPresenter;
 import atlant.moviesapp.views.LoginView;
@@ -116,14 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @Override
     public void loggedUser(String pass) {
 
-        Gson gson = new Gson();
-        SharedPreferences userDetails = this.getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE);
-        SharedPreferences.Editor edit = userDetails.edit();
-        edit.clear();
-        String user = gson.toJson(ApplicationState.getUser());
-        edit.putString(getString(R.string.user), user);
-        edit.putString(getString(R.string.password), pass);
-        edit.apply();
+        SharedPrefsUtils.loginPref(this,getString(R.string.userDetails),pass);
         Toast.makeText(this, "Welcome "+ApplicationState.getUser().getUsername(),Toast.LENGTH_SHORT).show();
         presenter.getMovieFavorites(1);
         presenter.getSeriesFavorites(1);

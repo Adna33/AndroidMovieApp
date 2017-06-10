@@ -47,7 +47,6 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
     TextView seasonYear;
     String realmId;
     private Integer seriesId, seasonId, seasonNum;
-    private StringUtils stringUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,6 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
-        stringUtils= new StringUtils(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -97,7 +95,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         seasonRecyclerView.addOnItemTouchListener(new HorizontalAdapter.RecyclerTouchListener(this, seasonRecyclerView, new HorizontalAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                realmId= stringUtils.getId(seriesId,seasons.get(position));
+                realmId= StringUtils.getId(seriesId,seasons.get(position));
                 if(isNetworkAvailable()) {
                     presenter.getSeasonEpisodes(id, seasons.get(position), realmId);
                 }

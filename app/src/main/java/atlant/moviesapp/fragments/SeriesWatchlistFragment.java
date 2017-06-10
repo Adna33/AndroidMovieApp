@@ -148,14 +148,12 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, p);
                         RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
-                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, p);
                         RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
-                        c.drawText("Remove", (float) itemView.getLeft() + width, (float) itemView.getTop() + width, t);
 
                     }
                 }
