@@ -118,7 +118,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 0;
-    private ShareActionProvider share=null;
+    ShareActionProvider mShareActionProvider;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -384,13 +384,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
 
-        MenuItem item=menu.findItem(R.id.share);
-        share=(ShareActionProvider)MenuItemCompat.getActionProvider(item);
-        share.setOnShareTargetSelectedListener(this);
+        MenuItem item = menu.add(Menu.NONE, R.id.share, Menu.NONE, R.string.share);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        mShareActionProvider = new ShareActionProvider(this) {
+            @Override
+            public View onCreateActionView() {
+                return null;
+            }
+        };
+
+        item.setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
+        mShareActionProvider.setOnShareTargetSelectedListener(this);
         setShareIntent(createShareIntent());
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
+
         return(super.onCreateOptionsMenu(menu));
+
     }
     @Override
     public boolean onShareTargetSelected(ShareActionProvider source,
@@ -401,23 +411,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         return false;
     }
     private void setShareIntent(Intent shareIntent) {
-        if (share != null) {
+        if (mShareActionProvider != null) {
 
-            share.setShareIntent(shareIntent);
+            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 
 
     private Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-
-        shareIntent.putExtra(Intent.EXTRA_TEXT,
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(movie.getImagePath()));
+        shareIntent.setType("image/jpeg");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,
                 movie.getTitle());
-
         shareIntent.putExtra(Intent.EXTRA_TEXT,
                 movie.getOverview());
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(movie.getImagePath()));
-        shareIntent.setType("image/*");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         return shareIntent;
     }
