@@ -230,7 +230,44 @@
                 android:layout_margin="15dp"
                 android:text="Overview text"
                 android:textSize="14sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/fadedText"
+                android:layout_marginTop="24dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp">
 
+                <TextView
+                    android:text="Image Gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="@string/expand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/see_all_images"
+                    android:layout_weight="1"
+                    android:textColor="@color/standardYellow"
+
+                    android:layout_gravity="right"
+                    android:textSize="12sp"
+                    android:foregroundGravity="right"
+                    android:gravity="right" />
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/images_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="6dp"
+                android:scrollbars="horizontal" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

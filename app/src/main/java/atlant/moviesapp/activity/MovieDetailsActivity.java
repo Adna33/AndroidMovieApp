@@ -45,11 +45,14 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
+import atlant.moviesapp.adapter.GalleryAdapter;
+import atlant.moviesapp.adapter.ImageAdapter;
 import atlant.moviesapp.adapter.ReviewAdapter;
 import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
@@ -100,6 +103,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
 
+    @BindView(R.id.images_recycler_view)
+    RecyclerView imageRecyclerView;
+
     @BindView(R.id.play_button)
     ImageView playButton;
 
@@ -133,6 +139,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         i.putExtra(getString(R.string.tag), TAG);
         startActivity(i);
 
+    }
+
+    @OnClick(R.id.see_all_images)
+    public void seeAll() {
+        Intent intent = new Intent(MovieDetailsActivity.this, GalleryActivity.class);
+        intent.putExtra(getString(R.string.name), movie.getTitle());
+        intent.putExtra(getString(R.string.id), movie.getId());
+        intent.putExtra(getString(R.string.tag), TAG);
+        startActivity(intent);
     }
 
     @OnClick(R.id.heart_detail)
@@ -258,6 +273,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 RealmUtil.getInstance().createRealmMovieObject(movie.getId());
             presenter.getCredits(movie.getId());
             presenter.getReviews(movie.getId());
+            presenter.getImages(movie.getId());
         } else {
             presenter.setUpMovie(movie.getId());
 
@@ -358,6 +374,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ReviewAdapter(reviews, R.layout.review_item, this));
+
+    }
+
+    @Override
+    public void showImages(List<Backdrop> backdrops) {
+        imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        imageRecyclerView.setAdapter(new ImageAdapter(getApplicationContext(), backdrops));
 
     }
 

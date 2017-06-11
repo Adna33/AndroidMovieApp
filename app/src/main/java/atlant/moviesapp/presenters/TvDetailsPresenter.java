@@ -6,11 +6,13 @@ import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.R;
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Crew;
+import atlant.moviesapp.model.ImageResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.TvShowDetail;
 import atlant.moviesapp.realm.models.RealmSeries;
@@ -223,12 +225,46 @@ public class TvDetailsPresenter {
 
 
     }
+    private Call<ImageResponse> imageCall;
 
+    public void getImages(final int id) {
+
+        final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
+        imageCall = apiservice.getSeriesImages(id, API_KEY);
+
+
+        imageCall.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    List<Backdrop> backdrops= response.body().getBackdrops();
+                    view.showImages(backdrops);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+                if (call.isCanceled()) {
+
+                    Log.e("TAG", "request was cancelled");
+                }
+
+                //TODO onFailure
+                Log.e("TAG", t.toString());
+
+            }
+        });
+
+
+    }
     public void onStop() {
         if (call != null)
             call.cancel();
         if (callCredits != null)
             callCredits.cancel();
+        if(imageCall!=null)
+            imageCall.cancel();
     }
 
     public void onDestroy() {
@@ -237,6 +273,8 @@ public class TvDetailsPresenter {
 
         if (callCredits != null)
             callCredits.cancel();
+        if(imageCall!=null)
+            imageCall.cancel();
         view = null;
     }
 }

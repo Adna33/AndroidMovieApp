@@ -21,6 +21,7 @@
 
     <color name="navPressed">#4a4b4c</color>
     <color name="navTextPressed">#f6c900</color>
+    <color name="galleryTitle">#2f2f2f</color>
 
 
 </resources>

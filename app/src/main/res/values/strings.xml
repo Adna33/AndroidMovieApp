@@ -110,6 +110,7 @@
     <string name="seriesNotFav">There is no upcoming favorite series releasing today</string>
     <string name="movieNotification">movieNotification</string>
     <string name="norificationText">"Have you seen %s ?"</string>
+    <string name="imagesTitle">"%s images"</string>
     <string name="actorBirthData">%1$s, %2$s</string>
     <string name="getTitle">%1$s, %2$s</string>
     <string name="concat">%1$s%2$s</string>

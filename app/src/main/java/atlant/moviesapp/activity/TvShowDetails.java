@@ -39,11 +39,14 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
+import atlant.moviesapp.adapter.ImageAdapter;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
+import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowDetail;
 
 import atlant.moviesapp.presenters.TvDetailsPresenter;
@@ -97,6 +100,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     @BindView(R.id.seasons_recycler_view)
     RecyclerView seasonRecyclerView;
 
+    @BindView(R.id.images_recycler_view)
+    RecyclerView imageRecyclerView;
+
     private TvDetailsPresenter presenter;
     private TvShowDetail series;
 
@@ -117,6 +123,14 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         i.putExtra(getString(R.string.tag), TAG);
         startActivity(i);
 
+    }
+    @OnClick(R.id.see_all_images)
+    public void seeAllImages() {
+        Intent intent = new Intent(TvShowDetails.this, GalleryActivity.class);
+        intent.putExtra(getString(R.string.name), name);
+        intent.putExtra(getString(R.string.id), seriesId);
+        intent.putExtra(getString(R.string.tag), TAG);
+        startActivity(intent);
     }
 
     @BindView(R.id.divider)
@@ -227,6 +241,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
                 RealmUtil.getInstance().createRealmSeriesObject(seriesId);
             presenter.getDetails(seriesId);
             presenter.getCredits(seriesId);
+            presenter.getImages(seriesId);
         } else {
             presenter.setUpTvShow(seriesId);
         }
@@ -348,6 +363,12 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         }));
         showPoster(series);
 
+    }
+
+    @Override
+    public void showImages(List<Backdrop> backdrops) {
+        imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        imageRecyclerView.setAdapter(new ImageAdapter(getApplicationContext(), backdrops));
     }
 
 

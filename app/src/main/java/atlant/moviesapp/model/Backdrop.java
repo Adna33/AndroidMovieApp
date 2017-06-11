@@ -31,4 +31,15 @@ public class Backdrop
         this.filePath = b.filePath;
     }
 
+    public String getBackdropImagePath300(){
+        return "http://image.tmdb.org/t/p/w300" + filePath;
+    }
+    public String getBackdropImagePath500(){
+        return "http://image.tmdb.org/t/p/w500" + filePath;
+    }
+    public String getBackdropImagePath780(){
+        return "http://image.tmdb.org/t/p/780" + filePath;
+    }
+
+
 }
