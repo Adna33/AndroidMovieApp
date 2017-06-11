@@ -2,9 +2,11 @@ package atlant.moviesapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -22,10 +24,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -393,14 +400,14 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         setShareIntent(createShareIntent());
         MenuItemCompat.setActionProvider(item, mShareActionProvider);
 
-        return(super.onCreateOptionsMenu(menu));
+        return (super.onCreateOptionsMenu(menu));
     }
 
     @Override
     public boolean onShareTargetSelected(ShareActionProvider source,
                                          Intent intent) {
         final String appName = intent.getComponent().getPackageName();
-        if (appName.equals("com.facebook.katana")) {
+        if (appName.equals(getString(R.string.fbPackage))) {
             setupFacebookShareIntent();
             return true;
         }
@@ -417,18 +424,41 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
 
     private Intent createShareIntent() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        SimpleTarget target = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+                shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+            }
+        };
+        Glide.with(getApplicationContext()).load(link).asBitmap()
+                .into(target);
+        shareIntent.setType(getString(R.string.imageType));
         if (name != null)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, name);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, name);
 
         if (decription != null)
-            shareIntent.putExtra(Intent.EXTRA_TEXT,decription);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, decription);
         if (link != null)
             shareIntent.putExtra(Intent.EXTRA_STREAM, link);
-        shareIntent.setType("image/*");
+
 
         return shareIntent;
+    }
+
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
     public void setupFacebookShareIntent() {

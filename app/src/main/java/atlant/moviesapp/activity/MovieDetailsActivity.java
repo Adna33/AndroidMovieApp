@@ -327,9 +327,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = StringUtils.getDirectorString(crew,this);
+        String directorsString = StringUtils.getDirectorString(crew, this);
         director.setText(directorsString);
-        String writersString = StringUtils.getWritersString(crew,this);
+        String writersString = StringUtils.getWritersString(crew, this);
         writers.setText(writersString);
 
     }
@@ -386,7 +386,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -404,17 +403,22 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         setShareIntent(createShareIntent());
         MenuItemCompat.setActionProvider(item, mShareActionProvider);
 
-        return(super.onCreateOptionsMenu(menu));
+        return (super.onCreateOptionsMenu(menu));
 
     }
+
     @Override
     public boolean onShareTargetSelected(ShareActionProvider source,
                                          Intent intent) {
         final String appName = intent.getComponent().getPackageName();
-        if(appName.equals("com.facebook.katana")){setupFacebookShareIntent(); return true;}
+        if (appName.equals(getString(R.string.fbPackage))) {
+            setupFacebookShareIntent();
+            return true;
+        }
 
         return false;
     }
+
     private void setShareIntent(Intent shareIntent) {
         if (mShareActionProvider != null) {
 
@@ -436,22 +440,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         Glide.with(getApplicationContext()).load(movie.getImagePath()).asBitmap()
                 .into(target);
 
-        shareIntent.setType("image/jpeg");
+        shareIntent.setType(getString(R.string.imageType));
         shareIntent.putExtra(Intent.EXTRA_SUBJECT,
                 movie.getTitle());
         shareIntent.putExtra(Intent.EXTRA_TEXT,
                 movie.getOverview());
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         return shareIntent;
     }
 
 
-
     public Uri getLocalBitmapUri(Bitmap bmp) {
         Uri bmpUri = null;
         try {
-            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
             FileOutputStream out = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.close();
@@ -461,8 +463,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         }
         return bmpUri;
     }
+
     public void setupFacebookShareIntent() {
-      ShareDialog shareDialog;
+        ShareDialog shareDialog;
         FacebookSdk.sdkInitialize(getApplicationContext());
         shareDialog = new ShareDialog(this);
 

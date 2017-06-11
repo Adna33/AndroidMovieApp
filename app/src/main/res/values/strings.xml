@@ -119,5 +119,7 @@
     <string name="name">name</string>
     <string name="link">link</string>
     <string name="overview">overview</string>
+    <string name="fbPackage">com.facebook.katana</string>
+    <string name="imageType">image/jpeg</string>
 
 </resources>

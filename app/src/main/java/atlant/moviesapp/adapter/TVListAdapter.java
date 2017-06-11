@@ -105,14 +105,14 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
             if (v.getId() == watchlist.getId()) {
                 if (ApplicationState.isLoggedIn()) {
                     if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.bookmark_active_icon).getConstantState())) {
-                        Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                        Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
                     }
                     else{
                         Glide.with(context).load(R.drawable.bookmark_active_icon)
-                                .crossFade().centerCrop()
+                                .crossFade()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
                     }
@@ -178,13 +178,13 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             } else {
-                Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             }
         } else {
-            Glide.with(context).load(R.drawable.not_bookmarked_icon)
+            Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(holder.watchlist);
