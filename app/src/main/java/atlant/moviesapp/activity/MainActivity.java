@@ -466,7 +466,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                             new TimerTask() {
                                 @Override
                                 public void run() {
-                                    // TODO: do what you need here (refresh list)
                                     if (edtSeach.getText() != null)
                                         doSearch(s);
                                 }
@@ -543,7 +542,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public void networkAvailable() {
 
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.connection), Toast.LENGTH_SHORT).show();
 
         if (ApplicationState.isLoggedIn()) {
             List<RealmPostMovie> postMovies = RealmUtil.getInstance().getAllPostMovies();
@@ -573,15 +572,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 }
             RealmUtil.getInstance().deleteAllPostMovies();
             RealmUtil.getInstance().deleteAllPostSeries();
-
-
         }
-
     }
 
     @Override
     public void networkUnavailable() {
-        Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.noConnection), Toast.LENGTH_SHORT).show();
     }
 
     @Override

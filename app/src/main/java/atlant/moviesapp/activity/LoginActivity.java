@@ -140,7 +140,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         builder.setPositiveButton(R.string.OkButton, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
             }
         });
         AlertDialog dialog = builder.create();

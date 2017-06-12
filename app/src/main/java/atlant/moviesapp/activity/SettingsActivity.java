@@ -81,7 +81,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            //Set up primjer-a push notifikacija
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 12);
             calendar.set(Calendar.MINUTE, 0);

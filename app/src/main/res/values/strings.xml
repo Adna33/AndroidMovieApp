@@ -119,6 +119,9 @@
     <string name="idExtra">ID</string>
     <string name="sessionExtra">SESSION</string>
     <string name="name">name</string>
+    <string name="connection">Connected</string>
+    <string name="noConnection">Disconnected</string>
+
     <string name="link">link</string>
     <string name="overview">overview</string>
     <string name="fbPackage">com.facebook.katana</string>

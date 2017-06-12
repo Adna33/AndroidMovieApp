@@ -12,8 +12,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5d7233f-53fb-4b0a-ac9d-bae7682124f0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/GalleryActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/GalleryActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SplashScreen.java" afterPath="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SplashScreen.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="AndroidMovieApp.iws" />
@@ -60,38 +62,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GalleryActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/GalleryActivity.java">
+      <file leaf-file-name="MovieDetailsActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="99" column="67" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="67" />
+            <state relative-caret-position="175">
+              <caret line="484" column="32" selection-start-line="484" selection-start-column="32" selection-end-line="484" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SignupActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SignupActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3558#3595#0" expanded="true" />
-                <marker date="1497260998628" expanded="false" signature="1593:1614" ph="&quot;Movies&quot;" />
+                <element signature="e#660#687#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java">
+      <file leaf-file-name="SplashScreen.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SplashScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="154" column="5" selection-start-line="154" selection-start-column="5" selection-end-line="154" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3527#3603#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <file leaf-file-name="TvShowDetails.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="113" column="45" selection-start-line="113" selection-start-column="45" selection-end-line="113" selection-end-column="45" />
+            <state relative-caret-position="66">
+              <caret line="370" column="91" selection-start-line="370" selection-start-column="91" selection-end-line="370" selection-end-column="91" />
               <folding />
             </state>
           </provider>
@@ -2156,7 +2163,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/receivers/AlarmReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/UserWatchlistPresenter.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/MovieListPresenter.java" />
@@ -2173,9 +2179,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/HighestRatedTvFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/AiringTvFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/MostPopularTvFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/helper/SharedPrefsUtils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesFavoritesFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesRatingsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/fragments/SeriesWatchlistFragment.java" />
@@ -2204,9 +2208,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/presenters/TvDetailsPresenter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_gallery.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/model/Backdrop.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/GalleryActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SplashScreen.java" />
       </list>
     </option>
   </component>
@@ -2824,24 +2831,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_share.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="78" selection-start-line="8" selection-start-column="59" selection-end-line="8" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/ActorAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="70" column="8" selection-start-line="70" selection-start-column="8" selection-end-line="73" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_episode.xml">
       <provider selected="true" editor-type-id="android-designer2">
         <state />
@@ -2849,30 +2838,6 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SignupActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2997,14 +2962,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="51" column="61" selection-start-line="48" selection-start-column="7" selection-end-line="51" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/adapter/FilmographyAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1292">
@@ -3041,6 +2998,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
           <caret line="45" column="92" selection-start-line="45" selection-start-column="92" selection-end-line="45" selection-end-column="92" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1782#1783#0" expanded="true" />
+            <element signature="e#1818#1819#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3106,6 +3068,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
           <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="46" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3113,28 +3076,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="17" column="46" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="382" column="91" selection-start-line="381" selection-start-column="8" selection-end-line="382" selection-end-column="91" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="370" column="91" selection-start-line="370" selection-start-column="91" selection-end-line="370" selection-end-column="91" />
-          <folding>
-            <element signature="e#3559#3581#0" expanded="false" />
-            <element signature="e#3613#3636#0" expanded="false" />
-            <element signature="e#3847#3871#0" expanded="false" />
-            <element signature="e#3904#3926#0" expanded="false" />
-            <element signature="e#3963#3986#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3235,18 +3176,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="113" column="45" selection-start-line="113" selection-start-column="45" selection-end-line="113" selection-end-column="45" />
-          <folding />
+        <state relative-caret-position="328">
+          <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3527#3603#0" expanded="true" />
+            <element signature="e#4515#4534#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="573" column="58" selection-start-line="573" selection-start-column="58" selection-end-line="573" selection-end-column="58" />
+          <folding>
+            <element signature="e#18773#18803#0" expanded="true" />
+            <element signature="e#21110#21142#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/GalleryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="99" column="67" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="67" />
+        <state relative-caret-position="327">
+          <caret line="95" column="13" selection-start-line="95" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3558#3595#0" expanded="true" />
@@ -3255,14 +3211,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="122" column="44" selection-start-line="122" selection-start-column="44" selection-end-line="122" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/RatingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+          <folding>
+            <element signature="e#1565#1588#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SeasonsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1241">
+          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SettingsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="515">
-          <caret line="154" column="5" selection-start-line="154" selection-start-column="5" selection-end-line="154" selection-end-column="5" />
+          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/MovieDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="484" column="32" selection-start-line="484" selection-start-column="32" selection-end-line="484" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SignupActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3527#3603#0" expanded="true" />
+            <element signature="e#660#687#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/SplashScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/atlant/moviesapp/activity/TvShowDetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="370" column="91" selection-start-line="370" selection-start-column="91" selection-end-line="370" selection-end-column="91" />
+          <folding />
         </state>
       </provider>
     </entry>
