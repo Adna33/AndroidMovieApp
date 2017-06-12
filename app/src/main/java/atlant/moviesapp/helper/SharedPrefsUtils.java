@@ -31,7 +31,7 @@ public class SharedPrefsUtils {
     }
 
     public static void removeNotif(Context context, String key, String type) {
-        context.getSharedPreferences(key, 0).edit().remove(type).apply();
+        context.getSharedPreferences(key, Context.MODE_PRIVATE).edit().remove(type).apply();
     }
 
     public static Boolean isTvNotifOn(Context context, String key) {
