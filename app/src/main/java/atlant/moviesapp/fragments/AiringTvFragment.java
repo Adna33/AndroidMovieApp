@@ -51,7 +51,6 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
     boolean isConnected;
 
     public AiringTvFragment() {
-        // Required empty public constructor
     }
 
 
@@ -61,7 +60,6 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
 
         View view = inflater.inflate(R.layout.fragment_airing_tv, container, false);
         ButterKnife.bind(this, view);
-
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
         isConnected=isNetworkAvailable();

@@ -180,10 +180,10 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
     @Override
     public void showError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Error loading data, please check your connection")
-                .setTitle("Error");
+        builder.setMessage(getString(R.string.errorMessage))
+                .setTitle(getString(R.string.errorTitle));
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.OkButton), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }

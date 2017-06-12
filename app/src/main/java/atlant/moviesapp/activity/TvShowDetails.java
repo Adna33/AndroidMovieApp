@@ -124,6 +124,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         startActivity(i);
 
     }
+
     @OnClick(R.id.see_all_images)
     public void seeAllImages() {
         Intent intent = new Intent(TvShowDetails.this, GalleryActivity.class);
@@ -170,7 +171,6 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         }
 
     }
-
 
     @OnClick(R.id.bookmark_detail)
     void updateWatchlist() {
