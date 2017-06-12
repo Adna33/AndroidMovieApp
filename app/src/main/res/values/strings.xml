@@ -111,6 +111,7 @@
     <string name="movieNotification">movieNotification</string>
     <string name="norificationText">"Have you seen %s ?"</string>
     <string name="imagesTitle">"%s images"</string>
+    <string name="welcomeMessage">"Welcome %s"</string>
     <string name="actorBirthData">%1$s, %2$s</string>
     <string name="getTitle">%1$s, %2$s</string>
     <string name="concat">%1$s%2$s</string>

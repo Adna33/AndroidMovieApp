@@ -95,8 +95,9 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView {
 
     @Override
     public void showImages(List<Backdrop> backdrops) {
+        String size=String.format("%d",backdrops.size());
         images.clear();
-        imageNumField.setText(getString(R.string.imagesTitle, String.format("%d",backdrops.size())));
+        imageNumField.setText(getString(R.string.imagesTitle,size ));
         images.addAll(backdrops);
         mAdapter.notifyDataSetChanged();
     }
