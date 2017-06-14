@@ -2,6 +2,7 @@ package atlant.moviesapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     private Context context;
     private Date date;
     private OnItemClick itemClick;
+    private int i = 0, j = 0;
 
 
     public OnLoadMoreListener loadMoreListener;
@@ -85,34 +87,40 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         public void onClick(View v) {
 
             if (v.getId() == favorite.getId()) {
-                if (ApplicationState.isLoggedIn()) {
-                if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.like_active_icon).getConstantState())) {
-
-                    Glide.with(context).load(R.drawable.like)
-                            .crossFade().centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .into(favorite);
-                } else {
-
-                    Glide.with(context).load(R.drawable.like_active_icon)
-                            .crossFade().centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .into(favorite);
-                }}
                 itemClick.onFavoriteClicked(getAdapterPosition());
+                if (ApplicationState.isLoggedIn()) {
+                    Log.d("heheh",i+"");
+                    if (i == 1) {
+                        i = 0;
+                        Glide.with(context).load(R.drawable.like)
+                                .crossFade().centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(favorite);
+                    } else {
+                        i = 1;
+                        Glide.with(context).load(R.drawable.like_active_icon)
+                                .crossFade().centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(favorite);
+                    }
+                }
+
 
             }
             if (v.getId() == watchlist.getId()) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (watchlist.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.bookmark_active_icon).getConstantState())) {
+
+                    if (j == 1) {
+                        j = 0;
                         Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
-                    }
-                    else{
+
+                    } else {
+                        j = 1;
                         Glide.with(context).load(R.drawable.bookmark_active_icon)
-                                .crossFade()
+                                .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
                     }
@@ -161,29 +169,36 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.seriesPoster);
         if (ApplicationState.isLoggedIn()) {
+
             if (ApplicationState.getUser().getFavouriteSeries().contains(series.get(position).getId())) {
+                i = 1;
                 Glide.with(context).load(R.drawable.like_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             } else {
+                i = 0;
                 Glide.with(context).load(R.drawable.like)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             }
             if (ApplicationState.getUser().getWatchListSeries().contains(series.get(position).getId())) {
+                j = 1;
                 Glide.with(context).load(R.drawable.bookmark_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             } else {
+                j = 0;
                 Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             }
         } else {
+            j = 0;
+            i = 0;
             Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)

@@ -37,6 +37,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private Context context;
     private Date date;
     private OnItemClick itemClick;
+    private int i = 0, j = 0;
 
     public MovieListAdapter.OnLoadMoreListener loadMoreListener;
     public boolean isLoading = false,
@@ -87,13 +88,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
             if (v.getId() == favorite.getId()) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.like_active_icon).getConstantState())) {
-
+                    if (i == 1) {
+                        i = 0;
                         Glide.with(context).load(R.drawable.like)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                 .into(favorite);
                     } else {
+                        i=1;
 
                         Glide.with(context).load(R.drawable.like_active_icon)
                                 .crossFade().centerCrop()
@@ -105,13 +107,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             }
             if (v.getId() == watchlist.getId()) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (watchlist.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.bookmark_active_icon).getConstantState())) {
+                    if (j == 1) {
+                        j = 0;
                         Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
                     }
                     else{
+                        j=1;
                         Glide.with(context).load(R.drawable.bookmark_active_icon)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -169,22 +173,26 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 .into(holder.moviePoster);
         if (ApplicationState.isLoggedIn()) {
             if (ApplicationState.getUser().getFavouriteMovies().contains(movies.get(position).getId())) {
+                i = 1;
                 Glide.with(context).load(R.drawable.like_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             } else {
+                i = 0;
                 Glide.with(context).load(R.drawable.like)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             }
             if (ApplicationState.getUser().getWatchListMovies().contains(movies.get(position).getId())) {
+                j = 1;
                 Glide.with(context).load(R.drawable.bookmark_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             } else {
+                j = 0;
                 Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
