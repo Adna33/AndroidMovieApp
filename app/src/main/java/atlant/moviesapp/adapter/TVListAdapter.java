@@ -87,9 +87,8 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         public void onClick(View v) {
 
             if (v.getId() == favorite.getId()) {
-                itemClick.onFavoriteClicked(getAdapterPosition());
+
                 if (ApplicationState.isLoggedIn()) {
-                    Log.d("heheh",i+"");
                     if (i == 1) {
                         i = 0;
                         Glide.with(context).load(R.drawable.like)
@@ -104,6 +103,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                                 .into(favorite);
                     }
                 }
+                itemClick.onFavoriteClicked(getAdapterPosition());
 
 
             }

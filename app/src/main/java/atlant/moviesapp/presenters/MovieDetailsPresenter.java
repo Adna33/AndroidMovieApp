@@ -133,8 +133,8 @@ public class MovieDetailsPresenter {
         if (RealmUtil.getInstance().getPostMovie(id) == null) {
             RealmUtil.getInstance().createPostMovie(id);
         }
-        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), false);
         RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), false);
     }
 
     public void postWatchlistRealm(int id) {
@@ -149,8 +149,8 @@ public class MovieDetailsPresenter {
         if (RealmUtil.getInstance().getPostMovie(id) == null) {
             RealmUtil.getInstance().createPostMovie(id);
         }
-        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
         RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
     }
 
     public void postFavorite(int id, String session_id, Boolean b) {
