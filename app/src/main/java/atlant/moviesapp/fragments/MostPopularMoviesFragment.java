@@ -76,6 +76,7 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
 
                     Movie m = movies.get(position);
                     if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
+                        ApplicationState.getUser().removeFavouriteMovie(m.getId());
                         if (isConnected) {
                             presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), false);
                         } else {

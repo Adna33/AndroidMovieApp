@@ -253,7 +253,11 @@
                 android:scrollbars="horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="15dp" />
-
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/images_layout">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -292,7 +296,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="6dp"
                 android:scrollbars="horizontal" />
-
+</LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

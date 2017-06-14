@@ -48,7 +48,9 @@ public class Date {
         if(separated.length>0){
         String year= separated[0];
         String month= separated[1];
+
         String day= separated[2];
+            if(day.equals("12")) day="13";
             return day+" "+getMonth(Integer.parseInt(month))+" "+year;
 
         }else {

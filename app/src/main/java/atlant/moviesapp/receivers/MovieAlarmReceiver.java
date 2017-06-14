@@ -109,13 +109,14 @@ public class MovieAlarmReceiver extends BroadcastReceiver {
                     int c = 0;
                     for (Movie m : movies) {
                         if (m.getReleaseDate().equals(today)) {
+
                             intent = new Intent(context, MovieDetailsActivity.class);
                             intent.putExtra(context.getString(R.string.movie), m);
                             makeNotification(context, context.getString(R.string.appName), context.getString(R.string.norificationText,m.getTitle()) , context.getString(R.string.appName), REQUEST_CODE_MOVIE, intent);
                             c++;
                         }
-                      //  if (c == 0)
-                           // makeNotification(context, context.getString(R.string.appName), "There is no upcoming watchlist releasing today", context.getString(R.string.appName), REQUEST_CODE_MOVIE, new Intent(context, MainActivity.class));
+                      if (c == 0)
+                           makeNotification(context, context.getString(R.string.appName), "There is no upcoming watchlist releasing today", context.getString(R.string.appName), REQUEST_CODE_MOVIE, new Intent(context, MainActivity.class));
 
                     }
                 }

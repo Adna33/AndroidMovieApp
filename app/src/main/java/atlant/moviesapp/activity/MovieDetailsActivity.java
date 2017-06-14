@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -156,12 +157,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             ApplicationState.getUser().removeFavouriteMovie(movie.getId());
             if (isNetworkAvailable()) {
                 presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), false);
-                Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
-
 
             } else {
                 presenter.removeFavoriteRealm(movie.getId());
             }
+            Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -216,6 +216,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @BindView(R.id.divider)
     TextView divider;
+
+    @BindView(R.id.images_layout)
+    LinearLayout imageLayout;
 
     private MovieDetailsPresenter presenter;
     private Movie movie;
@@ -273,8 +276,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 RealmUtil.getInstance().createRealmMovieObject(movie.getId());
             presenter.getCredits(movie.getId());
             presenter.getReviews(movie.getId());
+            imageLayout.setVisibility(View.VISIBLE);
             presenter.getImages(movie.getId());
         } else {
+            imageLayout.setVisibility(View.GONE);
             presenter.setUpMovie(movie.getId());
 
         }

@@ -68,9 +68,9 @@ public class HighestRatedMoviesFragment extends Fragment implements MovieListVie
             @Override
             public void onFavoriteClicked(int position) {
                 if (ApplicationState.isLoggedIn()) {
-
                     Movie m = movies.get(position);
                     if (ApplicationState.getUser().getFavouriteMovies().contains(m.getId())) {
+                        ApplicationState.getUser().removeFavouriteMovie(m.getId());
                         if (isConnected) {
                             presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), false);
                         } else {

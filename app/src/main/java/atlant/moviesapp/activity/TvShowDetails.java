@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -137,6 +138,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     @BindView(R.id.divider)
     TextView divider;
 
+    @BindView(R.id.images_layout)
+    LinearLayout imageLayout;
+
     @OnClick(R.id.heart_detail)
     void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteSeries().contains(seriesId)) {
@@ -241,8 +245,10 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
                 RealmUtil.getInstance().createRealmSeriesObject(seriesId);
             presenter.getDetails(seriesId);
             presenter.getCredits(seriesId);
+            imageLayout.setVisibility(View.VISIBLE);
             presenter.getImages(seriesId);
         } else {
+            imageLayout.setVisibility(View.GONE);
             presenter.setUpTvShow(seriesId);
         }
 
@@ -325,7 +331,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         director.setText(getString(R.string.unknown_field));
         String year = series.getFirstAirDate();
         if (year != null) {
-            title.setText(getString(R.string.getTitle, series.getName(), year));
+            title.setText(StringUtils.getTitle(series.getName(), year));
         }
         if (series.getGenres() == null) {
             genre.setText(R.string.genre_unknown);
@@ -429,7 +435,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
                                          Intent intent) {
         final String appName = intent.getComponent().getPackageName();
         if (appName.equals(getString(R.string.fbPackage))) {
-            setupFacebookShareIntent();
+          setupFacebookShareIntent();
             return true;
         }
 
