@@ -129,6 +129,9 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
                     if (isNetworkAvailable()) {
                         presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), 1);
                     } else {
+                        if (RealmUtil.getInstance().getPostSeries(id) == null) {
+                            RealmUtil.getInstance().createPostSeries(id);
+                        }
                         RealmUtil.getInstance().setSeriesWatchlist(RealmUtil.getInstance().getPostSeries(id), false);
                     }
 

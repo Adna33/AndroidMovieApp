@@ -132,6 +132,9 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
                     if (isNetworkAvailable()) {
                         presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), 0);
                     } else {
+                        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+                            RealmUtil.getInstance().createPostMovie(id);
+                        }
                         RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
                     }
 

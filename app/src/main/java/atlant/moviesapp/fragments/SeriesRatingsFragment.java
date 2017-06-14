@@ -131,9 +131,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
 
                     if (isNetworkAvailable()) {
                         presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
-                    } else {
-                       // RealmUtil.getInstance().
-                    }
+                    } 
 
                 }
             }

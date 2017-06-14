@@ -199,6 +199,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                         .into(holder.watchlist);
             }
         } else {
+            i=0;j=0;
             Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
