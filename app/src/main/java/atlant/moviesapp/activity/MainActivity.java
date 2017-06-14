@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -548,7 +549,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             List<RealmPostMovie> postMovies = RealmUtil.getInstance().getAllPostMovies();
             List<RealmPostSeries> postSeries = RealmUtil.getInstance().getAllPostSeries();
             if (postMovies != null)
+                Log.d("hue",postMovies.size()+"");
                 for (RealmPostMovie movie : postMovies) {
+
                     BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), movie.isFavorite());
                     presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
                     BodyWatchlist bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), movie.isInWatchlist());

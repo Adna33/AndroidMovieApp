@@ -727,17 +727,6 @@ public class RealmUtil {
         return m;
     }
 
-    public void deletePostMovie(int id) {
-        final RealmResults<RealmPostMovie> postModels = realm.where(RealmPostMovie.class).equalTo("id", id).findAll();
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                postModels.deleteAllFromRealm();
-            }
-        });
-    }
-
     public void deleteAllPostMovies() {
         final RealmResults<RealmPostMovie> postModels = realm.where(RealmPostMovie.class).findAll();
         realm.executeTransaction(new Realm.Transaction() {
