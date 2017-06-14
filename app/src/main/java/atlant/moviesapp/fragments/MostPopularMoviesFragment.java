@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,6 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
     private int currentPage = 1;
     List<Movie> movies;
     MovieListAdapter adapter;
-    private BodyFavourite bodyFavourite;
-
-
     @BindView(R.id.movies_recycler_view)
     RecyclerView recyclerView;
 

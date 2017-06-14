@@ -134,11 +134,13 @@ public class MovieListPresenter {
         if (RealmUtil.getInstance().getPostMovie(id) == null) {
             RealmUtil.getInstance().createPostMovie(id);
         }
+        Log.d("mvname",id+" presenter add");
         RealmUtil.getInstance().addMovieWatchlist(id);
         RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), true);
     }
 
     public void removeWatchlistRealm(int id) {
+        Log.d("mvname",id+" presenter del");
         if (RealmUtil.getInstance().getPostMovie(id) == null) {
             RealmUtil.getInstance().createPostMovie(id);
         }
