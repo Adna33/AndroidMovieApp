@@ -821,7 +821,6 @@ public class RealmUtil {
 
     public void setSeriesWatchlist(RealmPostSeries p, boolean b) {
         realm.beginTransaction();
-        if(p==null)
         if (p != null)
             p.setInWatchlist(b);
         realm.commitTransaction();
