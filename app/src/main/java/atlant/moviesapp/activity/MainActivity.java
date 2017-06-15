@@ -549,9 +549,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             List<RealmPostMovie> postMovies = RealmUtil.getInstance().getAllPostMovies();
             List<RealmPostSeries> postSeries = RealmUtil.getInstance().getAllPostSeries();
             if (postMovies != null)
-                Log.d("hue",postMovies.size()+"");
                 for (RealmPostMovie movie : postMovies) {
-
                     BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), movie.isFavorite());
                     presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
                     BodyWatchlist bodyWatchlist = new BodyWatchlist(getString(R.string.movie), movie.getId(), movie.isInWatchlist());
@@ -560,7 +558,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                         BodyRating bodyRating = new BodyRating(Double.parseDouble(movie.getRating()));
                         presenter.postRating(movie.getId(), ApplicationState.getUser().getSessionId(), bodyRating, MOVIE);
                     }
-
                 }
             if (postSeries != null)
                 for (RealmPostSeries series : postSeries) {
