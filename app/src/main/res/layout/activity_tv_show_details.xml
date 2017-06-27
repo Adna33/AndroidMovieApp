@@ -45,12 +45,38 @@
                 android:layout_margin="15dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_title"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Title"
-                    android:textSize="24sp" />
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Title"
+                        android:textSize="24sp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="13.5dp"
+                        android:layout_height="18.75dp"
+                        app:srcCompat="@drawable/bookmark_black_tool_symbol"
+                        android:id="@+id/bookmark_detail"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp" />
+
+                    <ImageView
+                        android:layout_width="19.95dp"
+                        android:layout_height="17.55dp"
+                        app:srcCompat="@drawable/like"
+                        android:id="@+id/heart_detail"
+                        android:layout_gravity="center_vertical" />
+
+
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tv_genre"
@@ -150,9 +176,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
                 android:drawableLeft="@drawable/star_fill_icon"
                 android:drawablePadding="3dp"
                 android:text="TextView"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/fadedText"
+                android:text="/10"
                 android:textSize="14sp" />
             <TextView
                 android:text=" |"

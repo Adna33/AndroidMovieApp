@@ -19,6 +19,7 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.FilmographyAdapter;
+import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.ActorDetailsPresenter;
@@ -52,6 +53,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
     @BindView(R.id.film_recycler_view)
     RecyclerView recyclerView;
+    private Date date;
 
 
     private boolean isClicked = true;
@@ -64,12 +66,12 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
             biography.setMaxLines(4);
             isClicked = true;
-            fullBiography.setText("See Full Bio");
+            fullBiography.setText(R.string.fullBio);
         } else {
 
             biography.setMaxLines(Integer.MAX_VALUE);
             isClicked = false;
-            fullBiography.setText("Hide");
+            fullBiography.setText(R.string.hide);
         }
     }
 
@@ -83,6 +85,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.actor_title);
+        date = new Date(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -106,7 +109,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     @Override
     public void showActor(Actor actor) {
         name.setText(actor.getName());
-        birthDate.setText(actor.getBirthday() + ", " + actor.getPlaceOfBirth());
+        birthDate.setText(date.getFormatedDate(actor.getBirthday()) + ", " + actor.getPlaceOfBirth());
         website.setText(actor.getHomepage());
         biography.setText(actor.getBiography());
         Glide.with(this).load(actor.getImagePath())
@@ -126,7 +129,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(ActorActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("movie", data.get(position));
+                intent.putExtra(getString(R.string.movieIntent), data.get(position));
                 startActivity(intent);
             }
 

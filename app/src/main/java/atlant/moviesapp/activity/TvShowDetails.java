@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,6 +24,8 @@ import atlant.moviesapp.adapter.TVListAdapter;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
 import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.model.BodyFavourite;
+import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
@@ -64,7 +67,11 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     @BindView(R.id.toolbarClassic)
     Toolbar toolbar;
 
+    @BindView(R.id.heart_detail)
+    ImageView favourite;
 
+    @BindView(R.id.bookmark_detail)
+    ImageView watchlist;
 
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
@@ -78,6 +85,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     private Integer seasonNum;
     private Date date;
 
+    private BodyFavourite bodyFavourite;
+    private BodyWatchlist bodyWatchlist;
+
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 1;
@@ -85,22 +95,71 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     void rate()
     {
         Intent i = new Intent(this, RatingActivity.class);
-        i.putExtra("title","Rate this TV show");
-        i.putExtra("id",seriesId);
-        i.putExtra("tag",TAG);
+        i.putExtra(getString(R.string.title),getString(R.string.ratethisTVshow));
+        i.putExtra(getString(R.string.id),seriesId);
+        i.putExtra(getString(R.string.tag),TAG);
         startActivity(i);
 
     }
     @BindView(R.id.divider)
     TextView divider;
 
+    @OnClick(R.id.heart_detail)
+    void addToFavorites() {
+        if (ApplicationState.getUser().getFavouriteSeries().contains(seriesId)) {
+            ApplicationState.getUser().removeFavoriteShow(seriesId);
+            bodyFavourite = new BodyFavourite(getString(R.string.tv),seriesId, false);
+            presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), bodyFavourite);
+            Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
+            Glide.with(this).load(R.drawable.like)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(favourite);
+
+        } else {
+            ApplicationState.getUser().addFavouriteShow(seriesId);
+            bodyFavourite = new BodyFavourite(getString(R.string.tv), seriesId, true);
+            presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), bodyFavourite);
+            Toast.makeText(this, R.string.addedFavorite, Toast.LENGTH_SHORT).show();
+            Glide.with(this).load(R.drawable.like_active_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(favourite);
+
+        }
+
+    }
+
+
+    @OnClick(R.id.bookmark_detail)
+    void addToWatchlist() {
+
+        if (ApplicationState.getUser().getWatchListSeries().contains(seriesId)) {
+            ApplicationState.getUser().removeWatchlistShow(seriesId);
+            bodyWatchlist= new BodyWatchlist(getString(R.string.tv), seriesId, false);
+            presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(watchlist);
+        } else {
+            ApplicationState.getUser().addWatchlistShow(seriesId);
+            bodyWatchlist= new BodyWatchlist(getString(R.string.tv),seriesId, true);
+            presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), bodyWatchlist);
+
+            Glide.with(this).load(R.drawable.bookmark_active_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(watchlist);
+        }
+    }
 
     @OnClick(R.id.see_all_seasons)
     public void seeAll() {
         Intent intent = new Intent(TvShowDetails.this, SeasonsActivity.class);
-        intent.putExtra("showId", seriesId);
-        intent.putExtra("seasonId", 1);
-        intent.putExtra("seasonNum", seasonNum);
+        intent.putExtra(getString(R.string.show_id_intent), seriesId);
+        intent.putExtra(getString(R.string.season_id_intent), 1);
+        intent.putExtra(getString(R.string.season_num_intent), seasonNum);
         startActivity(intent);
     }
 
@@ -125,10 +184,43 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
         date=new Date(this);
         Intent intent = getIntent();
-        seriesId = intent.getIntExtra("series", 0);
+        seriesId = intent.getIntExtra(getString(R.string.series), 0);
         presenter = new TvDetailsPresenter(this);
         presenter.getDetails(seriesId);
         presenter.getCredits(seriesId);
+
+        if (ApplicationState.isLoggedIn()) {
+            watchlist.setVisibility(View.VISIBLE);
+            favourite.setVisibility(View.VISIBLE);
+            if (ApplicationState.getUser().getFavouriteSeries().contains(seriesId)) {
+                Glide.with(this).load(R.drawable.like_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(favourite);
+            } else {
+                Glide.with(this).load(R.drawable.like)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(favourite);
+            }
+            if (ApplicationState.getUser().getWatchListSeries().contains(seriesId)) {
+                Glide.with(this).load(R.drawable.bookmark_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(watchlist);
+            } else {
+                Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(watchlist);
+            }
+
+        } else {
+            watchlist.setVisibility(View.INVISIBLE);
+            favourite.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
     @Override
@@ -147,7 +239,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(TvShowDetails.this, ActorActivity.class);
-                intent.putExtra("actorId", cast.get(position).getId());
+                intent.putExtra(getString(R.string.actorId), cast.get(position).getId());
                 startActivity(intent);
             }
 
@@ -163,7 +255,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
     public void showCrew(List<Crew> crew) {
         String directorsString = "";
         for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getJob().equals("Director")) {
+            if (crew.get(i).getJob().equals(getString(R.string.director))) {
                 directorsString = directorsString + crew.get(i).getName() + "  ";
             }
 
@@ -172,7 +264,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         String writersString = "";
         int num = 0;
         for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getDepartment().equals("Writing") && num < 3) {
+            if (crew.get(i).getDepartment().equals(getString(R.string.writing)) && num < 3) {
                 num++;
                 writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
             }
@@ -199,7 +291,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
         }
 
         releaseDate.setText(series.getAiring());
-        rating.setText(series.getVoteAverage().toString()+ "/10");
+        rating.setText(series.getVoteAverage().toString());
         overview.setText(series.getOverview());
         seasonNum = seasons.size();
 
@@ -212,9 +304,9 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView {
 
 
                 Intent intent = new Intent(TvShowDetails.this, SeasonsActivity.class);
-                intent.putExtra("showId", series.getId());
-                intent.putExtra("seasonId", seasons.get(position));
-                intent.putExtra("seasonNum", seasons.size());
+                intent.putExtra(getString(R.string.show_id_intent), series.getId());
+                intent.putExtra(getString(R.string.season_id_intent), seasons.get(position));
+                intent.putExtra(getString(R.string.season_num_intent), seasons.size());
 
                 startActivity(intent);
             }

@@ -94,7 +94,8 @@ public interface ApiInterface {
     Call<TvShowsResponse> getUserFavoriteSeries(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id, @Query("sort_by") String sortBy, @Query("page") int page);
 
     @POST("account/{id}/favorite")
-    Call<PostResponse> addFavorite(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id, @Body BodyWatchlist watchlist);
+    Call<PostResponse> addFavorite(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id,@Body BodyFavourite favorite );
+
 
     //watchlist
     @GET("account/{id}/watchlist/movies")
@@ -103,8 +104,8 @@ public interface ApiInterface {
     @GET("account/{id}/watchlist/tv")
     Call<TvShowsResponse> getUserSeriesWatchlist(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id, @Query("sort_by") String sortBy, @Query("page") int page);
 
-    @POST("account/{id}/favorite")
-    Call<PostResponse> addWatchlist(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id, @Body BodyFavourite favorite);
+    @POST("account/{id}/watchlist")
+    Call<PostResponse> addWatchlist(@Path("id") Integer accountId, @Query("api_key") String apiKey, @Query("session_id") String session_id, @Body BodyWatchlist watchlist);
 
 
     //rating

@@ -84,6 +84,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\Korisnik\.gradle\caches\modules-2\files-2.1\io.realm\realm-annotations\3.2.0\f975a4d720c4085dc6043f51a736a14a2c85656d\realm-annotations-3.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f975a4d720c4085dc6043f51a736a14a2c85656d">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\realm-annotations-3.2.0_926d754bc88e9238122053894b36de6cf33cc5e0.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\libs\YouTubeAndroidPlayerApi.jar"
         jumboMode="false"
         optimize="true"
@@ -138,21 +147,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4b746ef0fd46acb5aaf3d9ab9a4cec22c28d3211">
-        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.3.0_cd2852f74273e3535eee2079e8fea6b3a4ffbcf8.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="a3e61044038fb54cddf6b8dc79f41d2b57f42caf">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-25.3.0_a27143de4e352f52260671f0bd457dbea3a587e9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4b746ef0fd46acb5aaf3d9ab9a4cec22c28d3211">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.3.0_cd2852f74273e3535eee2079e8fea6b3a4ffbcf8.jar" />
     </item>
     <item
         is-multidex="false"
@@ -228,6 +237,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.getkeepsafe.relinker\relinker\1.2.2\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b64dd5f01bc37de289f90fd59299b0c76d119611">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\com.getkeepsafe.relinker-relinker-1.2.2_4026639bd4fcfd73f16235d36fb0574cddd2bd8e.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -261,6 +279,15 @@
         revision="25.0.2"
         sha1="a09926806199499a20b2f5168779499abfa33342">
         <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\converter-gson-2.2.0_252065c0d064428256efb4fc4156685bff243ccd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Praksa\AndroidMovieApp\app\build\intermediates\exploded-aar\io.realm\realm-android-library\3.2.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="dc6ffbc6a4c55ad0a43efc5d21378d33194dfabb">
+        <dex dex="D:\Praksa\AndroidMovieApp\app\build\intermediates\pre-dexed\debug\io.realm-realm-android-library-3.2.0_abaeae9b2c77ae886bd179bc08c862a6e43f187b.jar" />
     </item>
     <item
         is-multidex="false"

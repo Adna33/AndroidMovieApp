@@ -27,6 +27,10 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.helper.Date;
+import atlant.moviesapp.helper.OnItemClick;
+
+import android.view.View.OnClickListener;
+
 import atlant.moviesapp.model.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,12 +42,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private int rowLayout;
     private Context context;
     private Date date;
+    private OnItemClick itemClick;
 
     public MovieListAdapter.OnLoadMoreListener loadMoreListener;
     public boolean isLoading = false,
             isMoreDataAvailable = true;
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         @BindView(R.id.movies_layout)
         RelativeLayout moviesLayout;
 
@@ -73,28 +78,46 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         public MovieViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            favorite.setClickable(true);
+            favorite.setOnClickListener(this);
+
+            watchlist.setClickable(true);
+            watchlist.setOnClickListener(this);
+
+            moviePoster.setClickable(true);
+            moviePoster.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
 
-            //Proba
-            if (v.getId() == favorite.getId()){
-                Toast.makeText(v.getContext(), "FAVOURITE ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            if (v.getId() == favorite.getId()) {
+                itemClick.onfavouriteClicked(getAdapterPosition());
             }
-            if (v.getId() == watchlist.getId()){
-                Toast.makeText(v.getContext(), "WATCHLIST ITEM PRESSED = " + String.valueOf(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            if (v.getId() == watchlist.getId()) {
+                itemClick.onwatchlistClicked(getAdapterPosition());
+            }
+            if (v.getId() == moviePoster.getId()) {
+                itemClick.onposterClicked(getAdapterPosition());
             }
 
 
         }
     }
 
+    public OnItemClick getItemClick() {
+        return itemClick;
+    }
+
+    public void setItemClick(OnItemClick itemClick) {
+        this.itemClick = itemClick;
+    }
+
     public MovieListAdapter(List<Movie> movies, int rowLayout, Context context) {
         this.movies = movies;
         this.rowLayout = rowLayout;
         this.context = context;
-        date=new Date(context);
+        date = new Date(context);
     }
 
     @Override
@@ -105,12 +128,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
-        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+        if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
-        String year=movies.get(position).getReleaseDate();
-        holder.movieTitle.setText(movies.get(position).getTitle()+" ("+year.substring(0, Math.min(year.length(), 4))+")");
+        String year = movies.get(position).getReleaseDate();
+        holder.movieTitle.setText(movies.get(position).getTitle() + " (" + year.substring(0, Math.min(year.length(), 4)) + ")");
         holder.releaseDate.setText(date.getFormatedDate(movies.get(position).getReleaseDate()));
         holder.rating.setText(movies.get(position).getRatingString());
         if (movies.get(position).getGenreIds().isEmpty() || MovieGenre.getGenreById(movies.get(position).getGenreIds().get(0)) == null)
@@ -121,6 +144,40 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(holder.moviePoster);
+        if (ApplicationState.isLoggedIn()) {
+            if (ApplicationState.getUser().getFavouriteMovies().contains(movies.get(position).getId())) {
+                Glide.with(context).load(R.drawable.like_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            } else {
+                Glide.with(context).load(R.drawable.like)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            }
+            if (ApplicationState.getUser().getWatchListMovies().contains(movies.get(position).getId())) {
+                Glide.with(context).load(R.drawable.bookmark_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.watchlist);
+            } else {
+                Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.watchlist);
+            }
+        } else {
+            Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.watchlist);
+            Glide.with(context).load(R.drawable.like)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.favorite);
+        }
+
 
     }
 
@@ -129,54 +186,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return movies.size();
     }
 
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private MovieListAdapter.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final MovieListAdapter.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
         isMoreDataAvailable = moreDataAvailable;
@@ -185,17 +194,19 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     /* notifyDataSetChanged is final method so we can't override it
          call adapter.notifyDataChanged(); after update the list
          */
-    public void notifyDataChanged(){
+    public void notifyDataChanged() {
         notifyDataSetChanged();
         isLoading = false;
     }
 
 
-    public interface OnLoadMoreListener{
+    public interface OnLoadMoreListener {
         void onLoadMore();
     }
 
     public void setLoadMoreListener(MovieListAdapter.OnLoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }
+
+
 }

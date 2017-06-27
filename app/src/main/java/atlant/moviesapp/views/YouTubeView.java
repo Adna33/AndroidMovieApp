@@ -5,5 +5,5 @@ package atlant.moviesapp.views;
  */
 
 public interface YouTubeView {
-    void ShowVideo(String videoId);
+    void showVideo(String videoId);
 }

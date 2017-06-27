@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.helper.Date;
+import atlant.moviesapp.helper.OnItemClick;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.TvGenre;
@@ -35,6 +38,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     private List<TvShow> series;
     private Context context;
     private Date date;
+    private OnItemClick itemClick;
 
 
     public OnLoadMoreListener loadMoreListener;
@@ -42,7 +46,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
             isMoreDataAvailable = true;
 
 
-    public static class TvViewHolder extends RecyclerView.ViewHolder {
+    public class TvViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.movies_layout)
         RelativeLayout moviesLayout;
 
@@ -62,17 +66,47 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         @BindView(R.id.rating)
         TextView rating;
 
+        @BindView(R.id.like_btn)
+        ImageButton favorite;
+
+        @BindView(R.id.bookmark_btn)
+        ImageButton watchlist;
+
 
         public TvViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            favorite.setClickable(true);
+            favorite.setOnClickListener(this);
+
+            watchlist.setClickable(true);
+            watchlist.setOnClickListener(this);
+
+            seriesPoster.setClickable(true);
+            seriesPoster.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if (v.getId() == favorite.getId()) {
+                itemClick.onfavouriteClicked(getAdapterPosition());
+            }
+            if (v.getId() == watchlist.getId()) {
+                itemClick.onwatchlistClicked(getAdapterPosition());
+            }
+            if (v.getId() == seriesPoster.getId()) {
+                itemClick.onposterClicked(getAdapterPosition());
+            }
+
+
         }
     }
 
     public TVListAdapter(List<TvShow> series, Context context) {
         this.series = series;
         this.context = context;
-        date=new Date(context);
+        date = new Date(context);
     }
 
     @Override
@@ -84,7 +118,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     @Override
     public void onBindViewHolder(TVListAdapter.TvViewHolder holder, final int position) {
 
-        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+        if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
@@ -102,6 +136,39 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.seriesPoster);
+        if (ApplicationState.isLoggedIn()) {
+            if (ApplicationState.getUser().getFavouriteMovies().contains(series.get(position).getId())) {
+                Glide.with(context).load(R.drawable.like_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            } else {
+                Glide.with(context).load(R.drawable.like)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.favorite);
+            }
+            if (ApplicationState.getUser().getWatchListMovies().contains(series.get(position).getId())) {
+                Glide.with(context).load(R.drawable.bookmark_active_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(holder.watchlist);
+            } else {
+                Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                        .crossFade().centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.watchlist);
+            }
+        } else {
+            Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.watchlist);
+            Glide.with(context).load(R.drawable.like)
+                    .crossFade().centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.favorite);
+        }
 
     }
 
@@ -109,57 +176,6 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     public int getItemCount() {
         return series.size();
     }
-
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private TVListAdapter.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final TVListAdapter.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
-
 
 
     public void setMoreDataAvailable(boolean moreDataAvailable) {
@@ -169,18 +185,26 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     /* notifyDataSetChanged is final method so we can't override it
          call adapter.notifyDataChanged(); after update the list
          */
-    public void notifyDataChanged(){
+    public void notifyDataChanged() {
         notifyDataSetChanged();
         isLoading = false;
     }
 
 
-    public interface OnLoadMoreListener{
+    public interface OnLoadMoreListener {
         void onLoadMore();
     }
 
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
+    }
+
+    public OnItemClick getItemClick() {
+        return itemClick;
+    }
+
+    public void setItemClick(OnItemClick itemClick) {
+        this.itemClick = itemClick;
     }
 
 

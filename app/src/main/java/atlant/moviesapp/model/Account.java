@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Korisnik on 04.05.2017..
  */
 
-public class Account implements Parcelable{
+public class Account implements Parcelable {
 
     @SerializedName("id")
     private Integer id;
@@ -42,8 +42,8 @@ public class Account implements Parcelable{
         name = in.readString();
         username = in.readString();
         sessionId = in.readString();
-        id=in.readInt();
-        includeAdult=(Boolean) in.readValue(Boolean.class.getClassLoader());
+        id = in.readInt();
+        includeAdult = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.favouriteMovies = new ArrayList<Integer>();
         in.readList(this.favouriteMovies, Integer.class.getClassLoader());
         this.favouriteSeries = new ArrayList<Integer>();
@@ -157,6 +157,75 @@ public class Account implements Parcelable{
     public void setWatchListSeries(List<Integer> watchListSeries) {
         this.watchListSeries = watchListSeries;
     }
+
+    public void addFavouriteMovie(Integer id) {
+        this.favouriteMovies.add(id);
+    }
+
+    public void addFavouriteShow(Integer id) {
+        this.favouriteSeries.add(id);
+    }
+
+    public void addWatchlistMovie(Integer id) {
+        this.watchListMovies.add(id);
+    }
+
+    public void addWatchlistShow(Integer id) {
+        this.watchListSeries.add(id);
+    }
+
+    public void addMovieRating(Integer id) {
+        this.ratedMovies.add(id);
+    }
+
+    public void addShowRating(Integer id) {
+        this.ratedSeries.add(id);
+    }
+
+    public void removeFavouriteMovie(Integer id) {
+        for (int i = 0; i < this.getFavouriteMovies().size(); i++) {
+            if (this.getFavouriteMovies().get(0).equals(id))
+                this.favouriteMovies.remove(i);
+
+        }
+    }
+    public void removeFavoriteShow(Integer id) {
+        for (int i = 0; i < this.getFavouriteSeries().size(); i++) {
+            if (this.getFavouriteSeries().get(0).equals(id))
+                this.favouriteSeries.remove(i);
+
+        }
+    }
+    public void removeWatchlistMovie(Integer id) {
+        for (int i = 0; i < this.getWatchListMovies().size(); i++) {
+            if (this.getWatchListMovies().get(0).equals(id))
+                this.watchListMovies.remove(i);
+
+        }
+    }
+    public void removeWatchlistShow(Integer id) {
+        for (int i = 0; i < this.getWatchListSeries().size(); i++) {
+            if (this.getWatchListSeries().get(0).equals(id))
+                this.watchListSeries.remove(i);
+
+        }
+    }
+    public void removeRatingShow(Integer id) {
+        for (int i = 0; i < this.getRatedSeries().size(); i++) {
+            if (this.getRatedSeries().get(0).equals(id))
+                this.ratedSeries.remove(i);
+
+        }
+    }
+    public void removeRatingMovies(Integer id) {
+        for (int i = 0; i < this.getRatedMovies().size(); i++) {
+            if (this.getRatedMovies().get(0).equals(id))
+                this.ratedMovies.remove(i);
+
+        }
+    }
+
+
 
     @Override
     public int describeContents() {

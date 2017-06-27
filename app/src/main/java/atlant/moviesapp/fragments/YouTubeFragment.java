@@ -39,7 +39,7 @@ public class YouTubeFragment extends Fragment implements YouTubeView {
 
         View v = inflater.inflate(R.layout.fragment_you_tube, container, false);
 
-        movieId = getArguments().getInt("id");
+        movieId = getArguments().getInt(getString(R.string.id));
         presenter = new YouTubePresenter(this);
         presenter.getVideo(movieId);
 
@@ -47,7 +47,7 @@ public class YouTubeFragment extends Fragment implements YouTubeView {
     }
 
     @Override
-    public void ShowVideo(final String videoId) {
+    public void showVideo(final String videoId) {
         if (videoId != null) {
             YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -67,7 +67,7 @@ public class YouTubeFragment extends Fragment implements YouTubeView {
                 public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
                     String errorMessage = error.toString();
                     Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                    Log.d("errorMessage:", errorMessage);
+
                 }
 
 
