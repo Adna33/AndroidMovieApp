@@ -95,7 +95,7 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                     @Override
                     public void run() {
 
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getSeriesFavorites(++currentPage);
                         }
                     }
@@ -103,7 +103,7 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
             }
         });
         recyclerView.setAdapter(adapter);
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesFavorites(currentPage);
         } else {
@@ -126,7 +126,7 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeFavoriteShow(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), 1);
                     } else {
                         if (RealmUtil.getInstance().getPostSeries(id) == null) {
@@ -185,13 +185,6 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
 
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
     @Override
     public void showMovies(List<Movie> data) {
 
@@ -246,7 +239,7 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
         }
         adapter.clear();
         favoriteSeries.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesFavorites(1);
         } else {

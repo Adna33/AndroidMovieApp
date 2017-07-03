@@ -10,7 +10,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,11 +19,10 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.EpisodeAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
-import atlant.moviesapp.adapter.NewsFeedAdapter;
-import atlant.moviesapp.helper.StringUtils;
+import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.presenters.SeasonsPresenter;
-import atlant.moviesapp.presenters.TvDetailsPresenter;
 import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.SeasonsView;
 import butterknife.BindView;
@@ -46,6 +44,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
     @BindView(R.id.season_year)
     TextView seasonYear;
     String realmId;
+    boolean isConnected;
     private Integer seriesId, seasonId, seasonNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
                 onBackPressed();
             }
         });
-        boolean isConnected = isNetworkAvailable();
+         isConnected= ApplicationState.isNetworkAvailable(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.show_id_intent), 0);
         seasonId = intent.getIntExtra(getString(R.string.season_id_intent), 0);
@@ -96,7 +95,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
             @Override
             public void onClick(View view, int position) {
                 realmId= StringUtils.getId(seriesId,seasons.get(position));
-                if(isNetworkAvailable()) {
+                if(isConnected) {
                     presenter.getSeasonEpisodes(id, seasons.get(position), realmId);
                 }
                 else {
@@ -126,7 +125,7 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
             public void onClick(View view, int position) {
                 Intent intent = new Intent(SeasonsActivity.this, EpisodeActivity.class);
 
-                if (isNetworkAvailable()) {
+                if (isConnected) {
                     intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
                 } else {
                     intent.putExtra(getString(R.string.episodeIntent), episodes.get(position));
@@ -145,12 +144,6 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
     @Override
     public void ShowYear(String year) {
         seasonYear.setText(year);

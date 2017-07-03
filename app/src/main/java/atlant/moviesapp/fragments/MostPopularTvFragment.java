@@ -69,7 +69,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
 
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
-        isConnected = isNetworkAvailable();
+        isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
@@ -226,13 +226,7 @@ public class MostPopularTvFragment extends Fragment implements TvShowListView {
             presenter.onDestroy();
         super.onDestroy();
     }
-    public boolean isNetworkAvailable() {
 
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
     public void showLoginError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.loginAcces)

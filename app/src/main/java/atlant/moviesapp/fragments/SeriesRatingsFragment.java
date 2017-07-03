@@ -97,7 +97,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                     @Override
                     public void run() {
 
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getSeriesRatings(++currentPage);
                         }
 
@@ -106,7 +106,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             }
         });
         recyclerView.setAdapter(adapter);
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesRatings(currentPage);
         } else {
@@ -129,7 +129,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                     ApplicationState.getUser().removeRatingShow(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
 
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
                     }
 
@@ -214,13 +214,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             progressBar.setVisibility(View.INVISIBLE);
 
     }
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+    
     @Override
     public void onStop() {
         super.onStop();
@@ -244,7 +238,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
         }
         adapter.clear();
         ratedSeries.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesRatings(1);
         } else {

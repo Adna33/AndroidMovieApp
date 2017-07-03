@@ -1,6 +1,9 @@
 package atlant.moviesapp.model;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -31,6 +34,12 @@ public class ApplicationState extends Application {
 
         Realm.init(getApplicationContext());
 
+    }
+
+    public static boolean isNetworkAvailable(Context c) {
+        ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conManager.getActiveNetworkInfo();
+        return ( netInfo != null && netInfo.isConnected() );
     }
 
 }

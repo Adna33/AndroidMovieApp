@@ -68,6 +68,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         @BindView(R.id.bookmark_btn)
         ImageButton watchlist;
 
+        boolean isFavorite = false;
+        boolean isWatchlist = false;
 
         public MovieViewHolder(View v) {
             super(v);
@@ -87,14 +89,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
             if (v.getId() == favorite.getId()) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (favorite.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.like_active_icon).getConstantState())) {
-
+                    if (isFavorite) {
+                        isFavorite = false;
                         Glide.with(context).load(R.drawable.like)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                 .into(favorite);
                     } else {
-
+                        isFavorite = true;
                         Glide.with(context).load(R.drawable.like_active_icon)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -105,13 +107,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             }
             if (v.getId() == watchlist.getId()) {
                 if (ApplicationState.isLoggedIn()) {
-                    if (watchlist.getDrawable().getConstantState().equals(context.getResources().getDrawable(R.drawable.bookmark_active_icon).getConstantState())) {
-                        Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                    if (isWatchlist) {
+                        isWatchlist = false;
+                        Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                                 .crossFade().centerCrop()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                 .into(watchlist);
-                    }
-                    else{
+                    } else {
+                        isWatchlist = true;
                         Glide.with(context).load(R.drawable.bookmark_active_icon)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -169,29 +172,33 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 .into(holder.moviePoster);
         if (ApplicationState.isLoggedIn()) {
             if (ApplicationState.getUser().getFavouriteMovies().contains(movies.get(position).getId())) {
+                holder.isFavorite = true;
                 Glide.with(context).load(R.drawable.like_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             } else {
+                holder.isFavorite = false;
                 Glide.with(context).load(R.drawable.like)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             }
             if (ApplicationState.getUser().getWatchListMovies().contains(movies.get(position).getId())) {
+                holder.isWatchlist=true;
                 Glide.with(context).load(R.drawable.bookmark_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             } else {
-                Glide.with(context).load(R.drawable.not_bookmarked_icon)
+                holder.isWatchlist=false;
+                Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                         .crossFade().centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             }
         } else {
-            Glide.with(context).load(R.drawable.not_bookmarked_icon)
+            Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(holder.watchlist);

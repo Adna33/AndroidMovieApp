@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,11 +21,10 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.helper.StringUtils;
+import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.Cast;
-import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Episode;
-import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.EpisodePresenter;
 import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.EpisodeView;
@@ -55,7 +53,6 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
 
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
-    private StringUtils stringUtils;
     private EpisodePresenter presenter;
     private Date date;
     int episodeId;
@@ -77,7 +74,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
                 onBackPressed();
             }
         });
-        boolean isConnected = isNetworkAvailable();
+        boolean isConnected = ApplicationState.isNetworkAvailable(this);
         Intent intent = getIntent();
         Episode episode = intent.getParcelableExtra(getString(R.string.episodeIntent));
         Integer seriesId=intent.getIntExtra(getString(R.string.seriesId),0);
@@ -85,7 +82,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         episodeId=episode.getId();
         date=new Date(this);
         String year=episode.getAirDate();
-        title.setText(stringUtils.getTitle(episode.getName(),year));
+        title.setText(StringUtils.getTitle(episode.getName(),year));
         releaseDate.setText(date.getFormatedDate(episode.getAirDate()));
         rating.setText(episode.getRatingString());
         overview.setText(episode.getOverview());
@@ -132,12 +129,7 @@ public class EpisodeActivity extends AppCompatActivity implements EpisodeView{
         if (presenter != null)
             presenter.onStop();
     }
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
     @Override
     public void onDestroy() {
         if (presenter != null)

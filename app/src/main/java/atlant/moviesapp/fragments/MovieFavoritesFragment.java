@@ -98,7 +98,7 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
                     @Override
                     public void run() {
 
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getMovieFavorites(++currentPage);
                         }
 
@@ -108,7 +108,7 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
         });
         recyclerView.setAdapter(adapter);
 
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieFavorites(currentPage);
         } else {
@@ -132,7 +132,7 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeFavouriteMovie(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), 0);
                     } else {
                         if (RealmUtil.getInstance().getPostMovie(id) == null) {
@@ -230,14 +230,6 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
             presenter.onStop();
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     public void onDestroy() {
         if (presenter != null)
@@ -255,7 +247,7 @@ public class MovieFavoritesFragment extends Fragment implements UserFavoritesVie
         }
         adapter.clear();
         favoriteMovies.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieFavorites(1);
         } else {

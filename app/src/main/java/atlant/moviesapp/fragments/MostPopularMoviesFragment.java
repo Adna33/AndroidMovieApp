@@ -66,7 +66,7 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new MovieListAdapter(movies, R.layout.list_item, getActivity().getApplicationContext());
-        isConnected=isNetworkAvailable();
+        isConnected=ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         adapter.setItemClick(new OnItemClick() {
             @Override
             public void onFavoriteClicked(int position) {
@@ -201,13 +201,6 @@ public class MostPopularMoviesFragment extends Fragment implements MovieListView
         AlertDialog dialog = builder.create();
         dialog.show();
 
-    }
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     @Override
     public void hideProgress() {

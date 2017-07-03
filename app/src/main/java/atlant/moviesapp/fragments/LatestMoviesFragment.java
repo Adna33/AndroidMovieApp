@@ -59,7 +59,7 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
         View view = inflater.inflate(R.layout.fragment_latest, container, false);
 
         ButterKnife.bind(this, view);
-        isConnected = isNetworkAvailable();
+        isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         presenter = new MovieListPresenter(this);
         movies = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
@@ -127,6 +127,7 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
                     showLoginError();
                 }
             }
+
             @Override
             public void onposterClicked(int position) {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
@@ -245,11 +246,5 @@ public class LatestMoviesFragment extends Fragment implements MovieListView {
 
     }
 
-    public boolean isNetworkAvailable() {
 
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }

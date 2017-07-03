@@ -99,7 +99,7 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
                     @Override
                     public void run() {
 
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getMovieRatings(++currentPage);
                         }
 
@@ -108,7 +108,7 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
             }
         });
         recyclerView.setAdapter(adapter);
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieRatings(currentPage);
         } else {
@@ -132,7 +132,7 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeRatingMovies(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 0);
                     }
 
@@ -241,7 +241,7 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
         }
         adapter.clear();
         ratedMovies.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieRatings(1);
         } else {
@@ -252,11 +252,4 @@ public class MovieRatingsFragment extends Fragment implements UserRatingsView {
 
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }

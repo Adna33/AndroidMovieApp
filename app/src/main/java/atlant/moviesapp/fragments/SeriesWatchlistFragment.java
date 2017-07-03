@@ -95,7 +95,7 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
                     @Override
                     public void run() {
 
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getSeriesWatchlist(++currentPage);
                         }
 
@@ -104,7 +104,7 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
             }
         });
         recyclerView.setAdapter(adapter);
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesWatchlist(currentPage);
         } else {
@@ -126,7 +126,7 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeWatchlistShow(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), 1);
                     } else {
                         if (RealmUtil.getInstance().getPostSeries(id) == null) {
@@ -187,14 +187,6 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
 
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     public void showMovies(List<Movie> data) {
 
@@ -248,7 +240,7 @@ public class SeriesWatchlistFragment extends Fragment implements UserWatchlistVi
         }
         adapter.clear();
         watchlistSeries.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getSeriesWatchlist(1);
         } else {

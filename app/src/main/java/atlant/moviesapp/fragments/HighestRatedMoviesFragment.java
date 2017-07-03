@@ -60,7 +60,7 @@ public class HighestRatedMoviesFragment extends Fragment implements MovieListVie
         ButterKnife.bind(this, view);
         presenter = new MovieListPresenter(this);
         movies = new ArrayList<>();
-        isConnected = isNetworkAvailable();
+        isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new MovieListAdapter(movies, R.layout.list_item, getActivity().getApplicationContext());
@@ -189,13 +189,6 @@ public class HighestRatedMoviesFragment extends Fragment implements MovieListVie
 
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     @Override
     public void onStop() {

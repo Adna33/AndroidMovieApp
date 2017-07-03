@@ -62,7 +62,7 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
         ButterKnife.bind(this, view);
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
-        isConnected=isNetworkAvailable();
+        isConnected=ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
@@ -176,14 +176,6 @@ public class AiringTvFragment extends Fragment implements TvShowListView {
         if (progressBar != null)
             progressBar.setVisibility(View.VISIBLE);
 
-    }
-
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

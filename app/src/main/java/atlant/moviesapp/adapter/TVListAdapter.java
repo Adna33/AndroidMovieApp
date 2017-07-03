@@ -35,7 +35,6 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
     private Context context;
     private Date date;
     private OnItemClick itemClick;
-    private int i = 0, j = 0;
 
 
     public OnLoadMoreListener loadMoreListener;
@@ -69,6 +68,9 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         @BindView(R.id.bookmark_btn)
         ImageButton watchlist;
 
+        boolean isFavorite = false;
+        boolean isWatchlist = false;
+
 
         public TvViewHolder(View v) {
             super(v);
@@ -89,14 +91,14 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
             if (v.getId() == favorite.getId()) {
 
                 if (ApplicationState.isLoggedIn()) {
-                    if (i == 1) {
-                        i = 0;
+                    if (isFavorite) {
+                        isFavorite = false;
                         Glide.with(context).load(R.drawable.like)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                 .into(favorite);
                     } else {
-                        i = 1;
+                        isFavorite = true;
                         Glide.with(context).load(R.drawable.like_active_icon)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -110,15 +112,15 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
             if (v.getId() == watchlist.getId()) {
                 if (ApplicationState.isLoggedIn()) {
 
-                    if (j == 1) {
-                        j = 0;
+                    if (isWatchlist) {
+                        isWatchlist = false;
                         Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(watchlist);
 
                     } else {
-                        j = 1;
+                        isWatchlist = true;
                         Glide.with(context).load(R.drawable.bookmark_active_icon)
                                 .crossFade().centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -171,34 +173,33 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         if (ApplicationState.isLoggedIn()) {
 
             if (ApplicationState.getUser().getFavouriteSeries().contains(series.get(position).getId())) {
-                i = 1;
+                holder.isFavorite = true;
                 Glide.with(context).load(R.drawable.like_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             } else {
-                i = 0;
+                holder.isFavorite = false;
                 Glide.with(context).load(R.drawable.like)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.favorite);
             }
             if (ApplicationState.getUser().getWatchListSeries().contains(series.get(position).getId())) {
-                j = 1;
+                holder.isWatchlist = true;
                 Glide.with(context).load(R.drawable.bookmark_active_icon)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             } else {
-                j = 0;
+                holder.isWatchlist = false;
+
                 Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                         .crossFade().centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(holder.watchlist);
             }
         } else {
-            j = 0;
-            i = 0;
             Glide.with(context).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -221,9 +222,7 @@ public class TVListAdapter extends RecyclerView.Adapter<TVListAdapter.TvViewHold
         isMoreDataAvailable = moreDataAvailable;
     }
 
-    /* notifyDataSetChanged is final method so we can't override it
-         call adapter.notifyDataChanged(); after update the list
-         */
+
     public void notifyDataChanged() {
         notifyDataSetChanged();
         isLoading = false;

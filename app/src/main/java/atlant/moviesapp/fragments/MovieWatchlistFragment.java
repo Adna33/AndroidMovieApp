@@ -96,7 +96,7 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
                     public void run() {
 
                         presenter.getMovieWatchlist(++currentPage);
-                        if (isNetworkAvailable()) {
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                             presenter.getMovieWatchlist(++currentPage);
                         }
                     }
@@ -104,7 +104,7 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
             }
         });
         recyclerView.setAdapter(adapter);
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieWatchlist(currentPage);
         } else {
@@ -129,7 +129,7 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
                     adapter.removeItem(position);
                     ApplicationState.getUser().removeFavouriteMovie(id);
                     RealmUtil.getInstance().deleteRealmInt(id);
-                    if (isNetworkAvailable()) {
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
                         presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), 0);
                     } else {
                         if (RealmUtil.getInstance().getPostMovie(id) == null) {
@@ -243,7 +243,7 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
         }
         adapter.clear();
         watchlistMovies.clear();
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
             showProgress();
             presenter.getMovieWatchlist(1);
         } else {
@@ -254,11 +254,4 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
 
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }

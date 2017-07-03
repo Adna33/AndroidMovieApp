@@ -24,6 +24,7 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.NewsFeedAdapter;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.News;
 import atlant.moviesapp.presenters.NewsFeedPresenter;
 import atlant.moviesapp.views.NewsFeedView;
@@ -58,7 +59,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
         ButterKnife.bind(this, v);
 
-        boolean isConnected =isNetworkAvailable();
+        boolean isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
 
         presenter = new NewsFeedPresenter(this);
         if (isConnected) {
@@ -93,13 +94,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
             progressBar.setVisibility(View.INVISIBLE);
 
     }
-    public boolean isNetworkAvailable() {
 
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     @Override
     public void showError() {
