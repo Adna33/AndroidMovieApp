@@ -1,7 +1,10 @@
 package atlant.moviesapp.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +29,7 @@ import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.TvShowListPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.TvShowListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +48,7 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
     private int currentPage = 1;
     List<TvShow> series;
     TVListAdapter adapter;
-
+    boolean isConnected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,26 +58,34 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
         ButterKnife.bind(this, view);
         presenter = new TvShowListPresenter(this);
         series = new ArrayList<>();
+        isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new TVListAdapter(series, getActivity().getApplicationContext());
 
         adapter.setItemClick(new OnItemClick() {
             @Override
-            public void onfavouriteClicked(int position) {
-                if (ApplicationState.isLoggedIn()) {
+            public void onFavoriteClicked(int position) {
 
+                if (ApplicationState.isLoggedIn()) {
                     TvShow m = series.get(position);
                     if (ApplicationState.getUser().getFavouriteSeries().contains(m.getId())) {
                         ApplicationState.getUser().removeFavoriteShow(m.getId());
-                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), false);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), false);
+                        } else {
+                            presenter.removeFavoriteRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.removedFavorite), Toast.LENGTH_SHORT).show();
 
                     } else {
                         ApplicationState.getUser().addFavouriteShow(m.getId());
-                        BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), m.getId(), true);
-                        presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postFavorite(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postFavoriteRealm(m.getId());
+
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.addedFavorite), Toast.LENGTH_SHORT).show();
 
                     }
@@ -83,19 +95,25 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
             }
 
             @Override
-            public void onwatchlistClicked(int position) {
+            public void onWatchlistClicked(int position) {
+                TvShow m = series.get(position);
                 if (ApplicationState.isLoggedIn()) {
-                    TvShow m = series.get(position);
                     if (ApplicationState.getUser().getWatchListSeries().contains(m.getId())) {
                         ApplicationState.getUser().removeWatchlistShow(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), false);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), false);
+                        } else {
+                            presenter.removeWatchlistRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.watchlistRemoved), Toast.LENGTH_SHORT).show();
 
                     } else {
                         ApplicationState.getUser().addWatchlistShow(m.getId());
-                        BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.tv), m.getId(), true);
-                        presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+                        if (isConnected) {
+                            presenter.postWatchlist(m.getId(), ApplicationState.getUser().getSessionId(), true);
+                        } else {
+                            presenter.postWatchlistRealm(m.getId());
+                        }
                         Toast.makeText(getActivity().getApplicationContext(), R.string.watchlistAdded, Toast.LENGTH_SHORT).show();
 
                     }
@@ -108,6 +126,9 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
             public void onposterClicked(int position) {
                 Intent intent = new Intent(getActivity(), TvShowDetails.class);
                 intent.putExtra(getString(R.string.series), series.get(position).getId());
+                intent.putExtra(getString(R.string.name), series.get(position).getName());
+                intent.putExtra(getString(R.string.link), series.get(position).getImagePath());
+                intent.putExtra(getString(R.string.overview), series.get(position).getOverview());
                 startActivity(intent);
             }
         });
@@ -119,15 +140,24 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
                     @Override
                     public void run() {
 
-                        presenter.getHighestRatedSeries(TAG, currentPage++);
+                        if (isConnected) {
+                            presenter.getHighestRatedSeries(TAG, ++currentPage);
+                        } else {
+                            presenter.setUpSeries(TAG, ++currentPage);
+                        }
                     }
                 });
-                //Calling loadMore function in Runnable to fix the
-                // java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling error
-            }
+
+                     }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getHighestRatedSeries(TAG, 1);
+        if (isConnected) {
+            showProgress();
+            presenter.getHighestRatedSeries(TAG, 1);
+        } else {
+            presenter.setUpSeries(TAG, 1);
+            hideProgress();
+        }
         return view;
 
     }
@@ -210,4 +240,5 @@ public class LatestTvFragment extends Fragment implements TvShowListView {
         dialog.show();
 
     }
+
 }

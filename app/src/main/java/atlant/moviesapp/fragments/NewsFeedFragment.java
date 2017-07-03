@@ -2,7 +2,10 @@ package atlant.moviesapp.fragments;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,7 @@ import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.NewsFeedAdapter;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.News;
 import atlant.moviesapp.presenters.NewsFeedPresenter;
 import atlant.moviesapp.views.NewsFeedView;
@@ -53,9 +58,17 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
         ButterKnife.bind(this, v);
-        showProgress();
+
+        boolean isConnected = ApplicationState.isNetworkAvailable(getActivity().getApplicationContext());
+
         presenter = new NewsFeedPresenter(this);
-        presenter.getNews();
+        if (isConnected) {
+            showProgress();
+            presenter.getNews();
+        } else {
+            hideProgress();
+            presenter.setUpNews();
+        }
 
 
         return v;
@@ -81,6 +94,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedView {
             progressBar.setVisibility(View.INVISIBLE);
 
     }
+
 
     @Override
     public void showError() {

@@ -2,16 +2,18 @@ package atlant.moviesapp.presenters;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyRating;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowsResponse;
+import atlant.moviesapp.realm.models.RealmInt;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.UserRatingsView;
@@ -54,7 +56,6 @@ public class UserRatingsPresenter {
                     view.showMovies(movies);
                 } else {
                     view.hideProgress();
-                    view.showError();
                 }
 
 
@@ -67,7 +68,6 @@ public class UserRatingsPresenter {
                     Log.e("TAG", "request was cancelled");
                 }
                 view.hideProgress();
-                view.showError();
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
@@ -93,7 +93,6 @@ public class UserRatingsPresenter {
                     view.showTvShows(shows);
                 } else {
                     view.hideProgress();
-                    view.showError();
                 }
 
 
@@ -106,13 +105,40 @@ public class UserRatingsPresenter {
                     Log.e("TAG", "request was cancelled");
                 }
                 view.hideProgress();
-                view.showError();
                 //TODO onFailure
                 Log.e("TAG", t.toString());
 
             }
         });
 
+
+    }
+
+    public void setUpRatedMovies()
+    {
+        List<RealmInt> movieIds= RealmUtil.getInstance().getRealmAccount().getRatedMovies();
+        List<Movie> movies= new ArrayList<>();
+        for(RealmInt m: movieIds) {
+            if (RealmUtil.getInstance().getMovieFromRealm(m.getId()) != null)
+                movies.add(RealmUtil.getInstance().getMovieFromRealm(m.getId()));
+
+
+        }
+        view.showMovies(movies);
+
+    }
+    public void setUpRatedSeries()
+    {
+        List<RealmInt> Ids= RealmUtil.getInstance().getRealmAccount().getRatedSeries();
+        Log.d("velicina", Ids.size()+"");
+        List<TvShow> series= new ArrayList<>();
+        for(RealmInt m: Ids) {
+            if (RealmUtil.getInstance().getTvShowFromRealm(m.getId()) != null)
+                series.add(RealmUtil.getInstance().getTvShowFromRealm(m.getId()));
+
+
+        }
+        view.showTvShows(series);
 
     }
     public void deleteRating(int id, String session_id, int tag) {

@@ -8,14 +8,12 @@ import java.util.List;
 import atlant.moviesapp.BuildConfig;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
-import atlant.moviesapp.model.Movie;
-import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowsResponse;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
-import atlant.moviesapp.views.MovieListView;
 import atlant.moviesapp.views.TvShowListView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +42,7 @@ public class TvShowListPresenter {
         this.view = view;
     }
 
-    public void getHighestRatedSeries(int tag, int page) {
+    public void getHighestRatedSeries(final int tag, final int page) {
 
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         if (tag == MOST_POPULAR)
@@ -63,6 +61,15 @@ public class TvShowListPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<TvShow> shows = response.body().getResults();
+                    if (RealmUtil.getInstance().getRealmList(page) == null)
+                        RealmUtil.getInstance().createRealmList(page);
+                    if (tag == MOST_POPULAR)
+                        RealmUtil.getInstance().addPopularSeries(page, shows);
+                    else if (tag == LATEST)
+                        RealmUtil.getInstance().addLatestSeries(page, shows);
+                    else if (tag == HIGHEST_RATED)
+                        RealmUtil.getInstance().addHighestRatedSeries(page, shows);
+                    else RealmUtil.getInstance().addAiringSeries(page, shows);
                     view.hideProgress();
                     view.showTvShows(shows);
 
@@ -86,7 +93,30 @@ public class TvShowListPresenter {
 
     }
 
-    public void postFavorite(int id, String session_id, BodyFavourite favorite) {
+
+    public void setUpSeries(final int tag, int page) {
+        List<TvShow> list = new ArrayList<>();
+        if (RealmUtil.getInstance().getRealmList(page) != null) {
+            if (tag == MOST_POPULAR)
+                list = RealmUtil.getInstance().getPopularSeries(page);
+            else if (tag == LATEST)
+                list = RealmUtil.getInstance().getLatesSeries(page);
+            else if (tag == HIGHEST_RATED)
+                list = RealmUtil.getInstance().getHighestRatedSeries(page);
+            else list = RealmUtil.getInstance().getAiringSeries(page);
+            if (list != null)
+                view.showTvShows(list);
+        }
+
+    }
+
+    public void postFavorite(int id, String session_id, Boolean b) {
+        BodyFavourite favorite = new BodyFavourite("tv", id, b);
+        if (b) {
+            RealmUtil.getInstance().addFavoriteSeries(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCall = apiservice.addFavorite(id, API_KEY, session_id, favorite);
         postCall.enqueue(new Callback<PostResponse>() {
@@ -112,7 +142,49 @@ public class TvShowListPresenter {
 
 
     }
-    public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
+
+    public void postFavoriteRealm(int seriesId) {
+        if (RealmUtil.getInstance().getPostSeries(seriesId) == null) {
+            RealmUtil.getInstance().createPostSeries(seriesId);
+
+        }
+        RealmUtil.getInstance().addFavoriteSeries(seriesId);
+        RealmUtil.getInstance().setSeriesFavorite(RealmUtil.getInstance().getPostSeries(seriesId), true);
+    }
+
+    public void removeFavoriteRealm(int seriesId) {
+        if (RealmUtil.getInstance().getPostSeries(seriesId) == null) {
+            RealmUtil.getInstance().createPostSeries(seriesId);
+
+        }
+        RealmUtil.getInstance().deleteRealmInt(seriesId);
+        RealmUtil.getInstance().setSeriesFavorite(RealmUtil.getInstance().getPostSeries(seriesId), false);
+    }
+
+    public void postWatchlistRealm(int seriesId) {
+        if (RealmUtil.getInstance().getPostSeries(seriesId) == null) {
+            RealmUtil.getInstance().createPostSeries(seriesId);
+        }
+        RealmUtil.getInstance().addShowWatchlist(seriesId);
+        RealmUtil.getInstance().setSeriesWatchlist(RealmUtil.getInstance().getPostSeries(seriesId), true);
+
+    }
+
+    public void removeWatchlistRealm(int seriesId) {
+        if (RealmUtil.getInstance().getPostSeries(seriesId) == null) {
+            RealmUtil.getInstance().createPostSeries(seriesId);
+        }
+        RealmUtil.getInstance().deleteRealmInt(seriesId);
+        RealmUtil.getInstance().setSeriesWatchlist(RealmUtil.getInstance().getPostSeries(seriesId), false);
+    }
+
+    public void postWatchlist(int id, String session_id, Boolean b) {
+        BodyWatchlist watchlist = new BodyWatchlist("tv", id, b);
+        if (b) {
+            RealmUtil.getInstance().addShowWatchlist(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);
         postCallWatchlist.enqueue(new Callback<PostResponse>() {

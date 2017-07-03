@@ -5,7 +5,7 @@ package atlant.moviesapp.helper;
  */
 
 public interface OnItemClick {
-    void onfavouriteClicked(int position);
-    void onwatchlistClicked(int position);
+    void onFavoriteClicked(int position);
+    void onWatchlistClicked(int position);
     void onposterClicked(int position);
 }

@@ -1,7 +1,9 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,12 +19,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.FilmographyAdapter;
 import atlant.moviesapp.helper.Date;
 import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.ActorDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.ActorView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +60,6 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
 
     private boolean isClicked = true;
-
     private ActorDetailsPresenter presenter;
 
     @OnClick(R.id.actor_full_bio)
@@ -74,7 +76,6 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             fullBiography.setText(R.string.hide);
         }
     }
-
 
 
     @Override
@@ -96,12 +97,20 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             }
         });
 
+        boolean isConnected = ApplicationState.isNetworkAvailable(this);
+
         Intent intent = getIntent();
         Integer actorId = intent.getIntExtra("actorId", 0);
-
         presenter = new ActorDetailsPresenter(this);
-        presenter.getActor(actorId);
-        presenter.getHighestRatedMovies(actorId);
+
+        if (isConnected) {
+            if (RealmUtil.getInstance().getRealmActor(actorId) == null)
+                RealmUtil.getInstance().createRealmActor(actorId);
+            presenter.getActor(actorId);
+            presenter.getHighestRatedMovies(actorId);
+        } else {
+            presenter.setUpActor(actorId);
+        }
 
 
     }
@@ -109,7 +118,8 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     @Override
     public void showActor(Actor actor) {
         name.setText(actor.getName());
-        birthDate.setText(date.getFormatedDate(actor.getBirthday()) + ", " + actor.getPlaceOfBirth());
+        if (actor.getBirthday() != null && actor.getPlaceOfBirth() != null)
+            birthDate.setText(getString(R.string.actorBirthData, date.getFormatedDate(actor.getBirthday()), actor.getPlaceOfBirth()));
         website.setText(actor.getHomepage());
         biography.setText(actor.getBiography());
         Glide.with(this).load(actor.getImagePath())
@@ -139,8 +149,8 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             }
         }));
 
-
     }
+
 
     @Override
     public void onStop() {

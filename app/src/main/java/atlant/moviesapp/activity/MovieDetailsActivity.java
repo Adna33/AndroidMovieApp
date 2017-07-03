@@ -1,47 +1,64 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
-import atlant.moviesapp.adapter.NewsFeedAdapter;
+import atlant.moviesapp.adapter.ImageAdapter;
 import atlant.moviesapp.adapter.ReviewAdapter;
 import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
-import atlant.moviesapp.model.BodyWatchlist;
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.MovieGenre;
 import atlant.moviesapp.model.Review;
-import atlant.moviesapp.model.TvGenre;
 import atlant.moviesapp.presenters.MovieDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.MovieDetailsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsView {
+public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsView, ShareActionProvider.OnShareTargetSelectedListener {
 
     @BindView(R.id.movie_title)
     TextView title;
@@ -79,6 +96,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.cast_recycler_view)
     RecyclerView castRecyclerView;
 
+    @BindView(R.id.images_recycler_view)
+    RecyclerView imageRecyclerView;
+
     @BindView(R.id.play_button)
     ImageView playButton;
 
@@ -102,8 +122,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     private static final int TAG = 0;
-    private BodyFavourite bodyFavourite;
-    private BodyWatchlist bodyWatchlist;
+    ShareActionProvider mShareActionProvider;
 
     @OnClick(R.id.rate_txtBtn)
     void rate() {
@@ -115,12 +134,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     }
 
+    @OnClick(R.id.see_all_images)
+    public void seeAll() {
+        Intent intent = new Intent(MovieDetailsActivity.this, GalleryActivity.class);
+        intent.putExtra(getString(R.string.name), movie.getTitle());
+        intent.putExtra(getString(R.string.id), movie.getId());
+        intent.putExtra(getString(R.string.tag), TAG);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.heart_detail)
-    void addToFavorites() {
+    void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeFavouriteMovie(movie.getId());
-            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), false);
-            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            if (ApplicationState.isNetworkAvailable(this)) {
+                presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), false);
+
+            } else {
+                presenter.removeFavoriteRealm(movie.getId());
+            }
             Toast.makeText(this, R.string.removedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like)
                     .crossFade().centerCrop()
@@ -129,8 +161,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         } else {
             ApplicationState.getUser().addFavouriteMovie(movie.getId());
-            bodyFavourite = new BodyFavourite(getString(R.string.movie), movie.getId(), true);
-            presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), bodyFavourite);
+            if (ApplicationState.isNetworkAvailable(this)) {
+                presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), true);
+
+            } else {
+                presenter.postFavoriteRealm(movie.getId());
+            }
             Toast.makeText(this, R.string.addedFavorite, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(R.drawable.like_active_icon)
                     .crossFade().centerCrop()
@@ -143,20 +179,26 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
 
     @OnClick(R.id.bookmark_detail)
-    void addToWatchlist() {
+    void updateWatchlist() {
 
         if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeWatchlistMovie(movie.getId());
-            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), false);
-            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (ApplicationState.isNetworkAvailable(this)) {
+                presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), false);
+            } else {
+                presenter.removeWatchlistRealm(movie.getId());
+            }
             Glide.with(this).load(R.drawable.bookmark_black_tool_symbol)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistMovie(movie.getId());
-            bodyWatchlist= new BodyWatchlist(getString(R.string.movie), movie.getId(), true);
-            presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), bodyWatchlist);
+            if (ApplicationState.isNetworkAvailable(this)) {
+                presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), true);
+            } else {
+                presenter.postWatchlistRealm(movie.getId());
+            }
             Glide.with(this).load(R.drawable.bookmark_active_icon)
                     .crossFade().centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -166,6 +208,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @BindView(R.id.divider)
     TextView divider;
+
+    @BindView(R.id.images_layout)
+    LinearLayout imageLayout;
 
     private MovieDetailsPresenter presenter;
     private Movie movie;
@@ -177,7 +222,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
-
+        boolean isConnected = ApplicationState.isNetworkAvailable(this);
         checkLogin();
 
         setSupportActionBar(toolbar);
@@ -192,12 +237,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             }
         });
         date = new Date(this);
-
         Intent intent = getIntent();
         movie = intent.getParcelableExtra(getString(R.string.movieIntent));
-        director.setText("");
+        director.setText(getString(R.string.unknown_field));
         String year = movie.getReleaseDate();
-        title.setText(movie.getTitle() + " (" + year.substring(0, Math.min(year.length(), 4)) + ")");
+        title.setText(StringUtils.getTitle(movie.getTitle(), year));
         if (movie.getGenreIds().isEmpty())
             genre.setText(R.string.genre_unknown);
         else if (MovieGenre.getGenreById(movie.getGenreIds().get(0)) == null)
@@ -208,16 +252,29 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         rating.setText(movie.getRatingString());
         overview.setText(movie.getOverview());
 
-        if (movie.isVideo()) {
+
+        if (movie.isVideo() && isConnected) {
             playButton.setVisibility(View.VISIBLE);
             playButton.bringToFront();
         } else {
+            playButton.setVisibility(View.INVISIBLE);
         }
 
         showPoster(movie);
         presenter = new MovieDetailsPresenter(this);
-        presenter.getCredits(movie.getId());
-        presenter.getReviews(movie.getId());
+
+        if (isConnected) {
+            if (RealmUtil.getInstance().getMovieDetailsFromRealm(movie.getId()) == null)
+                RealmUtil.getInstance().createRealmMovieObject(movie.getId());
+            presenter.getCredits(movie.getId());
+            presenter.getReviews(movie.getId());
+            imageLayout.setVisibility(View.VISIBLE);
+            presenter.getImages(movie.getId());
+        } else {
+            imageLayout.setVisibility(View.GONE);
+            presenter.setUpMovie(movie.getId());
+
+        }
         if (ApplicationState.isLoggedIn()) {
             watchlist.setVisibility(View.VISIBLE);
             favourite.setVisibility(View.VISIBLE);
@@ -253,13 +310,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void showCast(final List<Cast> cast) {
-        String castString = "";
-        for (int i = 0; i < cast.size(); i++) {
-            if (i < 4) {
-                castString = castString + cast.get(i).getName() + " ";
-            }
-
-        }
+        String castString = StringUtils.showCast(cast);
         stars.setText(castString);
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         castRecyclerView.setAdapter(new ActorAdapter(cast, R.layout.actor_item, this));
@@ -280,25 +331,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     }
 
+ 
+
     @Override
     public void showCrew(List<Crew> crew) {
-        String directorsString = "";
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getJob().equals(getString(R.string.director))) {
-                directorsString = directorsString + crew.get(i).getName() + "  ";
-            }
-
-        }
+        String directorsString = StringUtils.getDirectorString(crew, this);
         director.setText(directorsString);
-        String writersString = "";
-        int num = 0;
-        for (int i = 0; i < crew.size(); i++) {
-            if (crew.get(i).getDepartment().equals(getString(R.string.writing)) && num < 3) {
-                num++;
-                writersString = writersString + crew.get(i).getName() + " (" + crew.get(i).getJob() + ")  ";
-            }
-
-        }
+        String writersString = StringUtils.getWritersString(crew, this);
         writers.setText(writersString);
 
     }
@@ -330,6 +369,31 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     }
 
+    @Override
+    public void showImages(final ArrayList<Backdrop> backdrops) {
+        imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        imageRecyclerView.setAdapter(new ImageAdapter(getApplicationContext(), backdrops));
+        imageRecyclerView.addOnItemTouchListener(new ImageAdapter.RecyclerTouchListener(getApplicationContext(), imageRecyclerView, new ImageAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(MovieDetailsActivity.this, ImageDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(getString(R.string.images), backdrops);
+                bundle.putInt(getString(R.string.position), position);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+
+
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+    }
+
     public void checkLogin() {
         if (ApplicationState.isLoggedIn()) {
             rateTxt.setVisibility(View.VISIBLE);
@@ -352,5 +416,95 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         if (presenter != null)
             presenter.onDestroy();
         super.onDestroy();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuItem item = menu.add(Menu.NONE, R.id.share, Menu.NONE, R.string.share);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        mShareActionProvider = new ShareActionProvider(this) {
+            @Override
+            public View onCreateActionView() {
+                return null;
+            }
+        };
+
+        item.setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
+        mShareActionProvider.setOnShareTargetSelectedListener(this);
+        setShareIntent(createShareIntent());
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
+
+        return (super.onCreateOptionsMenu(menu));
+
+    }
+
+    @Override
+    public boolean onShareTargetSelected(ShareActionProvider source,
+                                         Intent intent) {
+        final String appName = intent.getComponent().getPackageName();
+        if (appName.equals(getString(R.string.fbPackage))) {
+            setupFacebookShareIntent();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
+
+
+    private Intent createShareIntent() {
+
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        SimpleTarget target = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+                shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+            }
+        };
+        Glide.with(getApplicationContext()).load(movie.getImagePath()).asBitmap()
+                .into(target);
+
+        shareIntent.setType(getString(R.string.imageType));
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+                movie.getTitle());
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                movie.getOverview());
+
+        return shareIntent;
+    }
+
+
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
+    }
+
+    public void setupFacebookShareIntent() {
+        ShareDialog shareDialog;
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        shareDialog = new ShareDialog(this);
+
+        ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(movie.getOverview())
+                .setContentUrl(Uri.parse(movie.getImagePath()))
+                .build();
+        shareDialog.show(linkContent);
     }
 }

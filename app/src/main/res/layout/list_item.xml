@@ -101,17 +101,18 @@
             android:id="@+id/bookmark_btn"
             android:layout_gravity="right|center_vertical"
             android:backgroundTint="@color/endGradient"
-            android:layout_width="18dp"
-            android:layout_height="20dp" />
+            android:layout_marginRight="5dp"
+            android:layout_width="13.5dp"
+            android:layout_height="18.75dp" />
 
         <ImageButton
             app:srcCompat="@drawable/like"
             android:id="@+id/like_btn"
             android:layout_gravity="right|center_vertical"
             android:backgroundTint="@color/endGradient"
-            android:layout_marginLeft="4dp"
-            android:layout_height="16dp"
-            android:layout_width="18dp" />
+
+            android:layout_width="19.95dp"
+            android:layout_height="17.55dp" />
     </LinearLayout>
 
 </RelativeLayout>

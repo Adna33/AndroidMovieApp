@@ -46,9 +46,9 @@ public class Date {
 
         String[] separated = date.split("-");
         if(separated.length>0){
-        String year= separated[0];
-        String month= separated[1];
-        String day= separated[2];
+            String year= separated[0];
+            String month= separated[1];
+            String day= separated[2];
             return day+" "+getMonth(Integer.parseInt(month))+" "+year;
 
         }else {

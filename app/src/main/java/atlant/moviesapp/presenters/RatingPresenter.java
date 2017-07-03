@@ -5,10 +5,12 @@ import android.util.Log;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.BodyRating;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.SearchResponse;
 import atlant.moviesapp.model.SearchResult;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.RatingView;
@@ -31,15 +33,43 @@ public class RatingPresenter {
     }
 
     private static final String API_KEY = BuildConfig.API_KEY;
-    private Call<PostResponse> call;
+    private Call<PostResponse> ratingCall;
 
-    public void postRating(int id, String session_id, BodyRating rating, int tag) {
+    public void addRatingToList(int TAG,int id)
+    { if(TAG==0)
+    {
+        RealmUtil.getInstance().addMovieRating(id);
+        ApplicationState.getUser().addMovieRating(id);
+
+    }
+    else {
+        RealmUtil.getInstance().addSeriesRatings(id);
+        ApplicationState.getUser().addFavouriteShow(id);
+    }}
+
+    public void postRatingRealm(int TAG, int id,float rating) {
+        if (TAG == 0) {
+            if (RealmUtil.getInstance().getPostMovie(id) == null) {
+                RealmUtil.getInstance().createPostMovie(id);
+            }
+            RealmUtil.getInstance().setMovieRating(RealmUtil.getInstance().getPostMovie(id), String.format("%.2f", rating));
+        } else {
+
+            if (RealmUtil.getInstance().getPostSeries(id) == null) {
+                RealmUtil.getInstance().createPostSeries(id);
+            }
+            RealmUtil.getInstance().setSeriesRating(RealmUtil.getInstance().getPostSeries(id), String.format("%.2f", rating));
+        }
+    }
+
+    public void postRating(int id, String session_id, Double r, int tag) {
+        BodyRating rating=new BodyRating(r);
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         if (tag == MOVIE)
-            call = apiservice.rateMovie(id, API_KEY, session_id, rating);
+            ratingCall = apiservice.rateMovie(id, API_KEY, session_id, rating);
         else if (tag == TVSHOW)
-            call = apiservice.rateTVSeries(id, API_KEY, session_id, rating);
-        call.enqueue(new Callback<PostResponse>() {
+            ratingCall = apiservice.rateTVSeries(id, API_KEY, session_id, rating);
+        ratingCall.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                 int statusCode = response.code();
@@ -64,13 +94,13 @@ public class RatingPresenter {
     }
 
     public void onStop() {
-        if (call != null)
-            call.cancel();
+        if (ratingCall != null)
+            ratingCall.cancel();
     }
 
     public void onDestroy() {
-        if (call != null)
-            call.cancel();
+        if (ratingCall != null)
+            ratingCall.cancel();
         view = null;
     }
 

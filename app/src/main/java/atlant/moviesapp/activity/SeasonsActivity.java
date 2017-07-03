@@ -1,13 +1,15 @@
 package atlant.moviesapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,10 +19,11 @@ import java.util.List;
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.EpisodeAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
-import atlant.moviesapp.adapter.NewsFeedAdapter;
+import atlant.moviesapp.model.ApplicationState;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.presenters.SeasonsPresenter;
-import atlant.moviesapp.presenters.TvDetailsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.SeasonsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +43,9 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
     @BindView(R.id.season_year)
     TextView seasonYear;
-
+    String realmId;
+    boolean isConnected;
     private Integer seriesId, seasonId, seasonNum;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,6 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -61,15 +63,21 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
                 onBackPressed();
             }
         });
-
+         isConnected= ApplicationState.isNetworkAvailable(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.show_id_intent), 0);
         seasonId = intent.getIntExtra(getString(R.string.season_id_intent), 0);
         seasonNum = intent.getIntExtra(getString(R.string.season_num_intent), 0);
-
+        realmId= seriesId+""+seasonId;
         ShowSeasonList(seasonNum, seriesId);
         presenter = new SeasonsPresenter(this);
-        presenter.getSeasonEpisodes(seriesId, seasonId);
+        if (isConnected) {
+            if (RealmUtil.getInstance().getRealmSeason(realmId) == null)
+                RealmUtil.getInstance().createRealmSeason(realmId);
+            presenter.getSeasonEpisodes(seriesId, seasonId,realmId);
+        } else {
+            presenter.setUpSeason(realmId);
+        }
 
     }
 
@@ -86,7 +94,13 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
         seasonRecyclerView.addOnItemTouchListener(new HorizontalAdapter.RecyclerTouchListener(this, seasonRecyclerView, new HorizontalAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                presenter.getSeasonEpisodes(id, seasons.get(position));
+                realmId= StringUtils.getId(seriesId,seasons.get(position));
+                if(isConnected) {
+                    presenter.getSeasonEpisodes(id, seasons.get(position), realmId);
+                }
+                else {
+                    presenter.setUpSeason(realmId);
+                }
 
             }
 
@@ -110,7 +124,12 @@ public class SeasonsActivity extends AppCompatActivity implements SeasonsView {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(SeasonsActivity.this, EpisodeActivity.class);
-                intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
+
+                if (isConnected) {
+                    intent.putExtra(getString(R.string.episodeIntent), presenter.getEpisodes().get(position));
+                } else {
+                    intent.putExtra(getString(R.string.episodeIntent), episodes.get(position));
+                }
                 intent.putExtra(getString(R.string.seriesId), seriesId);
                 intent.putExtra(getString(R.string.seasonId), seasonId);
                 startActivity(intent);

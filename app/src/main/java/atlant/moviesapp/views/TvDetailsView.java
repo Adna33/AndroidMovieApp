@@ -2,6 +2,7 @@ package atlant.moviesapp.views;
 
 import java.util.List;
 
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.TvShowDetail;
@@ -14,4 +15,5 @@ public interface TvDetailsView {
     void showCast(List<Cast> cast);
     void showCrew(List<Crew> crew);
     void showDetails(TvShowDetail series);
+    void showImages(List<Backdrop> backdrops);
 }

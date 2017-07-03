@@ -5,22 +5,29 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 19.04.2017..
  */
 
-public class TvShowDetail {
+public class TvShowDetail extends RealmObject{
 
     @SerializedName("created_by")
+    @Ignore
     private List<Creators> createdBy = new ArrayList<>();
 
     @SerializedName("first_air_date")
     private String firstAirDate;
 
     @SerializedName("genres")
+    @Ignore
     private List<Genre> genres = null;
 
     @SerializedName("id")
+    @PrimaryKey
     private Integer id;
 
     @SerializedName("last_air_date")
@@ -42,10 +49,23 @@ public class TvShowDetail {
     private String posterPath;
 
     @SerializedName("seasons")
+    @Ignore
     private List<Season> seasons = null;
 
     @SerializedName("vote_average")
     private Float voteAverage;
+
+    public void setTvShow(TvShowDetail s)
+    {
+
+        this.name = s.getName();
+        this.posterPath = s.getPosterPath();
+        this.overview = s.getOverview();
+        this.voteAverage = s.getVoteAverage();
+        this.firstAirDate = s.getFirstAirDate();
+        this.numberOfEpisodes=s.getNumberOfEpisodes();
+        this.numberOfSeasons=s.getNumberOfSeasons();
+    }
 
     public List<Creators> getCreatedBy() {
         return createdBy;

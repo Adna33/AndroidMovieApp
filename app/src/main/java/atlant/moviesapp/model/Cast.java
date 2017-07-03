@@ -2,11 +2,14 @@ package atlant.moviesapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 15.04.2017..
  */
 
-public class Cast {
+public class Cast extends RealmObject {
 
     @SerializedName("cast_id")
     private int castId;
@@ -18,6 +21,7 @@ public class Cast {
     private String creditId;
 
     @SerializedName("id")
+    @PrimaryKey
     private int id;
 
     @SerializedName("name")
@@ -37,6 +41,9 @@ public class Cast {
         this.name = name;
         this.order = order;
         this.path = path;
+    }
+
+    public Cast() {
     }
 
     public int getCastId() {

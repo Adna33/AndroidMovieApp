@@ -68,4 +68,64 @@
             android:layout_weight="1"
             android:textColor="@color/fadedText" />
     </LinearLayout>
+    <TextView
+        android:text="ACCOUNT NOTIFICATION"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:id="@+id/textView4"
+        android:textColor="@color/standardYellow"
+        android:gravity="center_vertical"
+        android:paddingLeft="22dp"
+        android:background="@color/navDrawerBg" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:text="Movies notification:"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            android:paddingLeft="22dp"
+            android:textColor="@color/fadedText"
+            android:layout_width="175dp" />
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/moviesSwitch"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp" />
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/fadedText"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:text="Tv Shows notification"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:paddingLeft="22dp"
+            android:textColor="@color/fadedText"
+            android:layout_width="175dp" />
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/seriesSwitch"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp" />
+
+
+    </LinearLayout>
 </LinearLayout>

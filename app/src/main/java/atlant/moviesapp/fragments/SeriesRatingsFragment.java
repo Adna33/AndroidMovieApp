@@ -1,12 +1,15 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,21 +21,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.activity.TvShowDetails;
-import atlant.moviesapp.adapter.UserListAdapter;
 import atlant.moviesapp.adapter.UserListSeriesAdapter;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserRatingsPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserRatingsView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,14 +97,22 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                     @Override
                     public void run() {
 
-                        presenter.getSeriesRatings(++currentPage);
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                            presenter.getSeriesRatings(++currentPage);
+                        }
 
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getSeriesRatings(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getSeriesRatings(currentPage);
+        } else {
+            presenter.setUpRatedSeries();
+            hideProgress();
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -116,11 +124,14 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=ratedSeries.get(position).getId();
                     adapter.removeItem(position);
-                    //user fav movies check!!!
-                    int id=  ApplicationState.getUser().getRatedSeries().get(position);
                     ApplicationState.getUser().removeRatingShow(id);
-                    presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                        presenter.deleteRating(id, ApplicationState.getUser().getSessionId(), 1);
+                    }
 
                 }
             }
@@ -138,14 +149,12 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
                         c.drawRect(background,p);
                         RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background,p);
                         RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
 
                     }
                 }
@@ -205,7 +214,7 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
             progressBar.setVisibility(View.INVISIBLE);
 
     }
-
+    
     @Override
     public void onStop() {
         super.onStop();
@@ -229,6 +238,12 @@ public class SeriesRatingsFragment extends Fragment implements UserRatingsView {
         }
         adapter.clear();
         ratedSeries.clear();
-        presenter.getSeriesRatings(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getSeriesRatings(1);
+        } else {
+            presenter.setUpRatedSeries();
+            hideProgress();
+        }
     }
 }

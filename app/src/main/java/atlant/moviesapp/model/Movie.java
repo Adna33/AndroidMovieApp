@@ -8,9 +8,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie implements Parcelable {
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
+public class Movie extends RealmObject implements Parcelable {
 
     @SerializedName("id")
+    @PrimaryKey
     private Integer id;
 
     @SerializedName("title")
@@ -37,11 +42,8 @@ public class Movie implements Parcelable {
 
 
     @SerializedName("genre_ids")
+    @Ignore
     private List<Integer> genreIds = new ArrayList<Integer>();
-
-
-
-    //TODO for details:  crew- director,writers, stars(cast), reviews
 
 
     public Movie(Integer id, String title, String posterPath, String overview, double rating, String releaseDate, boolean video,List<Integer> genreIds, String backdropPath) {
@@ -56,6 +58,8 @@ public class Movie implements Parcelable {
         this.backdropPath=backdropPath;
     }
 
+    public Movie() {
+    }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override

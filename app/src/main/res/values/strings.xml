@@ -33,7 +33,7 @@
     <string name="season_id_intent">seasonid</string>
     <string name="show_id_intent">showId</string>
     <string name="season_num_intent">seasonNum</string>
-
+    <string name="facebook_app_id">680948758773609</string>
     <string-array name="tabs">
         <item>Most popular</item>
         <item>Latest</item>
@@ -103,5 +103,28 @@
     <string name="loginAccessTitle">Login to Popular Movies</string>
     <string name="notNow">NOT NOW</string>
     <string name="loginButton">LOGIN</string>
+    <string name="appName">Popular Movies</string>
+    <string name="share">Share</string>
+    <string name="tvNotification">tvNotification</string>
+    <string name="seriesNotif">There is no upcoming watchlist series releasing today</string>
+    <string name="seriesNotFav">There is no upcoming favorite series releasing today</string>
+    <string name="movieNotification">movieNotification</string>
+    <string name="norificationText">"Have you seen %s ?"</string>
+    <string name="imagesTitle">"%s images"</string>
+    <string name="welcomeMessage">"Welcome %s"</string>
+    <string name="actorBirthData">%1$s, %2$s</string>
+    <string name="getTitle">%1$s, %2$s</string>
+    <string name="concat">%1$s%2$s</string>
+    <string name="movieNotifaction">There is no upcoming favorite movies releasing today</string>
+    <string name="idExtra">ID</string>
+    <string name="sessionExtra">SESSION</string>
+    <string name="name">name</string>
+    <string name="connection">Connected</string>
+    <string name="noConnection">Disconnected</string>
+
+    <string name="link">link</string>
+    <string name="overview">overview</string>
+    <string name="fbPackage">com.facebook.katana</string>
+    <string name="imageType">image/jpeg</string>
 
 </resources>

@@ -7,7 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -27,17 +28,17 @@ import atlant.moviesapp.R;
 import atlant.moviesapp.activity.MovieDetailsActivity;
 import atlant.moviesapp.adapter.UserListAdapter;
 import atlant.moviesapp.model.ApplicationState;
-import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserWatchlistPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserWatchlistView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MovieWatchlistFragment extends Fragment implements UserWatchlistView{
+public class MovieWatchlistFragment extends Fragment implements UserWatchlistView {
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView recyclerView;
@@ -53,6 +54,7 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
     UserListAdapter adapter;
     private Paint p = new Paint();
     private Paint t = new Paint();
+
     public MovieWatchlistFragment() {
         // Required empty public constructor
     }
@@ -62,10 +64,10 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_user_movies, container, false);
+        View v = inflater.inflate(R.layout.fragment_user_movies, container, false);
         ButterKnife.bind(this, v);
-        presenter=new UserWatchlistPresenter(this);
-        watchlistMovies= new ArrayList<>();
+        presenter = new UserWatchlistPresenter(this);
+        watchlistMovies = new ArrayList<>();
         adapter = new UserListAdapter(watchlistMovies, R.layout.user_list_item, recyclerView.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -94,13 +96,22 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
                     public void run() {
 
                         presenter.getMovieWatchlist(++currentPage);
-
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                            presenter.getMovieWatchlist(++currentPage);
+                        }
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getMovieWatchlist(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getMovieWatchlist(currentPage);
+        } else {
+            presenter.setUpWatchlistMovies();
+            hideProgress();
+
+        }
 
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -109,40 +120,46 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                if (direction == ItemTouchHelper.LEFT){
+                if (direction == ItemTouchHelper.LEFT) {
+                    int id = watchlistMovies.get(position).getId();
                     adapter.removeItem(position);
-                    int id=  ApplicationState.getUser().getWatchListMovies().get(position);
                     ApplicationState.getUser().removeFavouriteMovie(id);
-                    BodyWatchlist bodyFavourite = new BodyWatchlist(getString(R.string.movie), id, false);
-                    presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                        presenter.postWatchlist(id, ApplicationState.getUser().getSessionId(), 0);
+                    } else {
+                        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+                            RealmUtil.getInstance().createPostMovie(id);
+                        }
+                        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
+                    }
 
                 }
             }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
                     View itemView = viewHolder.itemView;
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
-                    if(dX > 0){
+                    if (dX > 0) {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background,p);
-                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
 
                     }
                 }
@@ -191,13 +208,15 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -224,6 +243,15 @@ public class MovieWatchlistFragment extends Fragment implements UserWatchlistVie
         }
         adapter.clear();
         watchlistMovies.clear();
-        presenter.getMovieWatchlist(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getMovieWatchlist(1);
+        } else {
+            presenter.setUpWatchlistMovies();
+            hideProgress();
+
+        }
+
     }
+
 }

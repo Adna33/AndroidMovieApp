@@ -9,6 +9,7 @@ import atlant.moviesapp.model.Episode;
 import atlant.moviesapp.model.MoviesResponse;
 import atlant.moviesapp.model.Season;
 import atlant.moviesapp.model.TvShowDetail;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.NewsFeedView;
@@ -35,7 +36,7 @@ public class SeasonsPresenter {
         this.view = view;
     }
 
-    public void getSeasonEpisodes(int id,int season) {
+    public void getSeasonEpisodes(int id, final int season, final String realmID) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         call = apiservice.getSeason(id,season, API_KEY);
         call.enqueue(new Callback<Season>() {
@@ -45,6 +46,7 @@ public class SeasonsPresenter {
                 if (statusCode == 200) {
 
                     episodes= response.body().getEpisodes();
+                    RealmUtil.getInstance().addEpisodesToRealmSeason(realmID,episodes);
                     view.ShowEpisodes(episodes);
                     view.ShowYear(response.body().getAirYear());
 
@@ -64,6 +66,13 @@ public class SeasonsPresenter {
             }
         });
 
+
+    }
+
+    public void setUpSeason(String id)
+    {
+        if(RealmUtil.getInstance().getRealmSeason(id)!=null)
+        {view.ShowEpisodes(RealmUtil.getInstance().getRealmSeason(id).getEpisodes());}
 
     }
 

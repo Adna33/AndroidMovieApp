@@ -2,6 +2,7 @@ package atlant.moviesapp.views;
 
 import java.util.List;
 
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
 import atlant.moviesapp.model.Movie;
@@ -17,5 +18,6 @@ public interface MovieDetailsView {
     void showCrew(List<Crew> crew);
     void showPoster(Movie movie);
     void showReviews(List<Review> reviews);
+    void showImages(List<Backdrop> backdrops);
 
 }

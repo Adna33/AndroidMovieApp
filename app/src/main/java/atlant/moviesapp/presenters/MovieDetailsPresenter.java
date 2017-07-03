@@ -5,16 +5,19 @@ import android.util.Log;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
+import atlant.moviesapp.R;
+import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.BodyWatchlist;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.CreditsResponse;
 import atlant.moviesapp.model.Crew;
-import atlant.moviesapp.model.Movie;
-import atlant.moviesapp.model.MoviesResponse;
+import atlant.moviesapp.model.ImageResponse;
 import atlant.moviesapp.model.PostResponse;
 import atlant.moviesapp.model.Review;
 import atlant.moviesapp.model.ReviewsResponse;
+import atlant.moviesapp.realm.models.RealmMovie;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.MovieDetailsView;
@@ -51,8 +54,9 @@ public class MovieDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Cast> cast = response.body().getCast();
-                    Log.d("REV", id + "");
                     List<Crew> crew = response.body().getCrew();
+                    RealmUtil.getInstance().addRealmMovieActors(id, cast);
+                    RealmUtil.getInstance().addRealmMovieWriters(id, crew);
                     view.showCast(cast);
                     view.showCrew(crew);
 
@@ -73,7 +77,7 @@ public class MovieDetailsPresenter {
 
     }
 
-    public void getReviews(int id) {
+    public void getReviews(final int id) {
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
 
         call = apiservice.getMovieReviews(id, API_KEY);
@@ -83,7 +87,8 @@ public class MovieDetailsPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Review> reviews = response.body().getResults();
-                    //Log.d("REVIEWS",reviews.size()+"");
+                    RealmUtil.getInstance().addRealmMovieReviews(id, reviews);
+
                     view.showReviews(reviews);
 
                 } else {
@@ -103,7 +108,58 @@ public class MovieDetailsPresenter {
 
 
     }
-    public void postFavorite(int id, String session_id, BodyFavourite favorite) {
+
+    public void setUpMovie(int id) {
+        if (RealmUtil.getInstance().getMovieDetailsFromRealm(id) != null) {
+            RealmMovie m = RealmUtil.getInstance().getMovieDetailsFromRealm(id);
+            if (m.getReviews() != null)
+                view.showReviews(m.getReviews());
+            if (m.getWriters() != null)
+                view.showCrew(m.getWriters());
+            if (m.getActors() != null)
+                view.showCast(m.getActors());
+        }
+    }
+
+    public void postFavoriteRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().addFavoriteMovie(id);
+        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), true);
+    }
+
+    public void removeFavoriteRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieFavorite(RealmUtil.getInstance().getPostMovie(id), false);
+    }
+
+    public void postWatchlistRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().addMovieWatchlist(id);
+        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), true);
+    }
+
+    public void removeWatchlistRealm(int id) {
+        if (RealmUtil.getInstance().getPostMovie(id) == null) {
+            RealmUtil.getInstance().createPostMovie(id);
+        }
+        RealmUtil.getInstance().deleteRealmInt(id);
+        RealmUtil.getInstance().setMovieWatchlist(RealmUtil.getInstance().getPostMovie(id), false);
+    }
+
+    public void postFavorite(int id, String session_id, Boolean b) {
+        BodyFavourite favorite = new BodyFavourite("movie", id, b);
+        if (b) {
+            RealmUtil.getInstance().addFavoriteMovie(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCall = apiservice.addFavorite(id, API_KEY, session_id, favorite);
         postCall.enqueue(new Callback<PostResponse>() {
@@ -129,7 +185,14 @@ public class MovieDetailsPresenter {
 
 
     }
-    public void postWatchlist(int id, String session_id, BodyWatchlist watchlist) {
+
+    public void postWatchlist(int id, String session_id, Boolean b) {
+        if (b) {
+            RealmUtil.getInstance().addMovieWatchlist(id);
+        } else {
+            RealmUtil.getInstance().deleteRealmInt(id);
+        }
+        BodyWatchlist watchlist = new BodyWatchlist("movie", id, b);
         final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
         postCallWatchlist = apiservice.addWatchlist(id, API_KEY, session_id, watchlist);
         postCallWatchlist.enqueue(new Callback<PostResponse>() {
@@ -155,13 +218,47 @@ public class MovieDetailsPresenter {
 
 
     }
+    private Call<ImageResponse> imageCall;
 
+    public void getImages(final int id) {
+
+        final ApiInterface apiservice = ApiClient.getClient().create(ApiInterface.class);
+        imageCall = apiservice.getMovieImages(id, API_KEY);
+
+
+        imageCall.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    List<Backdrop> backdrops= response.body().getBackdrops();
+                    view.showImages(backdrops);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+                if (call.isCanceled()) {
+
+                    Log.e("TAG", "request was cancelled");
+                }
+
+                //TODO onFailure
+                Log.e("TAG", t.toString());
+
+            }
+        });
+
+
+    }
 
     public void onStop() {
         if (call != null)
             call.cancel();
         if (callCredits != null)
             callCredits.cancel();
+        if(imageCall!=null)
+            imageCall.cancel();
     }
 
     public void onDestroy() {
@@ -169,6 +266,8 @@ public class MovieDetailsPresenter {
             call.cancel();
         if (callCredits != null)
             callCredits.cancel();
+        if(imageCall!=null)
+            imageCall.cancel();
         view = null;
     }
 }

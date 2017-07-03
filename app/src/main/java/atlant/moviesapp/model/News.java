@@ -3,12 +3,14 @@ package atlant.moviesapp.model;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Korisnik on 14.04.2017..
  */
 
 @Root(name = "item")
-public class News {
+public class News extends RealmObject{
 
     @Element(name = "title")
     private String title;

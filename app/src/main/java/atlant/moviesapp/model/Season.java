@@ -4,15 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Korisnik on 19.04.2017..
  */
 
-public class Season {
+public class Season extends RealmObject {
     @SerializedName("air_date")
     private String airDate;
 
     @SerializedName("id")
+    @PrimaryKey
     private int id;
 
     @SerializedName("poster_path")
@@ -22,6 +27,7 @@ public class Season {
     private int seasonNumber;
 
     @SerializedName("episodes")
+    @Ignore
     List<Episode> episodes;
 
     public String getAirDate() {

@@ -1,12 +1,15 @@
 package atlant.moviesapp.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +33,7 @@ import atlant.moviesapp.model.BodyFavourite;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.presenters.UserFavoritesPresenter;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.views.UserFavoritesView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,14 +95,22 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                     @Override
                     public void run() {
 
-                        presenter.getSeriesFavorites(++currentPage);
-
+                        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                            presenter.getSeriesFavorites(++currentPage);
+                        }
                     }
                 });
             }
         });
         recyclerView.setAdapter(adapter);
-        presenter.getSeriesFavorites(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getSeriesFavorites(currentPage);
+        } else {
+            presenter.setUpFavoriteSeries();
+            hideProgress();
+
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -110,12 +122,18 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT){
+                    int id=favoriteSeries.get(position).getId();
                     adapter.removeItem(position);
-                    //user fav movies check!!!
-                    int id=  ApplicationState.getUser().getFavouriteSeries().get(position);
                     ApplicationState.getUser().removeFavoriteShow(id);
-                    BodyFavourite bodyFavourite = new BodyFavourite(getString(R.string.tv), id, false);
-                    presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), bodyFavourite);
+                    RealmUtil.getInstance().deleteRealmInt(id);
+                    if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+                        presenter.postFavorite(id, ApplicationState.getUser().getSessionId(), 1);
+                    } else {
+                        if (RealmUtil.getInstance().getPostSeries(id) == null) {
+                            RealmUtil.getInstance().createPostSeries(id);
+                        }
+                        RealmUtil.getInstance().setSeriesFavorite(RealmUtil.getInstance().getPostSeries(id), false);
+                    }
 
                 }
             }
@@ -133,15 +151,12 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
                         c.drawRect(background,p);
                         RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
                     } else {
                         p.setColor(getResources().getColor(R.color.standardYellow));
                         t.setColor(Color.parseColor("#FFFFFF"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background,p);
                         RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                        c.drawText("Remove",(float) itemView.getLeft() + width,(float) itemView.getTop() + width,t);
-
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -224,6 +239,12 @@ public class SeriesFavoritesFragment extends Fragment implements UserFavoritesVi
         }
         adapter.clear();
         favoriteSeries.clear();
-        presenter.getSeriesFavorites(1);
+        if (ApplicationState.isNetworkAvailable(getActivity().getApplicationContext())) {
+            showProgress();
+            presenter.getSeriesFavorites(1);
+        } else {
+            presenter.setUpFavoriteSeries();
+            hideProgress();
+        }
     }
 }

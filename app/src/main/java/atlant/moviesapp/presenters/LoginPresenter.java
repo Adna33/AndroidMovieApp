@@ -1,18 +1,13 @@
 package atlant.moviesapp.presenters;
 
-import android.app.Application;
-import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.BuildConfig;
 
 import atlant.moviesapp.model.Account;
-
-import android.preference.PreferenceManager;
-
-import com.google.gson.Gson;
 
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
@@ -21,14 +16,15 @@ import atlant.moviesapp.model.Session;
 import atlant.moviesapp.model.Token;
 import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowsResponse;
+import atlant.moviesapp.realm.models.RealmPostMovie;
+import atlant.moviesapp.realm.models.RealmPostSeries;
+import atlant.moviesapp.realm.RealmUtil;
 import atlant.moviesapp.rest.ApiClient;
 import atlant.moviesapp.rest.ApiInterface;
 import atlant.moviesapp.views.LoginView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class LoginPresenter {
@@ -156,6 +152,11 @@ public class LoginPresenter {
                 if (statusCode == 200) {
                     ApplicationState.setUser(response.body());
                     ApplicationState.getUser().setSessionId(sessionId);
+
+                    RealmUtil.getInstance().createRealmAccount();
+
+
+
                     view.loggedUser(password);
 
                 } else {
@@ -187,9 +188,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
+                    List<Integer> movieId=new ArrayList<Integer>();
                     for (Movie movie : movies) {
                         ApplicationState.getUser().addFavouriteMovie(movie.getId());
+                        movieId.add(movie.getId());
+                        RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                        RealmUtil.getInstance().setMovieFavorite(post,true);
                     }
+                    RealmUtil.getInstance().addFavoriteMovies(movieId);
                     if(response.body().getTotalPages()>1)
                         for(int i=2;i<=response.body().getTotalPages();i++)
                         {
@@ -202,6 +208,10 @@ public class LoginPresenter {
                                         List<Movie> movies = response.body().getResults();
                                         for (Movie movie : movies) {
                                             ApplicationState.getUser().addFavouriteMovie(movie.getId());
+                                            RealmUtil.getInstance().addFavoriteMovie(movie.getId());
+                                            RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                                            RealmUtil.getInstance().setMovieFavorite(post,true);
+
                                         }
                                     }
                                 }
@@ -243,9 +253,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<TvShow> shows = response.body().getResults();
+                    List<Integer> Ids=new ArrayList<Integer>();
                     for (TvShow show : shows) {
                         ApplicationState.getUser().addFavouriteShow(show.getId());
+                        Ids.add(show.getId());
+                        RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                        RealmUtil.getInstance().setSeriesFavorite(post,true);
                     }
+                    RealmUtil.getInstance().addFavoriteSeries(Ids);
 
                     if(response.body().getTotalPages()>1)
                         for(int i=2;i<=response.body().getTotalPages();i++)
@@ -259,6 +274,9 @@ public class LoginPresenter {
                                         List<TvShow> shows = response.body().getResults();
                                         for (TvShow show : shows) {
                                             ApplicationState.getUser().addFavouriteShow(show.getId());
+                                            RealmUtil.getInstance().addFavoriteSeries(show.getId());
+                                            RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                                            RealmUtil.getInstance().setSeriesFavorite(post,true);
                                         }
                                     }
                                 }
@@ -294,9 +312,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
+                    List<Integer> Ids=new ArrayList<Integer>();
                     for (Movie movie : movies) {
+                        Ids.add(movie.getId());
                         ApplicationState.getUser().addMovieRating(movie.getId());
+                        RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                        RealmUtil.getInstance().setMovieRating(post,movie.getRatingString());
                     }
+                    RealmUtil.getInstance().addMovieRatings(Ids);
                     if(response.body().getTotalPages()>1)
                         for(int i=2;i<=response.body().getTotalPages();i++)
                         {
@@ -309,6 +332,9 @@ public class LoginPresenter {
                                         List<Movie> movies = response.body().getResults();
                                         for (Movie movie : movies) {
                                             ApplicationState.getUser().addMovieRating(movie.getId());
+                                            RealmUtil.getInstance().addMovieRating(movie.getId());
+                                            RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                                            RealmUtil.getInstance().setMovieRating(post,movie.getRatingString());
                                         }
                                     }
                                 }
@@ -346,10 +372,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<TvShow> shows = response.body().getResults();
+                    List<Integer> Ids=new ArrayList<Integer>();
                     for (TvShow show : shows) {
                         ApplicationState.getUser().addShowRating(show.getId());
+                        Ids.add(show.getId());
+                        RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                        RealmUtil.getInstance().setSeriesRating(post,show.getRatingString());
                     }
-
+                    RealmUtil.getInstance().addSeriesRatings(Ids);
                     if(response.body().getTotalPages()>1)
                         for(int i=2;i<=response.body().getTotalPages();i++)
                         {
@@ -362,6 +392,9 @@ public class LoginPresenter {
                                         List<TvShow> shows = response.body().getResults();
                                         for (TvShow show : shows) {
                                             ApplicationState.getUser().addShowRating(show.getId());
+                                            RealmUtil.getInstance().addSeriesRatings(show.getId());
+                                            RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                                            RealmUtil.getInstance().setSeriesRating(post,show.getRatingString());
                                         }
                                     }
                                 }
@@ -403,10 +436,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<Movie> movies = response.body().getResults();
-
+                    List<Integer> Ids=new ArrayList<Integer>();
                     for (Movie movie : movies) {
                         ApplicationState.getUser().addWatchlistMovie(movie.getId());
+                        Ids.add(movie.getId());
+                        RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                        RealmUtil.getInstance().setMovieWatchlist(post,true);
                     }
+                    RealmUtil.getInstance().addMovieWatchlist(Ids);
                     if(response.body().getTotalPages()>1)
                     for(int i=2;i<=response.body().getTotalPages();i++)
                     {
@@ -419,6 +456,10 @@ public class LoginPresenter {
                                     List<Movie> movies = response.body().getResults();
                                     for (Movie movie : movies) {
                                         ApplicationState.getUser().addWatchlistMovie(movie.getId());
+                                        RealmUtil.getInstance().addMovieWatchlist(movie.getId());
+                                        RealmPostMovie post= RealmUtil.getInstance().getPostMovie(movie.getId());
+                                        RealmUtil.getInstance().setMovieWatchlist(post,true);
+
                                     }
                                 }
                             }
@@ -456,9 +497,14 @@ public class LoginPresenter {
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     List<TvShow> shows = response.body().getResults();
+                    List<Integer> Ids=new ArrayList<Integer>();
                     for (TvShow show : shows) {
                         ApplicationState.getUser().addWatchlistShow(show.getId());
+                        Ids.add(show.getId());
+                        RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                        RealmUtil.getInstance().setSeriesWatchlist(post,true);
                     }
+                    RealmUtil.getInstance().addSeriesWatchlist(Ids);
                     if(response.body().getTotalPages()>1)
                         for(int i=2;i<=response.body().getTotalPages();i++)
                         {
@@ -471,6 +517,9 @@ public class LoginPresenter {
                                         List<TvShow> shows = response.body().getResults();
                                         for (TvShow show : shows) {
                                             ApplicationState.getUser().addWatchlistShow(show.getId());
+                                            RealmUtil.getInstance().addShowWatchlist(show.getId());
+                                            RealmPostSeries post= RealmUtil.getInstance().getPostSeries(show.getId());
+                                            RealmUtil.getInstance().setSeriesWatchlist(post,true);
                                         }
                                     }
                                 }
