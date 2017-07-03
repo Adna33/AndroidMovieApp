@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.helper.SharedPrefsUtils;
+import atlant.moviesapp.utils.SharedPrefsUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.presenters.LoginPresenter;
 import atlant.moviesapp.views.LoginView;
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @OnClick(R.id.login_button)
     public void onClickButton() {
-        if (isNetworkAvailable()) {
+        if (ApplicationState.isNetworkAvailable(this)) {
             username = loginName.getText().toString();
             password = loginPassword.getText().toString();
             presenter.requestToken(username, password);
@@ -123,12 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
     @Override
     public void showError() {

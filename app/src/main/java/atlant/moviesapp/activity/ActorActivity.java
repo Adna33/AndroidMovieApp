@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +19,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import atlant.moviesapp.R;
-import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.FilmographyAdapter;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.helper.StringUtils;
 import atlant.moviesapp.model.Actor;
+import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Movie;
 import atlant.moviesapp.presenters.ActorDetailsPresenter;
 import atlant.moviesapp.realm.RealmUtil;
@@ -99,7 +97,7 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
             }
         });
 
-        boolean isConnected = isNetworkAvailable();
+        boolean isConnected = ApplicationState.isNetworkAvailable(this);
 
         Intent intent = getIntent();
         Integer actorId = intent.getIntExtra("actorId", 0);
@@ -120,7 +118,8 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
     @Override
     public void showActor(Actor actor) {
         name.setText(actor.getName());
-        birthDate.setText(getString(R.string.actorBirthData,actor.getBirthday(),actor.getPlaceOfBirth()));
+        if (actor.getBirthday() != null && actor.getPlaceOfBirth() != null)
+            birthDate.setText(getString(R.string.actorBirthData, date.getFormatedDate(actor.getBirthday()), actor.getPlaceOfBirth()));
         website.setText(actor.getHomepage());
         biography.setText(actor.getBiography());
         Glide.with(this).load(actor.getImagePath())
@@ -152,12 +151,6 @@ public class ActorActivity extends AppCompatActivity implements ActorView {
 
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     @Override
     public void onStop() {

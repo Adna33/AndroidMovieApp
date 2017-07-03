@@ -3,7 +3,6 @@ package atlant.moviesapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,28 +28,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.facebook.FacebookSdk;
-import com.facebook.share.ShareApi;
 import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import atlant.moviesapp.R;
 import atlant.moviesapp.adapter.ActorAdapter;
-import atlant.moviesapp.adapter.GalleryAdapter;
 import atlant.moviesapp.adapter.ImageAdapter;
 import atlant.moviesapp.adapter.ReviewAdapter;
 import atlant.moviesapp.fragments.YouTubeFragment;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.helper.StringUtils;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
@@ -155,7 +147,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeFavouriteMovie(movie.getId());
-            if (isNetworkAvailable()) {
+            if (ApplicationState.isNetworkAvailable(this)) {
                 presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), false);
 
             } else {
@@ -169,7 +161,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         } else {
             ApplicationState.getUser().addFavouriteMovie(movie.getId());
-            if (isNetworkAvailable()) {
+            if (ApplicationState.isNetworkAvailable(this)) {
                 presenter.postFavorite(movie.getId(), ApplicationState.getUser().getSessionId(), true);
 
             } else {
@@ -191,7 +183,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         if (ApplicationState.getUser().getWatchListMovies().contains(movie.getId())) {
             ApplicationState.getUser().removeWatchlistMovie(movie.getId());
-            if (isNetworkAvailable()) {
+            if (ApplicationState.isNetworkAvailable(this)) {
                 presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), false);
             } else {
                 presenter.removeWatchlistRealm(movie.getId());
@@ -202,7 +194,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistMovie(movie.getId());
-            if (isNetworkAvailable()) {
+            if (ApplicationState.isNetworkAvailable(this)) {
                 presenter.postWatchlist(movie.getId(), ApplicationState.getUser().getSessionId(), true);
             } else {
                 presenter.postWatchlistRealm(movie.getId());
@@ -230,7 +222,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
-        boolean isConnected = isNetworkAvailable();
+        boolean isConnected = ApplicationState.isNetworkAvailable(this);
         checkLogin();
 
         setSupportActionBar(toolbar);
@@ -339,12 +331,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+ 
 
     @Override
     public void showCrew(List<Crew> crew) {
@@ -383,9 +370,27 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     }
 
     @Override
-    public void showImages(List<Backdrop> backdrops) {
+    public void showImages(final ArrayList<Backdrop> backdrops) {
         imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageRecyclerView.setAdapter(new ImageAdapter(getApplicationContext(), backdrops));
+        imageRecyclerView.addOnItemTouchListener(new ImageAdapter.RecyclerTouchListener(getApplicationContext(), imageRecyclerView, new ImageAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(MovieDetailsActivity.this, ImageDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(getString(R.string.images), backdrops);
+                bundle.putInt(getString(R.string.position), position);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+
+
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
 

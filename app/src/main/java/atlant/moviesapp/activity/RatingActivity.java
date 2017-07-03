@@ -36,8 +36,6 @@ public class RatingActivity extends AppCompatActivity implements RatingView {
     Integer id;
     String title;
     Integer TAG;
-    String type;
-    private BodyRating bodyRating;
     float rating;
 
     @Override
@@ -89,7 +87,7 @@ public class RatingActivity extends AppCompatActivity implements RatingView {
                 if (ratingBar != null)
                     rating = ratingBar.getRating();
                 presenter.addRatingToList(TAG, id);
-                if (isNetworkAvailable()) {
+                if (ApplicationState.isNetworkAvailable(this)) {
                     double dr = (double) ratingBar.getRating();
                     presenter.postRating(id, ApplicationState.getUser().getSessionId(), dr, TAG);
                 } else {
@@ -103,10 +101,5 @@ public class RatingActivity extends AppCompatActivity implements RatingView {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 }

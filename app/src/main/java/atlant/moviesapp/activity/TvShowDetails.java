@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,12 +41,11 @@ import atlant.moviesapp.adapter.ActorAdapter;
 import atlant.moviesapp.adapter.HorizontalAdapter;
 import atlant.moviesapp.adapter.ImageAdapter;
 import atlant.moviesapp.helper.Date;
-import atlant.moviesapp.helper.StringUtils;
+import atlant.moviesapp.utils.StringUtils;
 import atlant.moviesapp.model.ApplicationState;
 import atlant.moviesapp.model.Backdrop;
 import atlant.moviesapp.model.Cast;
 import atlant.moviesapp.model.Crew;
-import atlant.moviesapp.model.TvShow;
 import atlant.moviesapp.model.TvShowDetail;
 
 import atlant.moviesapp.presenters.TvDetailsPresenter;
@@ -109,7 +107,8 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
     private Integer seriesId;
     private Integer seasonNum;
-    private Date date;
+    private boolean isConnected;
+    
     @BindView(R.id.rate_txtBtn)
     TextView rateTxt;
     String name, decription, link;
@@ -145,7 +144,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     void updateFavorites() {
         if (ApplicationState.getUser().getFavouriteSeries().contains(seriesId)) {
             ApplicationState.getUser().removeFavoriteShow(seriesId);
-            if (isNetworkAvailable()) {
+            if (isConnected) {
 
                 presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), false);
             } else {
@@ -160,7 +159,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
         } else {
             ApplicationState.getUser().addFavouriteShow(seriesId);
-            if (isNetworkAvailable()) {
+            if (isConnected) {
                 presenter.postFavorite(seriesId, ApplicationState.getUser().getSessionId(), true);
             } else {
                 presenter.postFavoriteRealm(seriesId);
@@ -181,7 +180,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
         if (ApplicationState.getUser().getWatchListSeries().contains(seriesId)) {
             ApplicationState.getUser().removeWatchlistShow(seriesId);
-            if (isNetworkAvailable()) {
+            if (isConnected) {
                 presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), false);
             } else {
                 presenter.removeWatchlistRealm(seriesId);
@@ -192,7 +191,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
                     .into(watchlist);
         } else {
             ApplicationState.getUser().addWatchlistShow(seriesId);
-            if (isNetworkAvailable()) {
+            if (isConnected) {
                 presenter.postWatchlist(seriesId, ApplicationState.getUser().getSessionId(), true);
             } else {
                 presenter.postWatchlistRealm(seriesId);
@@ -223,7 +222,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
         checkLogin();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.tvshows_title);
-        boolean isConnected = isNetworkAvailable();
+        isConnected = ApplicationState.isNetworkAvailable(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -232,7 +231,6 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
                 onBackPressed();
             }
         });
-        date = new Date(this);
         Intent intent = getIntent();
         seriesId = intent.getIntExtra(getString(R.string.series), 0);
         name = intent.getStringExtra(getString(R.string.name));
@@ -285,14 +283,7 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
 
 
     }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
+    
     @Override
     public void showCast(final List<Cast> cast) {
         String castString = StringUtils.showCast(cast);
@@ -372,9 +363,27 @@ public class TvShowDetails extends AppCompatActivity implements TvDetailsView, S
     }
 
     @Override
-    public void showImages(List<Backdrop> backdrops) {
+    public void showImages(final ArrayList<Backdrop> backdrops) {
         imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageRecyclerView.setAdapter(new ImageAdapter(getApplicationContext(), backdrops));
+        imageRecyclerView.addOnItemTouchListener(new ImageAdapter.RecyclerTouchListener(getApplicationContext(), imageRecyclerView, new ImageAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Intent intent = new Intent(TvShowDetails.this, ImageDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(getString(R.string.images), backdrops);
+                bundle.putInt(getString(R.string.position), position);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 
